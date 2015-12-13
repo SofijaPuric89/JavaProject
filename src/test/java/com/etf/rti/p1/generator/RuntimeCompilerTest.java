@@ -30,9 +30,9 @@ public class RuntimeCompilerTest {
         assertEquals("bnf", compiler.getName());
         AParser parser;
         try {
-            parser = compiler.getParser();
+            compiler.getParser();
             assertEquals(true, false);
-        } catch (Exception e) {
+        } catch (Exception ignored) {
         }
         InputStream in = new ByteArrayInputStream("<test>::=a".getBytes("UTF-8"));
         compiler.setInput(in);

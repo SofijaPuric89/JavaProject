@@ -47,6 +47,6 @@ public class Util {
     private void readOutput(InputStream ins) throws IOException {
         BufferedReader in = new BufferedReader(
                 new InputStreamReader(ins));
-        while (in.readLine() != null);
+        while ((in.readLine()) != null);
     }
 }

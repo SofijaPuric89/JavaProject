@@ -9,11 +9,9 @@ import java.util.regex.Pattern;
  */
 public class PatterFileFilter implements FilenameFilter {
 
-    private String pattern;
     private Pattern reg;
 
     public PatterFileFilter(String pattern) {
-        this.pattern = pattern;
         reg = Pattern.compile(pattern);
     }
 

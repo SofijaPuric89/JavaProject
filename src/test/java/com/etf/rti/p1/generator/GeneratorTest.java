@@ -19,11 +19,6 @@ public class GeneratorTest {
         gen = new Generator(grammar);
     }
 
-    @org.junit.After
-    public void tearDown() throws Exception {
-
-    }
-
     @org.junit.Test
     public void testGenerate() throws Exception {
         gen.generate();

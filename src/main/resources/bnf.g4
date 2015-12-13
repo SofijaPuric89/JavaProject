@@ -31,6 +31,12 @@ grammar bnf;
     import java.io.PrintStream;
     import com.etf.rti.p1.generator.AParser;
     import org.apache.commons.lang3.StringEscapeUtils;
+    import java.util.LinkedList;
+    import com.etf.rti.p1.ebnf.elements.Nonterminal;
+    import com.etf.rti.p1.ebnf.elements.Terminal;
+    import com.etf.rti.p1.ebnf.rules.IRule;
+    import com.etf.rti.p1.ebnf.rules.SimpleRule;
+
 }
 
 options {
@@ -41,10 +47,17 @@ options {
     private PrintStream output = null;
     private boolean first = true;
     private String name;
+    private SimpleRule rule = new SimpleRule();
+    private LinkedList<IRule> listRules = new LinkedList<IRule>();
+
     public bnfParser(TokenStream input, OutputStream out, String name) {
         this(input);
         this.output = new PrintStream(out);
         this.name = name;
+    }
+
+    public LinkedList<IRule> getRules() {
+        return listRules;
     }
 
     private void print(String s) {
@@ -69,8 +82,14 @@ options {
                 "superClass=AParser;\n"+
                 "}\n"+
             "@header {\n"+
-                "import com.etf.rti.p1.generator.AParser;\n"+
-            "}\n");
+                "import com.etf.rti.p1.generator.AParser;\n" +
+                "import com.etf.rti.p1.ebnf.rules.IRule;\n" +
+                "import java.util.LinkedList;\n" +
+            "}\n" +
+            "@parser::members {\n" +
+                        "    public LinkedList<IRule> getRules() {\n" +
+                        "        return null;\n" +
+                        "    }}\n");
             println(String.format("init : %s ;", s));
         }
         first = false;
@@ -94,6 +113,9 @@ rule_
                       println($lhs.v);
                       println($rhs.v);
                       println(";");
+                      rule.setRule(new Nonterminal($lhs.v));
+                      listRules.addLast(rule);
+                      rule = new SimpleRule();
                       }
     ;
 
@@ -106,7 +128,8 @@ rhs returns [String v]
     ;
 
 alternatives[String conector] returns [String v]
-    : a=alternative{$v = $a.v;}(BAR b=alternative {$v += conector + $b.v; })*
+    : a=alternative{$v = $a.v; rule.setNewOptionForInsert();}
+        (BAR b=alternative {$v += conector + $b.v; rule.setNewOptionForInsert();})*
     ;
 
 alternative returns [String v]
@@ -117,8 +140,10 @@ element returns[String v]
     : optional {$v = $optional.v;}
     | zeroormore {$v = $zeroormore.v;}
     | oneormore {$v = $oneormore.v;}
-    | t=text {$v = "\'" + StringEscapeUtils.escapeJava($t.text) + "\'";}
-    | id {$v = $id.v;}
+    | t=text {$v = "\'" + StringEscapeUtils.escapeJava($t.text) + "\'";
+                rule.insertElem(new Terminal($t.text));}
+    | id {$v = $id.v;
+          rule.insertElem(new Nonterminal($id.v));}
     ;
 
 optional returns[String v]

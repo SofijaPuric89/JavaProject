@@ -76,8 +76,6 @@ public class Generator {
             build(args);
             compile();
             copy();
-        } catch (Exception e) {
-            throw e;
         } finally {
             Util.getInstance().deleteFolder(tempDir);
         }

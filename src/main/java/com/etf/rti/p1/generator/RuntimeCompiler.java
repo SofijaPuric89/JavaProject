@@ -78,7 +78,6 @@ public class RuntimeCompiler implements Compiler {
         assert (argsType.length == args.length);
         Class<?> c = Class.forName(packageName + "." + this.name + name);
         Constructor<?> ctor = c.getConstructor(argsType);
-        T object = (T) ctor.newInstance(args);
-        return object;
+        return (T) ctor.newInstance(args);
     }
 }
