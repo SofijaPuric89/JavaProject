@@ -17,7 +17,8 @@ public class GrammarTransformTest {
     private GrammarTransform transform;
     private static final String input = "<a> ::= <b><a> | <a><c><c> | <a><c> | <a><g><a><t> | <e> | <c> | <c><d> " +
             "| <d><e> | <g><e> | <d><g><b><e> | <d><b><e> | <j><k> | <j><t> | <j> | <z> | <z><k> | <z><t> | <t><a><t>",
-    result = "a = ( t a t | { b } ( ( j | z ) [ ( k | t ) ] | [ ( d [ [ g ] b ] | g ) ] e | c [ d ] ) { ( c [ c ] | g a t ) } ).\n";
+            result = "a = ( t a t | { b } ( ( j | z ) [ ( k | t ) ] | [ ( d [ [ g ] b ] | g ) ] e | c [ d ] ) " +
+                    "{ ( c [ c ] | g a t ) } )." + System.lineSeparator();
     private ByteArrayOutputStream outResult;
 
     @Before
