@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import src.correct.java.com.etf.rti.p1.exceptions.ErrorNode;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -19,7 +20,7 @@ public class ParseGrammar {
     private static final String EMPTY = "";
     private static final String OR = "\\|";
     private static final String NONTERMINAL = "<(.+?)>";
-    public static final String TERMINALSNONTERMINALS = "(<(.+?)>)|([^<>]+)";
+    private static final String TERMINALSNONTERMINALS = "(<(.+?)>)|([^<>]+)";  // bilo bez ? u drugom delu
     private String input =
             "<p> ::= <malo_slovo>:\\<put>\n" +
                     "<put> ::= <dir> | <put>\\<dir> | \"<dir>\"\\<put>\n" +
@@ -205,39 +206,156 @@ public class ParseGrammar {
         }
     }
 
-    /*
-        public void updateInverseDepth(List<Node<Symbol>> list, int depth) {
-            for (Node<Symbol> n:list) {
-                if (n.getData().isComposite()) {
-                    int d = 0;
-                    for(int i=0;i<n.getChildren().size();i++)
-                        d += n.getChildren().get(i).getData().getInverseDepth();
-                    n.getData().setInverseDepth(d);
-                }
-                else
-                    n.getData().setInverseDepth(depth);
+    public void updateWidth(Node<Symbol> node, int width) {
+        if (node != null) {
+            if (!node.getData().isComposite()) {
+                if (!node.getData().getWidths().contains(width))  // ako nije kompozitni, dodajemo sirinu samo ako ista vec ne postoji u listi
+                    node.getData().addWidth(width);
             }
-            for (int i = 0; i < list.size(); i++) {
-                List<Node<Symbol>> l =list.get(i).getParents();
-                updateInverseDepth(l, depth+1);
+            else {
+                node.getData().setWidth(width);
+            }
+
+            for (Node<Symbol> parent : node.getParents()) {
+                if (parent != null) {
+                    if (parent.getData().isComposite()) {
+                        int sum = 0;
+                        //updateWidth(parent, parent.getData().getWidth() + width);
+                        for (Node<Symbol> nod : parent.getChildren())
+                            sum += nod.getData().getWidth();
+                        updateWidth(parent, sum);
+
+                    }
+                    else
+                        updateWidth(parent,width);
+                }
             }
         }
-    */
+    }
+
+    public void updateWidths(Node<Symbol> node, List<Integer> widths) {
+        if (node != null) {
+            setWidthsToNode(node, widths);
+            for (Node<Symbol> parent : node.getParents()) {
+                if (parent != null) {
+                    if (parent.getData().isComposite()) {
+                        calculateWidthOfCompositeNode(parent);
+                    }
+                    else
+                        updateWidths(parent,widths);
+                }
+            }
+        }
+    }
+
+    private void calculateWidthOfCompositeNode(Node<Symbol> parent) {
+        int sumTerminals = 0;
+        int numOfChildrenNonterminals = 0;
+        List<String> nameNonterminals = new ArrayList<String>();
+        for (Node<Symbol> nod : parent.getChildren()) {
+            if (nod.getData().isNonterminal()) {
+                numOfChildrenNonterminals++;
+                nameNonterminals.add(nod.getData().getName());
+            }
+            else {
+                sumTerminals += nod.getData().getName().length();
+            }
+        }
+        int[][] array = createMatrixOfChildrenWidths(numOfChildrenNonterminals, nameNonterminals);
+        int s = 0;
+        List<Integer> all = callGetAllCombinations(sumTerminals, array, s);
+        updateWidths(parent, all);
+    }
+
+    private List<Integer> callGetAllCombinations(int sumTerminals, int[][] array, int s) {
+        List<Integer> partial = new ArrayList<Integer>();
+        List<Integer> all = new ArrayList<Integer>();
+        getAllCombinations(array, partial, all, s);
+        for (int i=0;i<all.size();i++) {
+            all.set(i, all.get(i).intValue()+sumTerminals);
+        }
+        return all;
+    }
+
+    private int[][] createMatrixOfChildrenWidths(int numOfChildrenNonterminals, List<String> nameNonterminals) {
+        int[][] array = new int[numOfChildrenNonterminals][];
+        for (int i=0;i<numOfChildrenNonterminals;i++) {
+            Node<Symbol> nonterminal = find(nameNonterminals.get(i), root);
+            int[] lens = new int[nonterminal.getData().getWidths().size()];
+            int j=0;
+            for (int width:nonterminal.getData().getWidths()) {
+                lens[j++] = width;
+            }
+            array[i] = lens;
+        }
+        return array;
+    }
+
+    private void setWidthsToNode(Node<Symbol> node, List<Integer> widths) {
+        if (!node.getData().isComposite()) {
+            for (int w:widths)
+                if (!node.getData().getWidths().contains(w)) { // ako nije kompozitni, dodajemo sirinu samo ako ista vec ne postoji u listi
+                    node.getData().addWidth(w);
+                    break;
+                }
+        }
+        else {
+            node.getData().setWidths(widths);
+        }
+    }
+
+    void getAllCombinations(int[][] data, List<Integer> partial, List<Integer> all, int s) {
+        if (partial.size() == data.length) {
+            for (int i : partial) {
+                if (i != -1) {
+                    s += i;
+                }
+            }
+            all.add(s);
+            s = 0;
+            return;
+        }
+        if (data[partial.size()].length == 0) {
+            partial.add(-1);
+            getAllCombinations(data, partial, all, s);
+            partial.remove(partial.size()-1);
+            return;
+        }
+        for (int i = 0 ; i != data[partial.size()].length; i++) {
+            partial.add(data[partial.size()][i]);
+            getAllCombinations(data, partial, all, s);
+            partial.remove(partial.size()-1);
+        }
+    }
+
     public void updateDepthToAllNodes() {
         List<Node<Symbol>> list = returnAllNodes(root);
         List<Node<Symbol>> leafs = new ArrayList<Node<Symbol>>();
         for (Node<Symbol> sym : list)
             if (sym.isLeaf())
                 leafs.add(sym);
-        //updateInverseDepth(leafs, 0);
-        //for (Node<Symbol> sym:leafs)
         Node<Symbol> max = findNodeMaxDepth();
         updateDepthInverse(max, 0);
-        // updateDepthInverse(find("b", root), 0);
-        // updateDepthInverse(find("0", root), 0);
-        for (Node<Symbol> sym : list) {
-            System.out.println(sym.getData().getName() + " " + sym.getData().getInverseDepth());
+    }
+
+    public void setWidthToAllNodes() {
+        List<Node<Symbol>> list = returnAllNodes(root);
+        List<Node<Symbol>> leafs = new ArrayList<Node<Symbol>>();
+        for (Node<Symbol> sym : list)
+            if (sym.isLeaf())
+                leafs.add(sym);
+        for (Node<Symbol> leaf:leafs) {                      // width of terminals is their length (length of their name)
+            List<Integer> l = new ArrayList<Integer>();
+            l.add(leaf.getData().getName().length());
+            updateWidths(leaf, l);
         }
+        for (Node<Symbol> l:list) {
+            if (l.getData().isInfinite())
+                System.out.println(l.getData().getName() + " infinite!" + l.getData().getWidths());
+            else
+                System.out.println(l.getData().getName() + " " + l.getData().getWidths());
+        }
+
     }
 
     private Node<Symbol> findNodeMaxDepth() {
@@ -290,26 +408,114 @@ public class ParseGrammar {
         return result;
     }
 
+    public void setCompositeNodesToRecursive() {
+        List<Node<Symbol>> list = returnAllNodes(root);
+        List<Node<Symbol>> recursiveNodes = new ArrayList<Node<Symbol>>();
+        List<Node<Symbol>> compositeNodes = new ArrayList<Node<Symbol>>();
+        for (Node<Symbol> node : list) {
+            if (node.isRecursive()) {
+                recursiveNodes.add(node);
+            }
+            if (node.getData().isComposite()) {
+                compositeNodes.add(node);
+            }
+        }
+        for (Node<Symbol> compNode : compositeNodes) {
+            for (Node<Symbol> recNode : recursiveNodes) {
+                String recNodeName = "<" + recNode.getData().getName() + ">";
+                if (compNode.getData().getName().contains(recNodeName)) {
+                    compNode.setRecursive(true);
+                    compNode.addOrdNumOfRecursiveChildren(recNode);
+                }
+            }
+        }
+    }
+
+    public List<Node<Symbol>> getListOfRecursiveNodes() {
+        List<Node<Symbol>> list = returnAllNodes(root);
+        List<Node<Symbol>> recursiveNodes = new ArrayList<Node<Symbol>>();
+        for (Node<Symbol> node : list) {
+            if (node.isRecursive()) {
+                recursiveNodes.add(node);
+            }
+        }
+        return recursiveNodes;
+    }
+
+    public void setParentsToRecursive(Node<Symbol> node, boolean recursive) {
+        if (node != null) {
+            node.setRecursive(recursive);
+            for (int i = 0; i < node.getParents().size(); i++) {
+                if (node.getParents().get(i) != null) {
+                    setParentsToRecursive(node.getParents().get(i), recursive);
+                }
+            }
+        }
+    }
+
+    public void setNodesToRecursive() {
+        List<Node<Symbol>> recNodes = getListOfRecursiveNodes();
+        for (Node<Symbol> node : recNodes) {
+            setParentsToRecursive(node, true);
+        }
+    }
+
+    public void setNodesToInfinite() {
+        List<Node<Symbol>> recNodes = getListOfRecursiveNodes();
+        for (Node<Symbol> node : recNodes) {
+            node.getData().setInfinite(true);
+        }
+    }
+
+    public void setDifferenceLenToRecursiveNodes() {   // treba dovrsiti...
+        List<Node<Symbol>> recursiveNodes = getListOfRecursiveNodes();
+        List<Node<Symbol>> recCompNodes = new ArrayList<Node<Symbol>>();
+        Pattern pattern = Pattern.compile(NONTERMINAL);
+        for (Node<Symbol> node : recursiveNodes) {
+            if (node.getData().isComposite())
+                recCompNodes.add(node);
+        }
+        for (Node<Symbol> compNode : recCompNodes) {
+            List<String> names = new ArrayList<String>();
+            Pattern patt = Pattern.compile(TERMINALSNONTERMINALS);
+            Matcher match = patt.matcher(compNode.getData().getName());
+            //System.out.println(match.groupCount());
+            while (match.find()) {
+                String part = match.group(0);
+                boolean b = isNonterminal(part);
+                if (b) {
+                    Matcher matcher = pattern.matcher(part);
+                    if (matcher.find()) {
+                        //System.out.println(matcher.group(1));
+                        String nonterminalName = matcher.group(1);
+                        names.add(nonterminalName);
+                    }
+                }
+                else {
+                    names.add(part);
+                }
+            }
+            for (Node<Symbol> recChild : compNode.getOrdNumOfRecursiveChildren()) {
+
+            }
+
+        }
+    }
+
     public static void main(String[] args) {
        /* ParseGrammar pg = new ParseGrammar("<p> ::= <p><pom> | <pom>\n" +
                 "<pom> ::= _ | <cifra>\n" +
-                "<cifra> ::= 0|1|2|3|4|5|6|7|8|9");
+                "<cifra> ::= 0|1|2|3|4|5|6|7|8|9"); */
         ParseGrammar pg = new ParseGrammar("<start> ::= 11<a>|<b>1\n" +
                 "<a> ::= 1|<a><b>|<a><c><b>\n" +
                 "<b> ::= 101|<b>01\n" +
-                "<c> ::= 1100|<c>11|<c>00\n"); */
-        ParseGrammar pg = new ParseGrammar();
+                "<c> ::= 1100|<c>11|<c>00\n");
+        //ParseGrammar pg = new ParseGrammar();
         pg.parse();
-        //System.out.println(pg.print(pg.root));
-        pg.updateDepthToAllNodes();
-        //System.out.println(pg.find("pom", pg.root).getData().getDepth());
-        //System.out.println(pg.totalDepth(pg.root, 0));
-        //if (pg.find("b", pg.root).isRecursive())
-        //System.out.println("B recursive true!");
-        //Node<Symbol> sym = pg.find("cifra", pg.root);
-        //if (sym!= null) System.out.println(sym.getData().getName()
-
-        //System.out.println(max.getData().getName() + " " + maxDepth );
+        pg.setCompositeNodesToRecursive();
+        pg.setNodesToRecursive();
+        pg.setNodesToInfinite();
+        pg.setWidthToAllNodes();
     }
 }
 

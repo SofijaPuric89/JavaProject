@@ -12,6 +12,19 @@ public class Node<T> {
     private List<Node<T>> parents = new ArrayList<Node<T>>();
     private T data = null;
     private boolean isRecursive;
+    private List<Node<T>> ordNumOfRecursiveChildren = new ArrayList<Node<T>>();
+
+    public List<Node<T>> getOrdNumOfRecursiveChildren() {
+        return ordNumOfRecursiveChildren;
+    }
+
+    public void setOrdNumOfRecursiveChildren(List<Node<T>> ordNumOfRecursiveChildren) {
+        this.ordNumOfRecursiveChildren = ordNumOfRecursiveChildren;
+    }
+
+    public void addOrdNumOfRecursiveChildren(Node<T> recChild) {
+        ordNumOfRecursiveChildren.add(recChild);
+    }
 
     public Node(T data) {
         this.data = data;
