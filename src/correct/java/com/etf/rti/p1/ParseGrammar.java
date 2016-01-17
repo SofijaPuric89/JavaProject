@@ -23,7 +23,7 @@ public class ParseGrammar {
     private static final String TERMINALSNONTERMINALS = "(<(.+?)>)|([^<>]+)";  // bilo bez ? u drugom delu
     private String input =
             "<p> ::= <malo_slovo>:\\<put>\n" +
-                    "<put> ::= <dir> | <put>\\<dir> | \"<dir>\"\\<put>\n" +
+                    "<put> ::= <put>\\<dir> | \"<dir>\"\\<put> | <dir><pom>\n" +
                     "<dir> ::= <malo_slovo> | <dir><pom>\n" +
                     "<pom> ::= <malo_slovo> | _ | <cifra>\n" +
                     "<malo_slovo> ::= a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z\n" +
@@ -84,8 +84,6 @@ public class ParseGrammar {
         if (node != null) {
             //dodavanje novog roditelja
             if (rroot != null) {
-                // node.setParent(rroot);
-                // rroot.addChildOnly(node);
                 setParentToExistingNode(localRoot, rroot, node);
             } else {
                 setParentToExistingNode(rroot, localRoot, node);
@@ -102,8 +100,6 @@ public class ParseGrammar {
         if (node.equals(rroot) || node.equals(localRoot))
             node.setRecursive(true);
         else {
-            //node.setParent(rroot);
-            //rroot.getChildren().add(node);
             boolean bb = searchAllTree(node);
             if (bb) node.setRecursive(true);
             else
@@ -142,7 +138,6 @@ public class ParseGrammar {
             if (sym != null)
                 localRoot = sym;
         }
-        //System.out.println(terminals[1]);
         localRoot.setRecursive(isRecursive(nonterminal, terminal));
         return localRoot;
     }
@@ -248,6 +243,7 @@ public class ParseGrammar {
         }
     }
 
+
     private void calculateWidthOfCompositeNode(Node<Symbol> parent) {
         int sumTerminals = 0;
         int numOfChildrenNonterminals = 0;
@@ -262,9 +258,22 @@ public class ParseGrammar {
             }
         }
         int[][] array = createMatrixOfChildrenWidths(numOfChildrenNonterminals, nameNonterminals);
-        int s = 0;
-        List<Integer> all = callGetAllCombinations(sumTerminals, array, s);
-        updateWidths(parent, all);
+    //    if (array.length == numOfChildrenNonterminals) { PROMENJENO U SLEDECE:
+        if (!ifMatrixHasEmptyArray(array)) {
+            int s = 0;
+            List<Integer> all = callGetAllCombinations(sumTerminals, array, s);
+            updateWidths(parent, all);
+        }
+    }
+
+    private boolean ifMatrixHasEmptyArray(int[][] matrix) {
+        boolean b = false;
+        for (int[] array : matrix) {
+            if (array.length == 0)  {
+                b = true;
+            }
+        }
+        return b;
     }
 
     private List<Integer> callGetAllCombinations(int sumTerminals, int[][] array, int s) {
@@ -293,15 +302,38 @@ public class ParseGrammar {
 
     private void setWidthsToNode(Node<Symbol> node, List<Integer> widths) {
         if (!node.getData().isComposite()) {
-            for (int w:widths)
-                if (!node.getData().getWidths().contains(w)) { // ako nije kompozitni, dodajemo sirinu samo ako ista vec ne postoji u listi
-                    node.getData().addWidth(w);
-                    break;
-                }
-        }
+                for (int w : widths)
+                    if (!node.getData().getWidths().contains(w)) { // ako nije kompozitni, dodajemo sirinu samo ako ista vec ne postoji u listi
+                        node.getData().addWidth(w);
+                        break;
+                    }
+            }
         else {
+            //node.getData().getWidths().clear();   // dodato
             node.getData().setWidths(widths);
+            //updateParentsWidths(node);
         }
+    }
+
+    private void updateParentsWidths(Node<Symbol> node) {
+        if (node != null) {
+            for (Node<Symbol> parent : node.getParents()) {
+                if (parent != null && areAllChildrenComposite(parent)) {
+                    //parent.getData().getWidths().clear();
+                    parent.getData().getWidths().addAll(node.getData().getWidths());
+                }
+            }
+        }
+    }
+
+    private boolean areAllChildrenComposite(Node<Symbol> node) {
+        boolean b = true;
+        for (Node<Symbol> child : node.getChildren()) {
+            if (!child.getData().isComposite()) {
+                b = false;
+            }
+        }
+        return b;
     }
 
     void getAllCombinations(int[][] data, List<Integer> partial, List<Integer> all, int s) {
@@ -442,6 +474,17 @@ public class ParseGrammar {
         return recursiveNodes;
     }
 
+    public List<Node<Symbol>> getListOfCompositeNodes() {
+        List<Node<Symbol>> list = returnAllNodes(root);
+        List<Node<Symbol>> compositeNodes = new ArrayList<Node<Symbol>>();
+        for (Node<Symbol> node : list) {
+            if (node.getData().isComposite()) {
+                compositeNodes.add(node);
+            }
+        }
+        return compositeNodes;
+    }
+
     public void setParentsToRecursive(Node<Symbol> node, boolean recursive) {
         if (node != null) {
             node.setRecursive(recursive);
@@ -516,6 +559,7 @@ public class ParseGrammar {
         pg.setNodesToRecursive();
         pg.setNodesToInfinite();
         pg.setWidthToAllNodes();
+
     }
 }
 
