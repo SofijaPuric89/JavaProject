@@ -22,6 +22,8 @@ public class ParseGrammar {
     private static final String OR = "\\|";
     private static final String NONTERMINAL = "<(.+?)>";
     private static final String TERMINALSNONTERMINALS = "(<(.+?)>)|([^<>]+)";  // bilo bez ? u drugom delu
+    private static final double MINFACTOR = 0.8;
+    private static final double MAXFACTOR = 1.2;
     private String input =
             "<p> ::= <malo_slovo>:\\<put>\n" +
                     "<put> ::= <dir> | <put>\\<dir> | \"<dir>\"\\<put>\n" +
@@ -552,6 +554,37 @@ public class ParseGrammar {
         }
     }
 
+    public void genereteCorrectAnswer(int length) {   // URADITI!
+        int minLen = (int) MINFACTOR * length;
+        int maxLen = (int) MAXFACTOR * length;
+        int currLen = 0;
+        Node<Symbol> currRoot = root;
+        if (currRoot.getData().isInfinite()) {  // ako se ponavlja beskonacno
+            List<Node<Symbol>> children = currRoot.getChildren();
+            int numOfChildren = currRoot.getChildren().size();
+            if (numOfChildren > 1) {
+                int numOfInfiniteChildren = 0;
+                int numOfNonInfiniteChildren = 0;
+                List<Node<Symbol>> infiniteChildren = new ArrayList<Node<Symbol>>();
+                List<Node<Symbol>> nonInfiniteChildren = new ArrayList<Node<Symbol>>();
+                List<List<Integer>> childrenInfiniteWidths = new ArrayList<List<Integer>>();
+                List<List<Integer>> childrenNonInfiniteWidths = new ArrayList<List<Integer>>();
+                for (Node<Symbol> child : children) {
+                    if (child.getData().isInfinite()) {
+                        numOfInfiniteChildren++;
+                        infiniteChildren.add(child);
+                        childrenInfiniteWidths.add(child.getData().getWidths());
+                    }
+                    else {
+                        numOfNonInfiniteChildren++;
+                        nonInfiniteChildren.add(child);
+                        childrenNonInfiniteWidths.add(child.getData().getWidths());
+                    }
+                }
+            }
+            else currRoot = children.get(0);
+        }
+    }
     public static void main(String[] args) {
        /* ParseGrammar pg = new ParseGrammar("<p> ::= <p><pom> | <pom>\n" +
                 "<pom> ::= _ | <cifra>\n" +
