@@ -40,6 +40,10 @@ public class ParseGrammar {
     public ParseGrammar() {
     }
 
+    public String getGrammar() {
+        return input;
+    }
+
     public void parse() {
         Node<Symbol> localRoot = null;
         parseAllRules();
