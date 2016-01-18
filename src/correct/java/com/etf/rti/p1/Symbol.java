@@ -18,22 +18,27 @@ public class Symbol {
     private List<Integer> widths = new ArrayList<Integer>();
     private int width;
     private boolean isInfinite;
-    private HashMap<String, ArrayList> differenceLen = new HashMap<String, ArrayList>();
+    private HashMap<String, List> differenceLen = new HashMap<String, List>();
+    private ArrayList<Integer> differences = new ArrayList<Integer>();
 
-    public HashMap<String, ArrayList> getDifferenceLen() {
+    public HashMap<String, List> getDifferenceLen() {
         return differenceLen;
     }
 
-    public void setDifferenceLen(HashMap<String, ArrayList> differenceLen) {
+    public List<Integer> getDifferences(String name) {
+        return differenceLen.get(name);
+    }
+
+    public void setDifferenceLen(HashMap<String, List> differenceLen) {
         this.differenceLen = differenceLen;
     }
 
-    public void addDifferenceLen(String key, int d) {
-        differenceLen.get(key).add(d);
-    }
 
-    public void setDifferenceLenArray(String key, ArrayList<Integer> arr) {
-        differenceLen.get(key).addAll(arr);
+    public void setDifferenceLenArray(String key, List<Integer> arr) {
+        if (differenceLen.get(key) != null)
+            differenceLen.get(key).addAll(arr);
+        else
+            differenceLen.put(key, arr);
     }
 
     public Symbol(String n, boolean is, int len, boolean term, boolean comp) {
@@ -120,4 +125,6 @@ public class Symbol {
     public boolean isComposite() {
         return isComposite;
     }
+
+
 }

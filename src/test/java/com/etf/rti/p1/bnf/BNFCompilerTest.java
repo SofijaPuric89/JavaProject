@@ -17,13 +17,19 @@ import java.nio.file.Path;
  * Created by zika on 10.12.2015..
  */
 public class BNFCompilerTest {
-    private static final String input =
+    /*private static final String input =
             "<p> ::= <malo_slovo>:\\<put>\n" +
                     "<put> ::= <dir> | <put>\\<dir> | \"<dir>\"\\<put>\n" +
                     "<dir> ::= <malo_slovo> | <dir><pom>\n" +
                     "<pom> ::= <malo_slovo> | _ | <cifra>\n" +
                     "<malo_slovo> ::= a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z\n" +
                     "<cifra> ::= 0|1|2|3|4|5|6|7|8|9";
+                    */
+    private static final String input =
+            "<start> ::= 11<a>|<b>1\n" +
+                    "<b> ::= 101|<b>01\n" +
+                    "<c> ::= 1100|<c>11|<c>00\n" +
+                    "<a> ::= 1|<a><b>|<a><c><b>";
 
     private AParser parser;
 
@@ -53,7 +59,8 @@ public class BNFCompilerTest {
     public void testGetParser() throws Exception {
         parser.init();
         Compiler c = generator.generate();
-        c.setInput(new ByteArrayInputStream("f:\\\"d_a4f\"\\\"abc8ab\"\\pe5a_r\\pa8f1k".getBytes("UTF-8")));
+        //c.setInput(new ByteArrayInputStream("f:\\\"d_a4f\"\\\"abc8ab\"\\pe5a_r\\pa8f1k".getBytes("UTF-8")));
+        c.setInput(new ByteArrayInputStream("1111100111100101110011101".getBytes("UTF-8")));
         c.getParser().init();
 
     }
