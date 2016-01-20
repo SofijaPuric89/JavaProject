@@ -34,6 +34,7 @@ public class ParseGrammar {
 
     private String[] array = null;
     Node<Symbol> root = null;
+    CombinationGenerator gen = new CombinationGenerator(this);
 
     public ParseGrammar(String grammar) {
         input = grammar;
@@ -239,7 +240,7 @@ public class ParseGrammar {
             for (Node<Symbol> parent : node.getParents()) {
                 if (parent != null) {
                     if (parent.getData().isComposite()) {
-                        calculateWidthOfCompositeNode(parent, true);
+                        gen.calculateWidthOfCompositeNode(parent, true);
                     } else
                         updateWidths(parent, widths);
                 }
@@ -247,70 +248,6 @@ public class ParseGrammar {
         }
     }
 
-
-    private List<Integer> calculateWidthOfCompositeNode(Node<Symbol> parent, boolean widhts) {
-        int sumTerminals = 0;
-        int numOfChildrenNonterminals = 0;
-        List<String> nameNonterminals = new ArrayList<String>();
-        for (Node<Symbol> nod : parent.getChildren()) {
-            if (nod.getData().isNonterminal()) {
-                numOfChildrenNonterminals++;
-                nameNonterminals.add(nod.getData().getName());
-            } else {
-                sumTerminals += nod.getData().getName().length();
-            }
-        }
-        int[][] array = createMatrixOfChildrenWidths(numOfChildrenNonterminals, nameNonterminals);
-        //    if (array.length == numOfChildrenNonterminals) { PROMENJENO U SLEDECE:
-        if (widhts) {
-            if (!ifMatrixHasEmptyArray(array)) {
-                int s = 0;
-                List<Integer> all = callGetAllCombinations(sumTerminals, array, s);
-                updateWidths(parent, all);
-
-            }
-            return null;
-        }
-        else {
-            int s = 0;
-            List<Integer> all = callGetAllCombinations(sumTerminals, array, s);
-            return all;
-        }
-    }
-
-    private boolean ifMatrixHasEmptyArray(int[][] matrix) {
-        boolean b = false;
-        for (int[] array : matrix) {
-            if (array.length == 0) {
-                b = true;
-            }
-        }
-        return b;
-    }
-
-    private List<Integer> callGetAllCombinations(int sumTerminals, int[][] array, int s) {
-        List<Integer> partial = new ArrayList<Integer>();
-        List<Integer> all = new ArrayList<Integer>();
-        getAllCombinations(array, partial, all, s);
-        for (int i = 0; i < all.size(); i++) {
-            all.set(i, all.get(i).intValue() + sumTerminals);
-        }
-        return all;
-    }
-
-    private int[][] createMatrixOfChildrenWidths(int numOfChildrenNonterminals, List<String> nameNonterminals) {
-        int[][] array = new int[numOfChildrenNonterminals][];
-        for (int i = 0; i < numOfChildrenNonterminals; i++) {
-            Node<Symbol> nonterminal = find(nameNonterminals.get(i), root);
-            int[] lens = new int[nonterminal.getData().getWidths().size()];
-            int j = 0;
-            for (int width : nonterminal.getData().getWidths()) {
-                lens[j++] = width;
-            }
-            array[i] = lens;
-        }
-        return array;
-    }
 
     private void setWidthsToNode(Node<Symbol> node, List<Integer> widths) {
         if (!node.getData().isComposite()) {
@@ -347,29 +284,6 @@ public class ParseGrammar {
         return b;
     }
 
-    void getAllCombinations(int[][] data, List<Integer> partial, List<Integer> all, int s) {
-        if (partial.size() == data.length) {
-            for (int i : partial) {
-                if (i != -1) {
-                    s += i;
-                }
-            }
-            all.add(s);
-            s = 0;
-            return;
-        }
-        if (data[partial.size()].length == 0) {
-            partial.add(-1);
-            getAllCombinations(data, partial, all, s);
-            partial.remove(partial.size() - 1);
-            return;
-        }
-        for (int i = 0; i != data[partial.size()].length; i++) {
-            partial.add(data[partial.size()][i]);
-            getAllCombinations(data, partial, all, s);
-            partial.remove(partial.size() - 1);
-        }
-    }
 
     public void updateDepthToAllNodes() {
         List<Node<Symbol>> list = returnAllNodes(root);
@@ -544,14 +458,121 @@ public class ParseGrammar {
         for (Node<Symbol> node : recNonCompNodes) {
             List<Node<Symbol>> childrenComposite = getChildrenComposite(node);
             for (Node<Symbol> child : childrenComposite) {
-                List<Integer> differencesOfCompositeNode = calculateWidthOfCompositeNode(child, false);
+                List<Integer> differencesOfCompositeNode = gen.calculateWidthOfCompositeNode(child, false);
                 node.getData().setDifferenceLenArray(child.getData().getName(), differencesOfCompositeNode);
             }
         }
         for (Node<Symbol> node : recNonCompNodes) {
+            updateDifferences(node, node.getData().getDifferenceLen(), recNonCompNodes);
+        }
+        for (Node<Symbol> node : returnAllNodes(root)) {
             System.out.print(node.getData().getName());
             System.out.println(node.getData().getDifferenceLen());
         }
+    }
+
+    public void updateDifferences(Node<Symbol> node, HashMap<String, List> differences, List<Node<Symbol>> list) {
+        if (node != null) {
+            node.getData().setDifferencesLengths(differences);
+            for (Node<Symbol> parent : node.getParents()) {
+                if (parent != null) {
+                    if (!list.contains(parent)) {           // ako parent nije direktno rekurzivni
+                        if (!parent.getData().isComposite()) {
+                            updateDifferencesOfNonCompositeNode(differences, list, parent);
+                        } else {
+                            updateDifferencesOfCompositeNode(node, list, parent);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void updateDifferencesOfCompositeNode(Node<Symbol> node, List<Node<Symbol>> list, Node<Symbol> parent) {
+        int numOfChildrenHasDifferences = 1;                   // ako je kompozitni spajaju se differenceLen od svih potomaka
+        List<Node<Symbol>> childrenHasDifferences = new ArrayList<Node<Symbol>>();  // node mu je sigurno dete - uzima se njegova mapa i od svih ostalih
+        childrenHasDifferences.add(node);
+        for (Node<Symbol> child : parent.getChildren()) {
+            if (child.getData().isNonterminal() && !child.getData().getDifferenceLen().isEmpty()) {
+
+                if (!childrenHasDifferences.contains(child)) {
+                    numOfChildrenHasDifferences++;
+                    childrenHasDifferences.add(child);
+                }
+            }
+        }
+        int[][] ordNumbersOfChildrenMaps = getOrdNumbersOfChildrenMaps(numOfChildrenHasDifferences, childrenHasDifferences);
+        List<Integer> partial = new ArrayList<Integer>();
+        List<List<Integer>> all = new ArrayList<List<Integer>>();
+        HashMap<String, List> map = new HashMap<String, List>();
+        gen.catchAllCombinations(ordNumbersOfChildrenMaps, partial, all);  // all - sve kombinacije iz mapa dece
+        for (List<Integer> combination : all) {
+            putOneCombinationToMap(childrenHasDifferences, map, combination);
+        }
+        parent.getData().setDifferenceLen(map);
+        updateDifferences(parent, map, list);
+    }
+
+    private void putOneCombinationToMap(List<Node<Symbol>> childrenHasDifferences, HashMap<String, List> map, List<Integer> combination) {
+        List<Integer> diffs = new ArrayList<Integer>();
+        String name = "";
+        int ordNumOfChild = 0;
+        int ordNumOfCombination = 1;
+        for (int ordNum : combination) {
+            Node<Symbol> child = childrenHasDifferences.get(ordNumOfChild++);
+            name += child.getData().getName();
+            for (List<Integer> value : child.getData().getDifferenceLen().values()) {
+                if (ordNum == ordNumOfCombination) {
+                    diffs.addAll(value);
+                    break;
+                }
+                ordNumOfCombination++;
+            }
+        }
+        if (map.get(name) != null)
+            map.get(name).addAll(diffs);
+        else
+            map.put(name, diffs);
+    }
+
+    private int[][] getOrdNumbersOfChildrenMaps(int numOfChildrenHasDifferences, List<Node<Symbol>> childrenHasDifferences) {
+        int[][] ordNumbersOfChildrenMaps = new int[numOfChildrenHasDifferences][];
+        int ind = 0;
+        //System.out.println(numOfChildrenHasDifferences + " " + childrenHasDifferences.size());
+        for (Node<Symbol> child : childrenHasDifferences) {
+            int sizeOfChildMap = child.getData().getDifferenceLen().size();
+            int[] ords = new int[sizeOfChildMap];
+            for (int i=1;i<=sizeOfChildMap;i++) {
+                ords[i-1] = i;
+            }
+            ordNumbersOfChildrenMaps[ind++] = ords;
+        }
+        return ordNumbersOfChildrenMaps;
+    }
+
+    private void updateDifferencesOfNonCompositeNode(HashMap<String, List> differences, List<Node<Symbol>> list, Node<Symbol> parent) {
+        if (parent.getChildren().size() == 1) {
+            updateDifferences(parent, differences, list);  // ako nije kompozitni i ima jedno dete samo se propagira dalje
+        }
+        else {
+            HashMap<String, List> map = new HashMap<String, List>();
+            for (Node<Symbol> child : parent.getChildren()) {
+                if (!child.getData().getDifferenceLen().isEmpty()) {
+                    map.putAll(child.getData().getDifferenceLen());
+                }
+            }
+            parent.getData().setDifferenceLen(map);
+            updateDifferences(parent, map, list);
+        }
+    }
+
+    private int getSumOfTerminals(Node<Symbol> parent) {
+        int sum = 0;
+        for (Node<Symbol> child : parent.getChildren()) {
+            if (!child.getData().isNonterminal())
+                sum += child.getData().getName().length();
+        }
+        return sum;
     }
 
     public void genereteCorrectAnswer(int length) {   // URADITI!
@@ -600,6 +621,18 @@ public class ParseGrammar {
         pg.setNodesToInfinite();
         pg.setWidthToAllNodes();
         pg.setDifferenceLenToRecursiveNodes();
+        /*
+        int[][] matrix = {{1,2,3}, {1,2}, {1,2,3,4}};
+        List<Integer> p = new ArrayList<Integer>();
+        List<List<Integer>> all = new ArrayList<List<Integer>>();
+        pg.catchAllCombinations(matrix, p, all);
+        for (List<Integer> list : all) {
+            for (int num : list) {
+                System.out.print(num + " ");
+            }
+            System.out.println();
+        }
+        */
     }
 }
 

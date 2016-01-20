@@ -1,8 +1,6 @@
 package src.correct.java.com.etf.rti.p1;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Korisnik on 8.1.2016.
@@ -33,12 +31,25 @@ public class Symbol {
         this.differenceLen = differenceLen;
     }
 
+    public void setDifferencesLengths(HashMap<String, List> diffs) {
+        for (HashMap.Entry<String, List> entry : diffs.entrySet()) {
+            String key = entry.getKey();
+            List value = entry.getValue();
+            setDifferenceLenArray(key, value);
+        }
+    }
+
 
     public void setDifferenceLenArray(String key, List<Integer> arr) {
         if (differenceLen.get(key) != null)
             differenceLen.get(key).addAll(arr);
         else
             differenceLen.put(key, arr);
+// add elements to al, including duplicates
+        Set<Integer> hs = new HashSet<Integer>();
+        hs.addAll(differenceLen.get(key));
+        differenceLen.get(key).clear();
+        differenceLen.get(key).addAll(hs);
     }
 
     public Symbol(String n, boolean is, int len, boolean term, boolean comp) {
