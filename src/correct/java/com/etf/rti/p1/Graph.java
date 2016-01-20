@@ -359,8 +359,22 @@ public class Graph {
                 node.getData().setDifferenceLenArray(child.getData().getName(), differencesOfCompositeNode);
             }
         }
+        List<Node<Symbol>> allNodes = returnAllNodes(root);
+        List<Node<Symbol>> compositeNodes = new ArrayList<Node<Symbol>>();
+        List<Node<Symbol>> compRecNodes = new ArrayList<Node<Symbol>>();
+        for (Node<Symbol> node : allNodes) {
+            if (node.getData().isComposite())
+                compositeNodes.add(node);
+        }
+        for (Node<Symbol> node : compositeNodes) {
+            for (Node<Symbol> parent : node.getParents())
+            if (node.getData().getName().contains("<"+parent.getData().getName()+">"))
+                compRecNodes.add(node);
+        }
+        List<Node<Symbol>> recNodes = new ArrayList<Node<Symbol>>();
+        recNodes.addAll(recNonCompNodes); recNodes.addAll(compRecNodes);
         for (Node<Symbol> node : recNonCompNodes) {
-            updateDifferences(node, node.getData().getDifferenceLen(), recNonCompNodes);
+            updateDifferences(node, node.getData().getDifferenceLen(), recNodes);  // bilo recNonCompNodes
         }
         for (Node<Symbol> node : returnAllNodes(root)) {
             System.out.print(node.getData().getName());
@@ -399,37 +413,74 @@ public class Graph {
             }
         }
         int[][] ordNumbersOfChildrenMaps = getOrdNumbersOfChildrenMaps(numOfChildrenHasDifferences, childrenHasDifferences);
+        if (parent.getData().getName().equals("<korisnik>!<domen>")) {
+            for (int[] row : ordNumbersOfChildrenMaps) {
+                for (int num : row) {
+                    System.out.print(num);
+                }
+                System.out.println();
+            }
+
+        }
         List<Integer> partial = new ArrayList<Integer>();
         List<List<Integer>> all = new ArrayList<List<Integer>>();
         HashMap<String, List> map = new HashMap<String, List>();
         pg.gen.catchAllCombinations(ordNumbersOfChildrenMaps, partial, all);  // all - sve kombinacije iz mapa dece
         for (List<Integer> combination : all) {
-            putOneCombinationToMap(childrenHasDifferences, map, combination);
+            if (parent.getData().getName().equals("<korisnik>!<domen>")) {
+                System.out.println(combination);
+            }
+            putOneCombinationToMap(childrenHasDifferences, map, combination, node, parent);
         }
-        parent.getData().setDifferenceLen(map);
-        updateDifferences(parent, map, list);
+        //parent.getData().setDifferencesLengths(map);
+        if (getLastNonterminalWithDiffs(parent).equals(node)) {
+            updateDifferences(parent, map, list);
+        }
+
     }
 
-    private void putOneCombinationToMap(List<Node<Symbol>> childrenHasDifferences, HashMap<String, List> map, List<Integer> combination) {
+    private Node<Symbol> getLastNonterminalWithDiffs(Node<Symbol> parent) {
+        Node<Symbol> node = null;
+        for (int i=parent.getChildren().size()-1;i>=0;i--) {
+            Node<Symbol> child = parent.getChildren().get(i);
+            if (child.getData().isNonterminal() && !child.getData().getDifferenceLen().isEmpty()) {
+                node = child;
+                break;
+            }
+        }
+        return node;
+    }
+
+
+    private void putOneCombinationToMap(List<Node<Symbol>> childrenHasDifferences, HashMap<String, List> map, List<Integer> combination, Node<Symbol> node, Node<Symbol> parent) {
         List<Integer> diffs = new ArrayList<Integer>();
         String name = "";
         int ordNumOfChild = 0;
         int ordNumOfCombination = 1;
         for (int ordNum : combination) {
             Node<Symbol> child = childrenHasDifferences.get(ordNumOfChild++);
-            name += child.getData().getName();
+            name += child.getData().getName()+ordNum;
+            if (parent.getData().getName().equals("<korisnik>!<domen>")) {
+                System.out.print(name + " ");
+            }
+            ordNumOfCombination = 1;
             for (List<Integer> value : child.getData().getDifferenceLen().values()) {
                 if (ordNum == ordNumOfCombination) {
                     diffs.addAll(value);
-                    break;
+                    if (parent.getData().getName().equals("<korisnik>!<domen>")) {
+                        System.out.print(value + " ");
+                    }
+                    //break;
                 }
                 ordNumOfCombination++;
             }
         }
-        if (map.get(name) != null)
-            map.get(name).addAll(diffs);
-        else
-            map.put(name, diffs);
+        //if (parent.getChildren().get(parent.getChildren().size()-1).equals(node)) {
+            if (map.get(name) != null)
+                map.get(name).addAll(diffs);
+            else
+                map.put(name, diffs);
+       // }
     }
 
     private int[][] getOrdNumbersOfChildrenMaps(int numOfChildrenHasDifferences, List<Node<Symbol>> childrenHasDifferences) {
@@ -458,7 +509,7 @@ public class Graph {
                     map.putAll(child.getData().getDifferenceLen());
                 }
             }
-            parent.getData().setDifferenceLen(map);
+            //parent.getData().setDifferencesLengths(map);
             updateDifferences(parent, map, list);
         }
     }

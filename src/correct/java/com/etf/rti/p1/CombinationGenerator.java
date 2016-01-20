@@ -44,7 +44,7 @@ public class CombinationGenerator {
         }
     }
 
-    private boolean ifMatrixHasEmptyArray(int[][] matrix) {
+    public boolean ifMatrixHasEmptyArray(int[][] matrix) {
         boolean b = false;
         for (int[] array : matrix) {
             if (array.length == 0) {

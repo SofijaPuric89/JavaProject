@@ -15,8 +15,14 @@ import static org.junit.Assert.*;
  */
 public class GrammarTransformTest {
     private GrammarTransform transform;
-    private static final String input = "<a> ::= <b><a> | <a><c><c> | <a><c> | <a><g><a><t> | <e> | <c> | <c><d> " +
-            "| <d><e> | <g><e> | <d><g><b><e> | <d><b><e> | <j><k> | <j><t> | <j> | <z> | <z><k> | <z><t> | <t><a><t>",
+    private static final String input =
+            "<p> ::= <korisnik>!<domen>\n" +
+                    "<korisnik> ::= <rec> | <korisnik>_<rec>\n" +
+                    "<domen> ::= <kraj_domena> | <rec>.<domen>\n" +
+                    "<kraj_domena> ::= com | co.rs\n" +
+                    "<rec> ::= <slovo> | <slovo><rec> | <rec><cifra>\n" +
+                    "<slovo> ::= a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z\n" +
+                    "<cifra> ::= 0|1|2|3|4|5|6|7|8|9",
             result = "a = ( t a t | { b } ( ( j | z ) [ ( k | t ) ] | [ ( d [ [ g ] b ] | g ) ] e | c [ d ] ) " +
                     "{ ( c [ c ] | g a t ) } )." + System.lineSeparator();
     private ByteArrayOutputStream outResult;
