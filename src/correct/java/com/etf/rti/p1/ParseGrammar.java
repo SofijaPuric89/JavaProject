@@ -152,19 +152,8 @@ public class ParseGrammar {
 
         //pg.g.updateDepth(pg.g.root, 0);
         pg.g.setWidthToAllNodes();
-        //pg.g.setDifferenceLenToRecursiveNodes();
-        /*
-        int[][] matrix = {{1,2,3}, {1,2}, {1,2,3,4}};
-        List<Integer> p = new ArrayList<Integer>();
-        List<List<Integer>> all = new ArrayList<List<Integer>>();
-        pg.catchAllCombinations(matrix, p, all);
-        for (List<Integer> list : all) {
-            for (int num : list) {
-                System.out.print(num + " ");
-            }
-            System.out.println();
-        }
-        */
+        pg.g.setDifferenceLenToRecursiveNodes();
+
     }
 }
 

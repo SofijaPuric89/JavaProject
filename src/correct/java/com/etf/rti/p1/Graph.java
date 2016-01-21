@@ -131,23 +131,67 @@ public class Graph {
 
     public void updateWidths(Node<Symbol> node, List<Integer> widths) {
         if (node != null) {
+
+            setWidthsToSpecificNode(node, widths);   // bilo setWidthsToNode
             if (isNodeCompositeDirectRecursive(node)) {
                 calculateCompDirRecNodeWidths(node);
             }
-            else
-                setWidthsToNode(node, widths);
+            boolean allChildrenCompl = true;
+            for (Node<Symbol> child : node.getChildren()) {
+                if (!child.isComplete()) {
+                    allChildrenCompl = false;
+                }
+            }
+            if (allChildrenCompl) {
                 node.setComplete(true);
+            }
+            Node<Symbol> recc = find("rec", root);
+            if (node.equals(recc) && node.isComplete()) {
+                System.out.println("Rec je gotova. Kao i mi.");
+            }
+            if (isNodeDirectRecursiveNonComposite(node)) {
+                List<Integer> allWidths = new ArrayList<Integer>();
+                boolean allChildrenComplete = true;
+                for (Node<Symbol> child : node.getChildren()) {
+                    if (child.isComplete()) {
+                        allWidths.addAll(child.getData().getWidths());
+                    }
+                    else {
+                        allChildrenComplete = false;
+                    }
+                }
+                if (allChildrenComplete) {
+                    allWidths = removeDuplicates(allWidths);
+                    node.getData().getWidths().clear();
+                    setWidthsToSpecificNode(node, allWidths);
+                }
+            }
+            Node<Symbol> rec = find("rec", root);
+            if (node.equals(rec)) {
+                System.err.print(node.getData().getName() + " ");
+                if (node.isComplete())
+                    System.err.println("gotov");
+                else
+                    System.err.println("");
+            }
+            else {
+                for (Node<Symbol> child : rec.getChildren()) {
+                    if (node.equals(child)) {
+                        System.err.println(child.getData().getName());
+                        break;
+                    }
+                }
             }
             for (Node<Symbol> parent : node.getParents()) {
                 if (parent != null) {
                     if (parent.getData().isComposite() /*&& !isNodeCompositeDirectRecursive(parent)*/) {
                         pg.gen.calculateWidthOfCompositeNode(parent, true);
-                    }
-                    else
+                    } else
                         updateWidths(parent, widths);
                 }
             }
         }
+    }
 
 
     private void calculateCompDirRecNodeWidths(Node<Symbol> node) {
@@ -160,9 +204,9 @@ public class Graph {
         Node<Symbol> parent = find(parentName, root);
         List<Node<Symbol>> brothers = getBrothersNonDirectRecursiveNodes(node, parent);
         List<Integer> minLengths = getListOfMinimumLenghts(brothers);
-        List<Integer> finalList = sumTwoLists(parent.getData().getWidths(), minLengths);
+        List<Integer> finalList = sumTwoLists(node.getData().getWidths(), minLengths);
+        node.getData().getWidths().clear();
         setWidthsToNode(node, finalList);
-        node.setComplete(true);
     }
 
     public void adjustWidths(Node<Symbol> node, List<Integer> widths, List<Node<Symbol>> compDirRecNodes) {
@@ -179,6 +223,11 @@ public class Graph {
                 }
             }
         }
+    }
+
+    private void setWidthsToSpecificNode(Node<Symbol> node, List<Integer> widths) {
+        widths = removeDuplicates(widths);
+        node.getData().setWidths(widths);
     }
 
 
@@ -363,6 +412,14 @@ public class Graph {
         return directRecursiveNodes;
     }
 
+    private boolean isNodeDirectRecursiveNonComposite(Node<Symbol> node) {
+        List<Node<Symbol>> list = getListOfRecursiveNonCompositeNodes();
+        if (list.contains(node))
+            return true;
+        else
+            return false;
+    }
+
     public void setParentsToRecursive(Node<Symbol> node, boolean recursive) {
         if (node != null) {
             node.setRecursive(recursive);
@@ -396,7 +453,7 @@ public class Graph {
         }
         return list;
     }
-/*
+
     public void setDifferenceLenToRecursiveNodes() {
         List<Node<Symbol>> recNonCompNodes = getListOfRecursiveNonCompositeNodes();
         for (Node<Symbol> node : recNonCompNodes) {
@@ -406,7 +463,11 @@ public class Graph {
                 node.getData().setDifferenceLenArray(child.getData().getName(), differencesOfCompositeNode);
             }
         }
-        List<Node<Symbol>> compRecNodes = getCompositeDirectRecursiveNodes();
+        List<Element> compRecElements = getCompositeDirectRecursiveNodes();
+        List<Node<Symbol>> compRecNodes = new ArrayList<Node<Symbol>>();
+        for (Element el : compRecElements) {
+            compRecNodes.add(el.getCompositeDirectRecursiveNode());
+        }
         List<Node<Symbol>> recNodes = new ArrayList<Node<Symbol>>();
         recNodes.addAll(recNonCompNodes); recNodes.addAll(compRecNodes);
         for (Node<Symbol> node : recNonCompNodes) {
@@ -417,7 +478,7 @@ public class Graph {
             System.out.println(node.getData().getDifferenceLen());
         }
     }
-*/
+
     public List<Element> getCompositeDirectRecursiveNodes() {
         List<Node<Symbol>> allNodes = returnAllNodes(root);
         List<Node<Symbol>> compositeNodes = new ArrayList<Node<Symbol>>();
