@@ -149,8 +149,10 @@ public class ParseGrammar {
         pg.g.setCompositeNodesToRecursive();
         pg.g.setNodesToRecursive();
         pg.g.setNodesToInfinite();
+
+        //pg.g.updateDepth(pg.g.root, 0);
         pg.g.setWidthToAllNodes();
-        pg.g.setDifferenceLenToRecursiveNodes();
+        //pg.g.setDifferenceLenToRecursiveNodes();
         /*
         int[][] matrix = {{1,2,3}, {1,2}, {1,2,3,4}};
         List<Integer> p = new ArrayList<Integer>();

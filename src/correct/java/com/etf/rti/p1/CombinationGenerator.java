@@ -54,7 +54,7 @@ public class CombinationGenerator {
         return b;
     }
 
-    private List<Integer> callGetAllCombinations(int sumTerminals, int[][] array, int s) {
+    public List<Integer> callGetAllCombinations(int sumTerminals, int[][] array, int s) {
         List<Integer> partial = new ArrayList<Integer>();
         List<Integer> all = new ArrayList<Integer>();
         getAllCombinations(array, partial, all, s);
@@ -64,7 +64,7 @@ public class CombinationGenerator {
         return all;
     }
 
-    private int[][] createMatrixOfChildrenWidths(int numOfChildrenNonterminals, List<String> nameNonterminals) {
+    public int[][] createMatrixOfChildrenWidths(int numOfChildrenNonterminals, List<String> nameNonterminals) {
         int[][] array = new int[numOfChildrenNonterminals][];
         for (int i = 0; i < numOfChildrenNonterminals; i++) {
             Node<Symbol> nonterminal = pg.g.find(nameNonterminals.get(i), pg.g.root);

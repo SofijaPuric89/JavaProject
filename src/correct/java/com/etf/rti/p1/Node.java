@@ -12,6 +12,7 @@ public class Node<T> {
     private List<Node<T>> parents = new ArrayList<Node<T>>();
     private T data = null;
     private boolean isRecursive;
+    private boolean isComplete;
     private List<Node<T>> ordNumOfRecursiveChildren = new ArrayList<Node<T>>();
 
     public List<Node<T>> getOrdNumOfRecursiveChildren() {
@@ -115,4 +116,11 @@ public class Node<T> {
         return result;
     }  // method toString
 
+    public boolean isComplete() {
+        return isComplete;
+    }
+
+    public void setComplete(boolean complete) {
+        isComplete = complete;
+    }
 }
