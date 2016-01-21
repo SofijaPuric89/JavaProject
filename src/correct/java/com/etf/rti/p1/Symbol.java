@@ -16,40 +16,48 @@ public class Symbol {
     private List<Integer> widths = new ArrayList<Integer>();
     private int width;
     private boolean isInfinite;
-    private HashMap<String, List> differenceLen = new HashMap<String, List>();
+    private HashMap<String, Lists> differenceLen = new HashMap<String, Lists>();
     private ArrayList<Integer> differences = new ArrayList<Integer>();
 
-    public HashMap<String, List> getDifferenceLen() {
+    public HashMap<String, Lists> getDifferenceLen() {
         return differenceLen;
     }
 
     public List<Integer> getDifferences(String name) {
-        return differenceLen.get(name);
+        return differenceLen.get(name).getDifferences();
     }
 
-    public void setDifferenceLen(HashMap<String, List> differenceLen) {
+    public void setDifferenceLen(HashMap<String, Lists> differenceLen) {
         this.differenceLen = differenceLen;
     }
 
-    public void setDifferencesLengths(HashMap<String, List> diffs) {
-        for (HashMap.Entry<String, List> entry : diffs.entrySet()) {
+    public void setDifferencesLengths(HashMap<String, Lists> diffs) {
+        for (HashMap.Entry<String, Lists> entry : diffs.entrySet()) {
             String key = entry.getKey();
-            List value = entry.getValue();
+            Lists value = entry.getValue();
             setDifferenceLenArray(key, value);
         }
     }
 
 
-    public void setDifferenceLenArray(String key, List<Integer> arr) {
-        if (differenceLen.get(key) != null)
-            differenceLen.get(key).addAll(arr);
-        else
-            differenceLen.put(key, arr);
-// add elements to al, including duplicates
+    public void setDifferenceLenArray(String key, Lists arr) {
+        if (differenceLen.get(key) != null) {
+            differenceLen.get(key).getDifferences().addAll(arr.getDifferences());
+            differenceLen.get(key).getMinimums().addAll(arr.getMinimums());
+        }
+        else {
+            Lists l = new Lists(arr.getMinimums(), arr.getDifferences());
+            differenceLen.put(key, l);
+        }
+// add elements to all, including duplicates
         Set<Integer> hs = new HashSet<Integer>();
-        hs.addAll(differenceLen.get(key));
-        differenceLen.get(key).clear();
-        differenceLen.get(key).addAll(hs);
+        hs.addAll(differenceLen.get(key).getDifferences());
+        differenceLen.get(key).getDifferences().clear();
+        differenceLen.get(key).getDifferences().addAll(hs);
+        hs.clear();
+        hs.addAll(differenceLen.get(key).getMinimums());
+        differenceLen.get(key).getMinimums().clear();
+        differenceLen.get(key).getMinimums().addAll(hs);
     }
 
     public Symbol(String n, boolean is, int len, boolean term, boolean comp) {

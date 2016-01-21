@@ -131,65 +131,52 @@ public class Graph {
 
     public void updateWidths(Node<Symbol> node, List<Integer> widths) {
         if (node != null) {
-
-            setWidthsToSpecificNode(node, widths);   // bilo setWidthsToNode
+            setWidthsToSpecificNode(node, widths);
             if (isNodeCompositeDirectRecursive(node)) {
                 calculateCompDirRecNodeWidths(node);
             }
-            boolean allChildrenCompl = true;
-            for (Node<Symbol> child : node.getChildren()) {
-                if (!child.isComplete()) {
-                    allChildrenCompl = false;
-                }
-            }
-            if (allChildrenCompl) {
-                node.setComplete(true);
-            }
-            Node<Symbol> recc = find("rec", root);
-            if (node.equals(recc) && node.isComplete()) {
-                System.out.println("Rec je gotova. Kao i mi.");
-            }
+            setToComplete(node);
             if (isNodeDirectRecursiveNonComposite(node)) {
-                List<Integer> allWidths = new ArrayList<Integer>();
-                boolean allChildrenComplete = true;
-                for (Node<Symbol> child : node.getChildren()) {
-                    if (child.isComplete()) {
-                        allWidths.addAll(child.getData().getWidths());
-                    }
-                    else {
-                        allChildrenComplete = false;
-                    }
-                }
-                if (allChildrenComplete) {
-                    allWidths = removeDuplicates(allWidths);
-                    node.getData().getWidths().clear();
-                    setWidthsToSpecificNode(node, allWidths);
-                }
-            }
-            Node<Symbol> rec = find("rec", root);
-            if (node.equals(rec)) {
-                System.err.print(node.getData().getName() + " ");
-                if (node.isComplete())
-                    System.err.println("gotov");
-                else
-                    System.err.println("");
-            }
-            else {
-                for (Node<Symbol> child : rec.getChildren()) {
-                    if (node.equals(child)) {
-                        System.err.println(child.getData().getName());
-                        break;
-                    }
-                }
+                adjustWidthsToDirectRecursiveNonCompositeNode(node);
             }
             for (Node<Symbol> parent : node.getParents()) {
                 if (parent != null) {
-                    if (parent.getData().isComposite() /*&& !isNodeCompositeDirectRecursive(parent)*/) {
+                    if (parent.getData().isComposite()) {
                         pg.gen.calculateWidthOfCompositeNode(parent, true);
                     } else
                         updateWidths(parent, widths);
                 }
             }
+        }
+    }
+
+    private void adjustWidthsToDirectRecursiveNonCompositeNode(Node<Symbol> node) {
+        List<Integer> allWidths = new ArrayList<Integer>();
+        boolean allChildrenComplete = true;
+        for (Node<Symbol> child : node.getChildren()) {
+            if (child.isComplete()) {
+                allWidths.addAll(child.getData().getWidths());
+            }
+            else {
+                allChildrenComplete = false;
+            }
+        }
+        if (allChildrenComplete) {
+            allWidths = removeDuplicates(allWidths);
+            node.getData().getWidths().clear();
+            setWidthsToSpecificNode(node, allWidths);
+        }
+    }
+
+    private void setToComplete(Node<Symbol> node) {
+        boolean allChildrenCompl = true;
+        for (Node<Symbol> child : node.getChildren()) {
+            if (!child.isComplete()) {
+                allChildrenCompl = false;
+            }
+        }
+        if (allChildrenCompl) {
+            node.setComplete(true);
         }
     }
 
@@ -206,54 +193,17 @@ public class Graph {
         List<Integer> minLengths = getListOfMinimumLenghts(brothers);
         List<Integer> finalList = sumTwoLists(node.getData().getWidths(), minLengths);
         node.getData().getWidths().clear();
-        setWidthsToNode(node, finalList);
-    }
-
-    public void adjustWidths(Node<Symbol> node, List<Integer> widths, List<Node<Symbol>> compDirRecNodes) {
-        if (node != null) {
-            node.getData().setWidths(widths);
-            for (Node<Symbol> parent : node.getParents()) {
-                if (parent != null) {
-                    if (compDirRecNodes.contains(parent)) {
-
-                    }
-                    else {
-                        adjustWidths(parent, parent.getData().getWidths(), compDirRecNodes);
-                    }
-                }
-            }
-        }
+        //setWidthsToNode(node, finalList);
+        setWidthsToSpecificNode(node, finalList);
     }
 
     private void setWidthsToSpecificNode(Node<Symbol> node, List<Integer> widths) {
         widths = removeDuplicates(widths);
-        node.getData().setWidths(widths);
-    }
-
-
-    private void setWidthsToNode(Node<Symbol> node, List<Integer> widths) {
-        if (!node.getData().isComposite()) {
-            for (int w : widths)
-                if (!node.getData().getWidths().contains(w)) { // ako nije kompozitni, dodajemo sirinu samo ako ista vec ne postoji u listi
-                    node.getData().addWidth(w);
-                    break;
-                }
-        } else {
-            //node.getData().getWidths().clear();   // dodato
-            node.getData().setWidths(widths);
-            //updateParentsWidths(node);
+        if (!(node.isRecursive() || node.getData().isComposite())) {
+            node.getData().getWidths().addAll(widths);
+            removeDuplicates(node.getData().getWidths());
         }
-    }
-
-    private void updateParentsWidths(Node<Symbol> node) {
-        if (node != null) {
-            for (Node<Symbol> parent : node.getParents()) {
-                if (parent != null && areAllChildrenComposite(parent)) {
-                    //parent.getData().getWidths().clear();
-                    parent.getData().getWidths().addAll(node.getData().getWidths());
-                }
-            }
-        }
+        else node.getData().setWidths(widths);
     }
 
     private boolean areAllChildrenComposite(Node<Symbol> node) {
@@ -264,17 +214,6 @@ public class Graph {
             }
         }
         return b;
-    }
-
-
-    public void updateDepthToAllNodes() {
-        List<Node<Symbol>> list = returnAllNodes(root);
-        List<Node<Symbol>> leafs = new ArrayList<Node<Symbol>>();
-        for (Node<Symbol> sym : list)
-            if (sym.isLeaf())
-                leafs.add(sym);
-        Node<Symbol> max = findNodeMaxDepth();
-        updateDepthInverse(max, 0);
     }
 
     public void setWidthToAllNodes() {
@@ -288,38 +227,12 @@ public class Graph {
             l.add(leaf.getData().getName().length());
             updateWidths(leaf, l);
         }
-
-        List<Element> comDirRecNodes = getCompositeDirectRecursiveNodes();
-        for (Element e : comDirRecNodes) {
-            System.out.println(e.getParentName() + " " + e.getCompositeDirectRecursiveNode().getData().getName());
-        }
-        /*
-        for (Node<Symbol> leaf : leafs) {
-            adjustWidths(leaf, leaf.getData().getWidths(), comDirRecNodes);
-        }
-        */
         for (Node<Symbol> l:list) {
             if (l.getData().isInfinite())
                 System.out.println(l.getData().getName() + " infinite!" + l.getData().getWidths());
             else
                 System.out.println(l.getData().getName() + " " + l.getData().getWidths());
         }
-
-
-    }
-
-    private Node<Symbol> findNodeMaxDepth() {
-        updateDepth(root, 0);
-        int maxDepth = 0;
-        Node<Symbol> maxNode = null;
-        List<Node<Symbol>> list = returnAllNodes(root);
-        for (Node<Symbol> sym : list) {
-            if (sym.getData().getDepth() > maxDepth) {
-                maxDepth = sym.getData().getDepth();
-                maxNode = sym;
-            }
-        }
-        return maxNode;
     }
 
     public static List<Node<Symbol>> returnAllNodes(Node node) {
@@ -460,7 +373,7 @@ public class Graph {
             List<Node<Symbol>> childrenComposite = getChildrenComposite(node);
             for (Node<Symbol> child : childrenComposite) {
                 List<Integer> differencesOfCompositeNode = pg.gen.calculateWidthOfCompositeNode(child, false);
-                node.getData().setDifferenceLenArray(child.getData().getName(), differencesOfCompositeNode);
+                node.getData().setDifferenceLenArray(child.getData().getName(), new Lists(child.getData().getWidths(), differencesOfCompositeNode));
             }
         }
         List<Element> compRecElements = getCompositeDirectRecursiveNodes();
@@ -546,7 +459,7 @@ public class Graph {
         return list;
     }
 
-    public void updateDifferences(Node<Symbol> node, HashMap<String, List> differences, List<Node<Symbol>> list) {
+    public void updateDifferences(Node<Symbol> node, HashMap<String, Lists> differences, List<Node<Symbol>> list) {
         if (node != null) {
             node.getData().setDifferencesLengths(differences);
             for (Node<Symbol> parent : node.getParents()) {
@@ -578,10 +491,10 @@ public class Graph {
         int[][] ordNumbersOfChildrenMaps = getOrdNumbersOfChildrenMaps(numOfChildrenHasDifferences, childrenHasDifferences);
         List<Integer> partial = new ArrayList<Integer>();
         List<List<Integer>> all = new ArrayList<List<Integer>>();
-        HashMap<String, List> map = new HashMap<String, List>();
+        HashMap<String, Lists> map = new HashMap<String, Lists>();
         pg.gen.catchAllCombinations(ordNumbersOfChildrenMaps, partial, all);  // all - sve kombinacije iz mapa dece
         for (List<Integer> combination : all) {
-            putOneCombinationToMap(childrenHasDifferences, map, combination);
+            putOneCombinationToMap(childrenHasDifferences, map, combination, parent.getData().getWidths());
         }
         //parent.getData().setDifferencesLengths(map);
         if (getLastNonterminalWithDiffs(parent).equals(node)) {
@@ -603,7 +516,7 @@ public class Graph {
     }
 
 
-    private void putOneCombinationToMap(List<Node<Symbol>> childrenHasDifferences, HashMap<String, List> map, List<Integer> combination) {
+    private void putOneCombinationToMap(List<Node<Symbol>> childrenHasDifferences, HashMap<String, Lists> map, List<Integer> combination, List<Integer> compNodeWidths) {
         List<Integer> diffs = new ArrayList<Integer>();
         String name = "";
         int ordNumOfChild = 0;
@@ -612,9 +525,9 @@ public class Graph {
             Node<Symbol> child = childrenHasDifferences.get(ordNumOfChild++);
             name += child.getData().getName()+ordNum;
             ordNumOfCombination = 1;
-            for (List<Integer> value : child.getData().getDifferenceLen().values()) {
+            for (Lists value : child.getData().getDifferenceLen().values()) {
                 if (ordNum == ordNumOfCombination) {
-                    diffs.addAll(value);
+                    diffs.addAll(value.getDifferences());
                     break;
                 }
                 ordNumOfCombination++;
@@ -622,9 +535,9 @@ public class Graph {
         }
         //if (parent.getChildren().get(parent.getChildren().size()-1).equals(node)) {
             if (map.get(name) != null)
-                map.get(name).addAll(diffs);
+                map.get(name).getDifferences().addAll(diffs);
             else
-                map.put(name, diffs);
+                map.put(name, new Lists(compNodeWidths, diffs));
        // }
     }
 
@@ -643,12 +556,12 @@ public class Graph {
         return ordNumbersOfChildrenMaps;
     }
 
-    private void updateDifferencesOfNonCompositeNode(HashMap<String, List> differences, List<Node<Symbol>> list, Node<Symbol> parent) {
+    private void updateDifferencesOfNonCompositeNode(HashMap<String, Lists> differences, List<Node<Symbol>> list, Node<Symbol> parent) {
         if (parent.getChildren().size() == 1) {
             updateDifferences(parent, differences, list);  // ako nije kompozitni i ima jedno dete samo se propagira dalje
         }
         else {
-            HashMap<String, List> map = new HashMap<String, List>();
+            HashMap<String, Lists> map = new HashMap<String, Lists>();
             for (Node<Symbol> child : parent.getChildren()) {
                 if (!child.getData().getDifferenceLen().isEmpty()) {
                     map.putAll(child.getData().getDifferenceLen());

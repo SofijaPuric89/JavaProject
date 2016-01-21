@@ -138,19 +138,18 @@ public class ParseGrammar {
                 "<a> ::= 1|<a><b>|<a><c><b>\n" +
                 "<b> ::= 101|<b>01\n" +
                 "<c> ::= 1100|<c>11|<c>00\n");*/
-        ParseGrammar pg = new ParseGrammar("<p> ::= <korisnik>!<domen>\n" +
+       /* ParseGrammar pg = new ParseGrammar("<p> ::= <korisnik>!<domen>\n" +
                 "<korisnik> ::= <rec> | <korisnik>_<rec><rec> | <korisnik>_<kraj_domena>\n" +
                 "<domen> ::= <kraj_domena> | <rec>.<domen>\n" +
                 "<kraj_domena> ::= com | co.rs\n" +
                 "<rec> ::= <slovo> | <slovo><rec> | <rec><cifra>\n" +
                 "<slovo> ::= a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z\n" +
-                "<cifra> ::= 0|1|2|3|4|5|6|7|8|9");
+                "<cifra> ::= 0|1|2|3|4|5|6|7|8|9"); */
+        ParseGrammar pg = new ParseGrammar();
         pg.parse();
         pg.g.setCompositeNodesToRecursive();
         pg.g.setNodesToRecursive();
         pg.g.setNodesToInfinite();
-
-        //pg.g.updateDepth(pg.g.root, 0);
         pg.g.setWidthToAllNodes();
         pg.g.setDifferenceLenToRecursiveNodes();
 
