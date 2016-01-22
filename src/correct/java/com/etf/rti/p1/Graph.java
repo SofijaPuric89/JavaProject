@@ -199,7 +199,7 @@ public class Graph {
 
     private void setWidthsToSpecificNode(Node<Symbol> node, List<Integer> widths) {
         widths = removeDuplicates(widths);
-        if (!(node.isRecursive() || node.getData().isComposite())) {
+        if (!(isNodeDirectRecursiveNonComposite(node) || isNodeCompositeDirectRecursive(node))) {
             node.getData().getWidths().addAll(widths);
             removeDuplicates(node.getData().getWidths());
         }
