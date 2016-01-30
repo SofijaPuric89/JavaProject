@@ -49,6 +49,9 @@ public class PermutationGenerator {
                     //diffsCount[j]++;
                     if (diffsCount[j] == diffsMaxCount[j]) {
                         if (j == diffsCount.length-1) {
+                            if (diffsCount.length == 1) {
+                                break;
+                            }
                             j = 0;
                             continue;
                         }

@@ -19,7 +19,11 @@ public class GenerateAnswer {
     private static final double MAX_LENGTH = 1.1;
     private static final String TERMINALSNONTERMINALS = "(<(.+?)>)|([^<>]+)";
     private static final String NONTERMINAL = "<(.+?)>";
-    Random randGenerator = new Random();
+    private static Random randGenerator = new Random();
+    static {
+        Calendar c = Calendar.getInstance();
+        randGenerator.setSeed(c.getTimeInMillis());
+    }
 
     public GenerateAnswer(Graph g, boolean c) {
         graph = g; correct = c;
@@ -33,86 +37,33 @@ public class GenerateAnswer {
         // faza 1 i faza 2: slucajno odabiramo dete koje ima duzinu najpriblizniju len iz liste dece koji imaju pribliznu duzinu len
         List<Node<Symbol>> children = getChildren(node, len);
         // ispisivanje dece sa odgovarajucom duzinom
-        System.out.println("***DECA***");
-        printList(children);
-        System.out.println("***IZABRANO DETE***");
         Node<Symbol> randNode = getRandomNode(children);
-        System.out.println(randNode.getData().getName());
         if (randNode.getData().isComposite()) {
             // faza 3: od duzine oduzeti duzinu terminala
             int terminalsLength = getLenOfChildrenTerminals(randNode);
             int left = len - terminalsLength;
-            System.out.println("***DUZINA TERMINALA***");
-            System.out.println(terminalsLength);
             // faza 4:
             List<Node<Symbol>> nodes = getListOfNodes(randNode);
-            System.out.println("***SADRZAJ KOMPOZITNOG CVORA***");
-            printList(nodes);
             List<Node<Symbol>> nonterminals = getListOfNonterminals(nodes);
-            System.out.println("***NETERMINALI KOMPOZITNOG CVORA***");
-            printList(nonterminals);
             List<Pair<Node<Symbol>, Integer>> pairs = new ArrayList<Pair<Node<Symbol>, Integer>>();
             for (int i=0;i<nodes.size();i++) {
                 pairs.add(null);
             }
             while (!nonterminals.isEmpty()) {
                 int randNum = randomNumber(nonterminals.size());
-                System.out.println("***IZABRANI CVOR***");
                 Node<Symbol> randomNode = nonterminals.get(randNum);
                 nonterminals.remove(randNum);
-                System.out.println(randNum + randomNode.getData().getName());
-                System.out.println("***PREOSTALI NETERMINALI***");
-                printList(nonterminals);
                 int ordNum = 0;
-                for (int i=0;i<nodes.size(); i++) {
-                    if (nodes.get(i) != null) {
-                        if (ordNum == randNum && nodes.get(i).getData().isNonterminal()) {
-                            nodes.set(i, null); ordNum = i;
-                            break;
-                        }
-                        if (nodes.get(i).getData().isNonterminal())
-                            ordNum++;
-                    }
-                }
-                System.out.println("***ORD NUM***");
-                System.out.println(ordNum);
-                System.out.println("***PREOSTALO U NODES***");
-                printList(nodes);
+                ordNum = getOrdNum(nodes, randNum, ordNum);
                 int sum = getMinimumOfList(nonterminals);
-                System.out.println("***MINIMUM OD NONTERMINALS LIST***");
-                System.out.println(sum + " " + (left-sum));
                 PermutationGenerator pg = new PermutationGenerator(left-sum);
                 HashMap<String, Lists> mapOfNode = randomNode.getData().getDifferenceLen();
                 int randNumInSet = 0;
                 if (!mapOfNode.isEmpty()) {
-                    Iterator it = mapOfNode.entrySet().iterator();
-                    if (randomNode.getData().getName().equals("rec")) {
-                        System.out.println(randomNode.getData().getName());
-                    }
-                    while (it.hasNext()) {
-                        Map.Entry pair = (Map.Entry) it.next();
-                        Lists lists = (Lists) pair.getValue();
-                        pg.addToSet(lists.getMinimums(), lists.getDifferences());
-                    }
-                    Set<Integer> setOfPermutations = pg.getSetOfLengths();
-                    System.out.println("***SET PERMUTACIJA***");
-                    System.out.println(setOfPermutations);
-                    int randOrdInSet = randomNumber(setOfPermutations.size());
-                    randNumInSet = (Integer) setOfPermutations.toArray()[randOrdInSet];
-                    System.out.println("***RANDOM IZABRAN IZ SKUPA***");
-                    System.out.println(randOrdInSet + randNumInSet);
+                    randNumInSet = getRandNumInPermutationsSet(pg, mapOfNode);
                 }
                 else {   // ako je mapOfNode prazna, onda dohvatamo minimalne duzine, a diffs su 0
-                    if (randomNode.getData().getName().equals("slovo") || randomNode.getData().getName().equals("cifra")) {
-                        System.out.println(randomNode.getData().getName());
-                    }
-                    List<Integer> minimums = randomNode.getData().getWidths();
-                    List<Integer> okMinimus = new ArrayList<Integer>();
-                    for (int min : minimums) {
-                        if (min <= (left-sum))
-                            okMinimus.add(min);
-                    }
-                    randNumInSet = okMinimus.get(randomNumber(okMinimus.size()));
+                    randNumInSet = getRandNumInMinimumsSet(left, randomNode, sum);
                 }
 
                 if (nonterminals.isEmpty()) {
@@ -121,15 +72,7 @@ public class GenerateAnswer {
                 pairs.set(ordNum, new MutablePair<Node<Symbol>, Integer>(randomNode, randNumInSet));
                 left -= randNumInSet;
             }
-            String answer = "";
-            for (int i=0;i<nodes.size();i++) {
-                if (nodes.get(i) == null) {
-                    answer  += generateAnswerForNode(pairs.get(i).getLeft(), pairs.get(i).getRight());
-                }
-                else {
-                    answer += nodes.get(i).getData().getName();
-                }
-            }
+            String answer = generateAnswerForCompositeNode(nodes, pairs);
             return answer;
         }
         else {
@@ -140,6 +83,61 @@ public class GenerateAnswer {
                 return generateAnswerForNode(randNode, len);
             }
         }
+    }
+
+    private String generateAnswerForCompositeNode(List<Node<Symbol>> nodes, List<Pair<Node<Symbol>, Integer>> pairs) {
+        String answer = "";
+        for (int i=0;i<nodes.size();i++) {
+            if (nodes.get(i) == null) {
+                answer  += generateAnswerForNode(pairs.get(i).getLeft(), pairs.get(i).getRight());
+            }
+            else {
+                answer += nodes.get(i).getData().getName();
+            }
+        }
+        return answer;
+    }
+
+    private int getRandNumInMinimumsSet(int left, Node<Symbol> randomNode, int sum) {
+        int randNumInSet;List<Integer> minimums = randomNode.getData().getWidths();
+        List<Integer> okMinimus = new ArrayList<Integer>();
+        for (int min : minimums) {
+            if (min <= (left-sum))
+                okMinimus.add(min);
+        }
+        if (okMinimus.size()==0) {
+            Collections.sort(minimums);
+            okMinimus.add(minimums.get(0));
+        }
+        randNumInSet = okMinimus.get(randomNumber(okMinimus.size()));
+        return randNumInSet;
+    }
+
+    private int getRandNumInPermutationsSet(PermutationGenerator pg, HashMap<String, Lists> mapOfNode) {
+        int randNumInSet;Iterator it = mapOfNode.entrySet().iterator();
+        while (it.hasNext()) {
+            Map.Entry pair = (Map.Entry) it.next();
+            Lists lists = (Lists) pair.getValue();
+            pg.addToSet(lists.getMinimums(), lists.getDifferences());
+        }
+        Set<Integer> setOfPermutations = pg.getSetOfLengths();
+        int randOrdInSet = randomNumber(setOfPermutations.size());
+        randNumInSet = (Integer) setOfPermutations.toArray()[randOrdInSet];
+        return randNumInSet;
+    }
+
+    private int getOrdNum(List<Node<Symbol>> nodes, int randNum, int ordNum) {
+        for (int i=0;i<nodes.size(); i++) {
+            if (nodes.get(i) != null) {
+                if (ordNum == randNum && nodes.get(i).getData().isNonterminal()) {
+                    nodes.set(i, null); ordNum = i;
+                    break;
+                }
+                if (nodes.get(i).getData().isNonterminal())
+                    ordNum++;
+            }
+        }
+        return ordNum;
     }
 
     private void printList(List<Node<Symbol>> list) {

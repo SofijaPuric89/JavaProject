@@ -18,13 +18,12 @@ import java.nio.file.Path;
  */
 public class BNFCompilerTest {
     private static final String input =
-            "<p> ::= <korisnik>!<domen>\n" +
-            "<korisnik> ::= <rec> | <korisnik>_<rec>\n" +
-            "<domen> ::= <kraj_domena> | <rec>.<domen>\n" +
-            "<kraj_domena> ::= com | co.rs\n" +
-            "<rec> ::= <slovo> | <slovo><rec> | <rec><cifra>\n" +
-            "<slovo> ::= a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z\n" +
-            "<cifra> ::= 0|1|2|3|4|5|6|7|8|9";
+            "<p> ::= <malo_slovo>:\\<put>\n" +
+                    "<put> ::= <dir> | <put>\\<dir> | \"<dir>\"\\<put>\n" +
+                    "<dir> ::= <malo_slovo> | <dir><pom>\n" +
+                    "<pom> ::= <malo_slovo> | _ | <cifra>\n" +
+                    "<malo_slovo> ::= a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z\n" +
+                    "<cifra> ::= 0|1|2|3|4|5|6|7|8|9";
 
     private AParser parser;
 
@@ -55,7 +54,7 @@ public class BNFCompilerTest {
         parser.init();
         Compiler c = generator.generate();
         //c.setInput(new ByteArrayInputStream("f:\\\"d_a4f\"\\\"abc8ab\"\\pe5a_r\\pa8f1k".getBytes("UTF-8")));
-        c.setInput(new ByteArrayInputStream("pera1_detlic2!etf.bg.co.rs".getBytes("UTF-8")));
+        c.setInput(new ByteArrayInputStream("".getBytes("UTF-8")));
         c.getParser().init();
 
     }

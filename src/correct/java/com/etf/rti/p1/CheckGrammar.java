@@ -22,13 +22,20 @@ public class CheckGrammar {
 
         private static String input;
         private static String answer;
-
+        private boolean isCorrect;
         private AParser parser;
-        private ParseGrammar pg;
         private Generator generator;
         private Path tmpDir;
 
-        public void setUp() throws Exception {
+        public CheckGrammar(String i) {
+            input = i;
+        }
+
+        public void setAnswer(String a) {
+            answer = a;
+        }
+
+    public void setUp() throws Exception {
             tmpDir = Files.createTempDirectory("test");
             final String name = "test";
             Path grammar =  tmpDir.resolve(name + ".g4");
@@ -49,28 +56,25 @@ public class CheckGrammar {
             parser.init();
             Compiler c = generator.generate();
             //c.setInput(new ByteArrayInputStream("f:\\\"d_a4f\"\\\"abc8ab\"\\pe5a_r\\pa8f1k".getBytes("UTF-8")));
-            c.setInput(new ByteArrayInputStream("a:\\".getBytes("UTF-8")));
+            c.setInput(new ByteArrayInputStream(answer.getBytes("UTF-8")));
             c.getParser().init();
 
         }
 
-        public void testGrammar() {
-            pg = new ParseGrammar();
-            input = pg.getGrammar();
+        public boolean testGrammar() {
             try {
                 setUp();
                 testGetParser();
                 tearDown();
                 System.out.println("Grammar is ok!");
+                isCorrect = true;
             }
             catch (Exception e) {
                 System.out.println(e.getMessage());
+                isCorrect = false;
             }
+            return isCorrect;
         }
 
-    public static void main(String[] args) {
-        CheckGrammar cg = new CheckGrammar();
-        cg.testGrammar();
-    }
 
 }
