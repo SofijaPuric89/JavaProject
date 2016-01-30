@@ -152,21 +152,11 @@ public class ParseGrammar {
         pg.g.setNodesToInfinite();
         pg.g.setWidthToAllNodes();
         pg.g.setDifferenceLenToRecursiveNodes();
-        Node<Symbol> node = pg.g.find("<korisnik>_<rec><rec>", pg.g.root);
-        List<Node<Symbol>> list = node.getOrdNumOfRecursiveChildren();
-        System.out.println("***");
-        for (Node<Symbol> child : list) {
-            System.out.println(child.getData().getName());
-        }
-        System.out.println("***");
-        System.out.println("***");
+
         GenerateAnswer ga = new GenerateAnswer(pg.g, true);
-        Node<Symbol> cc = pg.g.find("<korisnik>_<rec><rec>", pg.g.root);
-        List<Node<Symbol>> l = ga.getListOfNonterminals(cc);
-        for (Node<Symbol> c : l) {
-            System.out.println(c.getData().getName());
-        }
-        System.out.println("***");
+        String str = ga.generateAnswerForNode(pg.g.root, 10);
+        System.out.println("***GENERISANI STRING***");
+        System.out.println(str);
     }
 }
 

@@ -29,22 +29,40 @@ public class GenerateAnswer {
 
     }
 
-    private String generateAnswerForNode(Node<Symbol> node, int len) {
+    public String generateAnswerForNode(Node<Symbol> node, int len) {
         // faza 1 i faza 2: slucajno odabiramo dete koje ima duzinu najpriblizniju len iz liste dece koji imaju pribliznu duzinu len
         List<Node<Symbol>> children = getChildren(node, len);
+        // ispisivanje dece sa odgovarajucom duzinom
+        System.out.println("***DECA***");
+        printList(children);
+        System.out.println("***IZABRANO DETE***");
         Node<Symbol> randNode = getRandomNode(children);
+        System.out.println(randNode.getData().getName());
         if (randNode.getData().isComposite()) {
             // faza 3: od duzine oduzeti duzinu terminala
             int terminalsLength = getLenOfChildrenTerminals(randNode);
             int left = len - terminalsLength;
+            System.out.println("***DUZINA TERMINALA***");
+            System.out.println(terminalsLength);
             // faza 4:
             List<Node<Symbol>> nodes = getListOfNodes(randNode);
+            System.out.println("***SADRZAJ KOMPOZITNOG CVORA***");
+            printList(nodes);
             List<Node<Symbol>> nonterminals = getListOfNonterminals(nodes);
-            List<Pair<Node<Symbol>, Integer>> pairs = new ArrayList<Pair<Node<Symbol>, Integer>>(nodes.size());
+            System.out.println("***NETERMINALI KOMPOZITNOG CVORA***");
+            printList(nonterminals);
+            List<Pair<Node<Symbol>, Integer>> pairs = new ArrayList<Pair<Node<Symbol>, Integer>>();
+            for (int i=0;i<nodes.size();i++) {
+                pairs.add(null);
+            }
             while (!nonterminals.isEmpty()) {
                 int randNum = randomNumber(nonterminals.size());
+                System.out.println("***IZABRANI CVOR***");
                 Node<Symbol> randomNode = nonterminals.get(randNum);
                 nonterminals.remove(randNum);
+                System.out.println(randNum + randomNode.getData().getName());
+                System.out.println("***PREOSTALI NETERMINALI***");
+                printList(nonterminals);
                 int ordNum = 0;
                 for (int i=0;i<nodes.size(); i++) {
                     if (nodes.get(i) != null) {
@@ -56,18 +74,47 @@ public class GenerateAnswer {
                             ordNum++;
                     }
                 }
+                System.out.println("***ORD NUM***");
+                System.out.println(ordNum);
+                System.out.println("***PREOSTALO U NODES***");
+                printList(nodes);
                 int sum = getMinimumOfList(nonterminals);
+                System.out.println("***MINIMUM OD NONTERMINALS LIST***");
+                System.out.println(sum + " " + (left-sum));
                 PermutationGenerator pg = new PermutationGenerator(left-sum);
                 HashMap<String, Lists> mapOfNode = randomNode.getData().getDifferenceLen();
-                Iterator it = mapOfNode.entrySet().iterator();
-                while (it.hasNext()) {
-                    Map.Entry pair = (Map.Entry)it.next();
-                    Lists lists = (Lists) pair.getValue();
-                    pg.addToSet(lists.getMinimums(), lists.getDifferences());
+                int randNumInSet = 0;
+                if (!mapOfNode.isEmpty()) {
+                    Iterator it = mapOfNode.entrySet().iterator();
+                    if (randomNode.getData().getName().equals("rec")) {
+                        System.out.println(randomNode.getData().getName());
+                    }
+                    while (it.hasNext()) {
+                        Map.Entry pair = (Map.Entry) it.next();
+                        Lists lists = (Lists) pair.getValue();
+                        pg.addToSet(lists.getMinimums(), lists.getDifferences());
+                    }
+                    Set<Integer> setOfPermutations = pg.getSetOfLengths();
+                    System.out.println("***SET PERMUTACIJA***");
+                    System.out.println(setOfPermutations);
+                    int randOrdInSet = randomNumber(setOfPermutations.size());
+                    randNumInSet = (Integer) setOfPermutations.toArray()[randOrdInSet];
+                    System.out.println("***RANDOM IZABRAN IZ SKUPA***");
+                    System.out.println(randOrdInSet + randNumInSet);
                 }
-                Set<Integer> setOfPermutations = pg.getSetOfLengths();
-                int randOrdInSet = randomNumber(setOfPermutations.size());
-                int randNumInSet = (Integer) setOfPermutations.toArray()[randOrdInSet];
+                else {   // ako je mapOfNode prazna, onda dohvatamo minimalne duzine, a diffs su 0
+                    if (randomNode.getData().getName().equals("slovo") || randomNode.getData().getName().equals("cifra")) {
+                        System.out.println(randomNode.getData().getName());
+                    }
+                    List<Integer> minimums = randomNode.getData().getWidths();
+                    List<Integer> okMinimus = new ArrayList<Integer>();
+                    for (int min : minimums) {
+                        if (min <= (left-sum))
+                            okMinimus.add(min);
+                    }
+                    randNumInSet = okMinimus.get(randomNumber(okMinimus.size()));
+                }
+
                 if (nonterminals.isEmpty()) {
                     randNumInSet = left;
                 }
@@ -92,6 +139,12 @@ public class GenerateAnswer {
             else {
                 return generateAnswerForNode(randNode, len);
             }
+        }
+    }
+
+    private void printList(List<Node<Symbol>> list) {
+        for(Node<Symbol> node : list) {
+            if (node != null) System.out.println(node.getData().getName());
         }
     }
 
@@ -151,7 +204,7 @@ public class GenerateAnswer {
         for (Node<Symbol> nod : node.getChildren()) {
             if (nod.isRecursive()) {
                 for (int width : nod.getData().getWidths()) {
-                    if (width < len) {
+                    if (width <= len) {  // TREBA <=
                         list.add(nod);
                         break;
                     }
