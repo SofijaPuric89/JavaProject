@@ -37,7 +37,7 @@ public class GenerateAnswer {
     }
 
     public void generateIncorrectAnswer(Node<Symbol> node, int len) {
-        ExponentialDistribution eg = new ExponentialDistribution(3.*len/4);
+        ExponentialDistribution eg = new ExponentialDistribution(len/2.);
         correctLen =  (int) Math.round(eg.sample());
     }
 
@@ -125,7 +125,7 @@ public class GenerateAnswer {
 
 
     private String generateAnswerForCompositeNode(List<Node<Symbol>> nodes, List<Pair<Node<Symbol>, Integer>> pairs) {
-        if (generateLen >= correctLen && !correct) {
+        if (generateLen >= correctLen && !correct) {  // nekad i ne udje ovde, a kad udje izgenerise pogresan...
             List<Node<Symbol>> cloneNodes = new ArrayList<Node<Symbol>>();
             List<Pair<Node<Symbol>, Integer>> clonePairs = new ArrayList<Pair<Node<Symbol>, Integer>>();
             List<Integer> ordNumbers = new ArrayList<Integer>();

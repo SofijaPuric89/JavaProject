@@ -130,6 +130,7 @@ public class ParseGrammar {
             else currRoot = children.get(0);
         }
     }
+
     public static void main(String[] args) {
        /* ParseGrammar pg = new ParseGrammar("<p> ::= <p><pom> | <pom>\n" +
                 "<pom> ::= _ | <cifra>\n" +
@@ -154,21 +155,21 @@ public class ParseGrammar {
         pg.g.setDifferenceLenToRecursiveNodes();
 
         CheckGrammar cg = new CheckGrammar(pg.input);
-       // for (int i = 0; i < 50; i++) {
-            GenerateAnswer ga = new GenerateAnswer(pg.g, false);
-            ga.generateIncorrectAnswer(pg.g.root, 10);
-            boolean correct = false;
-            String str = "";
-            while (!correct) {
-                str = ga.generateAnswerForNode(pg.g.root, 10);
-              //  System.out.print("***GENERISANI STRING*** ");
-              //  System.out.println(str + " duzina: " + str.length());
-               cg.setAnswer(str);
-               correct = cg.testGrammar();
-            }
+         for (int i = 0; i < 50; i++) {
+        GenerateAnswer ga = new GenerateAnswer(pg.g, false);
+        ga.generateIncorrectAnswer(pg.g.root, 10);
+        boolean correct = false;
+        String str = "";
+        //while (!correct) {
+        str = ga.generateAnswerForNode(pg.g.root, 20);
+        //  System.out.print("***GENERISANI STRING*** ");
+        //  System.out.println(str + " duzina: " + str.length());
+        //cg.setAnswer(str);
+        //correct = cg.testGrammar();
+        // }
         System.out.print("***GENERISANI STRING*** ");
-       System.out.println(str + " duzina: " + str.length());
-   // }
+        System.out.println(str + " duzina: " + str.length());
+         }
 
     }
 }
