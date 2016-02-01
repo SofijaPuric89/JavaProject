@@ -13,7 +13,27 @@ public class PermutationGenerator {
         length = l;
     }
     public Set<Integer> getSetOfLengths() {
+        changeSet();
         return setOfLengths;
+    }
+
+    private void changeSet() {
+        Set<Integer> newSet = new TreeSet<Integer>();
+        Iterator<Integer> i;
+        int min = 1000;
+        for (i=setOfLengths.iterator(); i.hasNext();) {
+            int num = i.next();
+            if (num <= length) {
+                newSet.add(num);
+            }
+            if (num < min) {
+                min = num;
+            }
+        }
+        if (newSet.isEmpty()) {
+            newSet.add(min);
+        }
+        setOfLengths = newSet;
     }
     public void addToSet(List<Integer> minimums, List<Integer> differences) {
         int[] diffsCount = new int[differences.size()];
