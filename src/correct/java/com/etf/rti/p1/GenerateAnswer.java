@@ -126,18 +126,31 @@ public class GenerateAnswer {
 
     private String generateAnswerForCompositeNode(List<Node<Symbol>> nodes, List<Pair<Node<Symbol>, Integer>> pairs) {
         if (generateLen >= correctLen && !correct) {
-            List<Node<Symbol>> cloneNodes = nodes;
-            List<Pair<Node<Symbol>, Integer>> clonePairs = pairs;
+            List<Node<Symbol>> cloneNodes = new ArrayList<Node<Symbol>>();
+            List<Pair<Node<Symbol>, Integer>> clonePairs = new ArrayList<Pair<Node<Symbol>, Integer>>();
             List<Integer> ordNumbers = new ArrayList<Integer>();
             Set<Integer> setOfOrds = new TreeSet<Integer>();
-            for (int i=0;i<nodes.size();i++) {
-                ordNumbers.add(i);
-                setOfOrds.add(i);
+            boolean same = true;
+            while (same) {
+                for (int i=0;i<nodes.size();i++) {
+                    ordNumbers.add(i);
+                    setOfOrds.add(i);
+                }
+                int i = 0;
+                cloneNodes.clear(); clonePairs.clear();
+                while (!setOfOrds.isEmpty()) {
+                    int randNum = randomNumber(setOfOrds.size());
+                    int num = (Integer) setOfOrds.toArray()[randNum];
+                    setOfOrds.remove(num);
+                    cloneNodes.add(nodes.get(num));
+                    clonePairs.add(pairs.get(num));
+                    if (i != num) {
+                        same = false;
+                    }
+                    i++;
+                }
             }
-            while (!setOfOrds.isEmpty()) {
-                int randNum = randomNumber(setOfOrds.size());
-                int num = (Integer) setOfOrds.toArray()[randNum];
-            }
+            nodes = cloneNodes; pairs = clonePairs;
         }
         String answer = "";
         for (int i=0;i<nodes.size();i++) {

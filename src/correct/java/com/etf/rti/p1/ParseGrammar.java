@@ -155,20 +155,21 @@ public class ParseGrammar {
 
         CheckGrammar cg = new CheckGrammar(pg.input);
        // for (int i = 0; i < 50; i++) {
-            GenerateAnswer ga = new GenerateAnswer(pg.g, true);
+            GenerateAnswer ga = new GenerateAnswer(pg.g, false);
+            ga.generateIncorrectAnswer(pg.g.root, 10);
             boolean correct = false;
             String str = "";
             while (!correct) {
-                str = ga.generateAnswerForNode(pg.g.root, 30);
+                str = ga.generateAnswerForNode(pg.g.root, 10);
               //  System.out.print("***GENERISANI STRING*** ");
               //  System.out.println(str + " duzina: " + str.length());
-                cg.setAnswer(str);
-                correct = cg.testGrammar();
+               cg.setAnswer(str);
+               correct = cg.testGrammar();
             }
-      //  System.out.print("***GENERISANI STRING*** ");
-      //  System.out.println(str + " duzina: " + str.length());
+        System.out.print("***GENERISANI STRING*** ");
+       System.out.println(str + " duzina: " + str.length());
    // }
-        ga.generateIncorrectAnswer(pg.g.root, 10);
+
     }
 }
 
