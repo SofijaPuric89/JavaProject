@@ -138,7 +138,7 @@ public class ParseGrammar {
        /* ParseGrammar pg = new ParseGrammar("<start> ::= 11<a>|<b>1\n" +
                 "<a> ::= 1|<a><b>|<a><c><b>\n" +
                 "<b> ::= 101|<b>01\n" +
-                "<c> ::= 1100|<c>11|<c>00\n"); */
+                "<c> ::= 1100|<c>11|<c>00\n");*/
         ParseGrammar pg = new ParseGrammar("<p> ::= <korisnik>!<domen>\n" +
                 "<korisnik> ::= <rec> | <korisnik>_<rec>\n" +
                 "<domen> ::= <kraj_domena> | <rec>.<domen>\n" +
@@ -155,9 +155,9 @@ public class ParseGrammar {
         pg.g.setDifferenceLenToRecursiveNodes();
 
         CheckGrammar cg = new CheckGrammar(pg.input);
-         for (int i = 0; i < 50; i++) {
+        //for (int i = 0; i < 50; i++) {
         GenerateAnswer ga = new GenerateAnswer(pg.g, false);
-        ga.generateIncorrectAnswer(pg.g.root, 10);
+        ga.generateIncorrectAnswer(pg.g.root, 10, 20);
         boolean correct = false;
         String str = "";
         //while (!correct) {
@@ -169,7 +169,9 @@ public class ParseGrammar {
         // }
         System.out.print("***GENERISANI STRING*** ");
         System.out.println(str + " duzina: " + str.length());
-         }
+      //   }
+        String corrupt = ga.corruptCorrectAnswer(str);
+        System.out.println(corrupt + " duzina: " + corrupt.length());
 
     }
 }

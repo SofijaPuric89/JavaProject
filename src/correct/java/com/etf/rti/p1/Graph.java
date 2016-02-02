@@ -580,4 +580,15 @@ public class Graph {
         }
         return sum;
     }
+
+    public List<Node<Symbol>> findAllTerminals() {
+        List<Node<Symbol>> all = returnAllNodes(root);
+        List<Node<Symbol>> terminals = new ArrayList<Node<Symbol>>();
+        for (Node<Symbol> node : all) {
+            if (!node.getData().isNonterminal() && node.getData().isNode()) {
+                terminals.add(node);
+            }
+        }
+        return terminals;
+    }
 }

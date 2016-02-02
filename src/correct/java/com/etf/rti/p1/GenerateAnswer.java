@@ -9,6 +9,8 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static java.util.Collections.*;
+
 /**
  * Created by Sofija on 1/29/2016.
  */
@@ -23,6 +25,7 @@ public class GenerateAnswer {
     private static Random randGenerator = new Random();
     int correctLen;
     int generateLen = 0;
+    boolean once = false;
 
     static {
         Calendar cal = Calendar.getInstance();
@@ -36,9 +39,15 @@ public class GenerateAnswer {
         length = l;
     }
 
-    public void generateIncorrectAnswer(Node<Symbol> node, int len) {
+    public void generateIncorrectAnswer(Node<Symbol> node, int len, int sumLen) {
         ExponentialDistribution eg = new ExponentialDistribution(len/2.);
-        correctLen =  (int) Math.round(eg.sample());
+        boolean ok = false;
+        while (!ok) {
+            correctLen = (int) Math.round(eg.sample());
+            if (!(correctLen == 0 || correctLen == sumLen))  {
+                ok = true;
+            }
+        }
     }
 
 
@@ -125,7 +134,8 @@ public class GenerateAnswer {
 
 
     private String generateAnswerForCompositeNode(List<Node<Symbol>> nodes, List<Pair<Node<Symbol>, Integer>> pairs) {
-        if (generateLen >= correctLen && !correct) {  // nekad i ne udje ovde, a kad udje izgenerise pogresan...
+        if (generateLen >= correctLen && !correct && !once) {  // nekad i ne udje ovde, a kad udje izgenerise pogresan sto je ok...
+            once = true;
             List<Node<Symbol>> cloneNodes = new ArrayList<Node<Symbol>>();
             List<Pair<Node<Symbol>, Integer>> clonePairs = new ArrayList<Pair<Node<Symbol>, Integer>>();
             List<Integer> ordNumbers = new ArrayList<Integer>();
@@ -172,7 +182,7 @@ public class GenerateAnswer {
                 okMinimus.add(min);
         }
         if (okMinimus.size()==0) {
-            Collections.sort(minimums);
+            sort(minimums);
             okMinimus.add(minimums.get(0));
         }
         randNumInSet = okMinimus.get(randomNumber(okMinimus.size()));
@@ -246,7 +256,7 @@ public class GenerateAnswer {
         int sum = 0;
         for (Node<Symbol> child : list) {
             if (child != null) {
-                Collections.sort(child.getData().getWidths());
+                sort(child.getData().getWidths());
                 sum += child.getData().getWidths().get(0);
             }
         }
@@ -328,6 +338,82 @@ public class GenerateAnswer {
             list.add(node.getChildren().get(num));
         }
         return list;
+    }
+
+    public String corruptCorrectAnswer(String correctAnswer) {
+        String corruptAnswer = "";
+        if (once == false) {
+            int answerLen = correctAnswer.length(); // zameniti nesto u odgovoru na nekoj poziciji od correctLen do answerLen
+            if (correctLen > 0 && correctLen <= answerLen) {
+                List<Node<Symbol>> terminals = graph.findAllTerminals();
+                List<Pair<Node<Symbol>, Node<Symbol>>> pairs = new ArrayList<Pair<Node<Symbol>, Node<Symbol>>>();   // parovi cvorova terminala koji nemaju sve pretke iste
+                for (int i=0; i<terminals.size();i++) {
+                    for (int j=i+1; j<terminals.size();j++) {
+                       List<Node<Symbol>> parents1 = new ArrayList<Node<Symbol>>();
+                        getParentsOfNode(terminals.get(i), parents1);
+                        List<Node<Symbol>> parents2 = new ArrayList<Node<Symbol>>();
+                        getParentsOfNode(terminals.get(j), parents2);
+                        boolean b = areListsTheSame(parents1, parents2);
+                        if (!b) {
+                            pairs.add(new MutablePair<Node<Symbol>, Node<Symbol>>(terminals.get(i), terminals.get(j)));  // ovde nesto pobrljavi...
+                        }
+                    }
+                }
+                int num = randomNumber(pairs.size());   // na pozciji num menjamo ta dva para!
+                List<String> terminals1 = new ArrayList<String>();   // treba proslediti sve, pa koji se nadje orginial (levi deo para) on da se zameni!!!
+                List<String> terminals2 = new ArrayList<String>();
+                getChildrenTerminals(pairs.get(num).getLeft(), terminals1);
+                getChildrenTerminals(pairs.get(num).getRight(), terminals2);
+                corruptAnswer = swapTerminals(correctAnswer, terminals1, terminals2, correctLen, answerLen);
+            }
+        }
+        return corruptAnswer;
+    }
+
+     String swapTerminals(String correctAnswer, List<String> terminals1, List<String> terminals2, int correctLen, int answerLen) {
+        String corruptAnswer = correctAnswer;
+        for (int i=correctLen; i<=answerLen; i++) {
+            for (String terminal : terminals1) {
+                if (correctAnswer.substring(i).contains(terminal)) {  // nadjen terminal
+                    int index = correctAnswer.indexOf(terminal, i);   // pocinje od i-te pozicije
+                    int randNum = randomNumber(terminals2.size());
+                    corruptAnswer = correctAnswer.substring(0, i-1) + terminals2.get(randNum) + correctAnswer.substring(i+terminal.length());
+                    break;
+                }
+            }
+        }
+        return corruptAnswer;
+    }
+
+    private boolean areListsTheSame(List<Node<Symbol>> one, List<Node<Symbol>> two) {
+        return one.containsAll(two) && two.containsAll(one);
+    }
+
+    public void getParentsOfNode(Node<Symbol> node, List<Node<Symbol>> parents) {
+        if (node == null)
+            return;
+        for (Node<Symbol> parent : node.getParents()) {
+            if (!(parents.contains(parent))) {
+                parents.add(parent);
+            }
+            getParentsOfNode(parent, parents);
+        }
+    }
+
+    public void getChildrenTerminals(Node<Symbol> node, List<String> terminals) {
+        if (node == null)
+            return;
+        if (node.getData().isNonterminal() || (node.getData().isComposite())) {
+            for (Node<Symbol> child : node.getChildren()) {
+
+                getChildrenTerminals(child, terminals);
+            }
+        }
+        else {
+            if (!(terminals.contains(node.getData().getName())) && !node.getData().isNonterminal() && node.getData().isNode()) {
+                terminals.add(node.getData().getName());
+            }
+        }
     }
 
     private int randomNumber(int len) {
