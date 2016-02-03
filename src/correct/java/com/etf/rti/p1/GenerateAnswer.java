@@ -341,7 +341,7 @@ public class GenerateAnswer {
     }
 
     public String corruptCorrectAnswer(String correctAnswer) {
-        String corruptAnswer = "";
+        String corruptAnswer = ""; int minDiff = 1000;
         if (once == false) {
             int answerLen = correctAnswer.length(); // zameniti nesto u odgovoru na nekoj poziciji od correctLen do answerLen
             if (correctLen > 0 && correctLen <= answerLen) {
@@ -354,32 +354,61 @@ public class GenerateAnswer {
                         List<Node<Symbol>> parents2 = new ArrayList<Node<Symbol>>();
                         getParentsOfNode(terminals.get(j), parents2);
                         boolean b = areListsTheSame(parents1, parents2);
-                        if (!b) {
-                            pairs.add(new MutablePair<Node<Symbol>, Node<Symbol>>(terminals.get(i), terminals.get(j)));  // ovde nesto pobrljavi...
+                        if (numOfDiffParentes(parents1, parents2) < minDiff) {
+                            minDiff = numOfDiffParentes(parents1, parents2);
                         }
+                        //if (!b) {
+                           // pairs.add(new MutablePair<Node<Symbol>, Node<Symbol>>(terminals.get(i), terminals.get(j)));  // ovde nesto pobrljavi...
+                        //}
                     }
                 }
-                int num = randomNumber(pairs.size());   // na pozciji num menjamo ta dva para!
-                List<String> terminals1 = new ArrayList<String>();   // treba proslediti sve, pa koji se nadje orginial (levi deo para) on da se zameni!!!
-                List<String> terminals2 = new ArrayList<String>();
-                getChildrenTerminals(pairs.get(num).getLeft(), terminals1);
-                getChildrenTerminals(pairs.get(num).getRight(), terminals2);
-                corruptAnswer = swapTerminals(correctAnswer, terminals1, terminals2, correctLen, answerLen);
+                for (int i=0; i<terminals.size();i++) {
+                    for (int j=i+1; j<terminals.size();j++) {
+                        List<Node<Symbol>> parents1 = new ArrayList<Node<Symbol>>();
+                        getParentsOfNode(terminals.get(i), parents1);
+                        List<Node<Symbol>> parents2 = new ArrayList<Node<Symbol>>();
+                        getParentsOfNode(terminals.get(j), parents2);
+                        if (numOfDiffParentes(parents1, parents2) == minDiff) {
+                            pairs.add(new MutablePair<Node<Symbol>, Node<Symbol>>(terminals.get(i), terminals.get(j)));
+                        }
+                        //if (!b) {
+                        // pairs.add(new MutablePair<Node<Symbol>, Node<Symbol>>(terminals.get(i), terminals.get(j)));  // ovde nesto pobrljavi...
+                        //}
+                    }
+                }
+                //int num = randomNumber(pairs.size());   // na pozciji num menjamo ta dva para!
+               // List<String> terminals1 = new ArrayList<String>();   // treba proslediti sve, pa koji se nadje orginial (levi deo para) on da se zameni!!!
+               // List<String> terminals2 = new ArrayList<String>();
+               // getChildrenTerminals(pairs.get(num).getLeft(), terminals1);
+               // getChildrenTerminals(pairs.get(num).getRight(), terminals2);
+                corruptAnswer = swapTerminals(correctAnswer, pairs, correctLen, answerLen);
             }
         }
         return corruptAnswer;
     }
 
-     String swapTerminals(String correctAnswer, List<String> terminals1, List<String> terminals2, int correctLen, int answerLen) {
+     String swapTerminals(String correctAnswer, List<Pair<Node<Symbol>, Node<Symbol>>> pairs, int correctLen, int answerLen) {
         String corruptAnswer = correctAnswer;
         for (int i=correctLen; i<=answerLen; i++) {
-            for (String terminal : terminals1) {
-                if (correctAnswer.substring(i).contains(terminal)) {  // nadjen terminal
-                    int index = correctAnswer.indexOf(terminal, i);   // pocinje od i-te pozicije
-                    int randNum = randomNumber(terminals2.size());
-                    corruptAnswer = correctAnswer.substring(0, i-1) + terminals2.get(randNum) + correctAnswer.substring(i+terminal.length());
+            for (int num = 0; num < pairs.size(); num++) {
+                List<String> terminals1 = new ArrayList<String>();
+                List<String> terminals2 = new ArrayList<String>();
+                getChildrenTerminals(pairs.get(num).getLeft(), terminals1);
+                getChildrenTerminals(pairs.get(num).getRight(), terminals2);
+                for (String terminal : terminals1) {
+                    if (correctAnswer.substring(i).contains(terminal)) {  // nadjen terminal
+                        int index = correctAnswer.indexOf(terminal, i);   // pocinje od i-te pozicije
+                        int randNum = randomNumber(terminals2.size());
+                        corruptAnswer = correctAnswer.substring(0, i - 1) + terminals2.get(randNum) + correctAnswer.substring(i + terminal.length());
+                        break;
+                    }
+                }
+                if (!corruptAnswer.equals(correctAnswer)) {
                     break;
                 }
+            }
+            if (!corruptAnswer.equals(correctAnswer)) {
+                break;
             }
         }
         return corruptAnswer;
@@ -387,6 +416,18 @@ public class GenerateAnswer {
 
     private boolean areListsTheSame(List<Node<Symbol>> one, List<Node<Symbol>> two) {
         return one.containsAll(two) && two.containsAll(one);
+    }
+
+    private int numOfDiffParentes(List<Node<Symbol>> one, List<Node<Symbol>> two) {
+        int num = 0;
+        for (int i=0;i<one.size();i++) {
+            for (int j=i+1; j<two.size();j++) {
+                if (!one.get(i).getData().getName().equals(two.get(j).getData().getName())) {
+                    num++;
+                }
+            }
+        }
+        return num;
     }
 
     public void getParentsOfNode(Node<Symbol> node, List<Node<Symbol>> parents) {
