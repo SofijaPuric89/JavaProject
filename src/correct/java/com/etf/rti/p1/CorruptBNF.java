@@ -13,14 +13,16 @@ public class CorruptBNF {
     private static final String TERMINALSNONTERMINALS = "(<(.+?)>)|([^<>]+)";
     private String[] rules;
     private boolean[] compRules;
-    Random randGenerator;
-    int numOfCompRules;
+    private Random randGenerator;
+    private int numOfCompRules;
+    private Graph graph;
 
-    public CorruptBNF(String[] rules, int numOfCompRules, boolean[] compRules) {
+    public CorruptBNF(String[] rules, int numOfCompRules, boolean[] compRules, Graph g) {
         this.rules = rules;
         this.numOfCompRules = numOfCompRules;
         this.compRules = compRules;
         randGenerator = new Random();
+        graph = g;
         Calendar cal = Calendar.getInstance();
         randGenerator.setSeed(cal.getTimeInMillis());
     }
@@ -54,6 +56,30 @@ public class CorruptBNF {
                 directRecursive = true;
             }
         }
+        boolean corrupt = false;
+        while (!corrupt) {
+            int num = randomNumber(5);
+            switch (num) {
+                case 0:
+                    break;
+                case 1:
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+            }
+        }
 
+    }
+
+    private boolean changeRecursiveToNonRecursive(boolean directRecursive, String[] sides) {
+        boolean success = false;   // dovrsiti...
+        if (directRecursive) {
+            success = true;
+        }
+        return success;
     }
 }
