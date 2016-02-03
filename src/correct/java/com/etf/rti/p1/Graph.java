@@ -43,13 +43,14 @@ public class Graph {
         }
     }
 
-    public Node<Symbol> addCompositeNode(Node<Symbol> localRoot, String part) {
+    public Node<Symbol> addCompositeNode(Node<Symbol> localRoot, String part, int index) {
         String s = part.substring(part.indexOf("<") + 1);
         if (!(s.equals(part)))
             s = s.substring(0, s.indexOf(">"));
         int count = StringUtils.countMatches(part, "<"); // how many times contains character <
         Node<Symbol> rroot = null;
         if ((count > 1) || ((s.length() + 2) < part.length())) {
+            pg.setCompRuleToTrue(index);
             Symbol ss = new Symbol(part, false, 0, false, true);
             rroot = new Node<Symbol>(ss);
             if (localRoot != null)

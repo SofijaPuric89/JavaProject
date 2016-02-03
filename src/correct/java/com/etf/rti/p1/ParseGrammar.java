@@ -22,8 +22,6 @@ public class ParseGrammar {
     private static final String OR = "\\|";
     private static final String NONTERMINAL = "<(.+?)>";
     private static final String TERMINALSNONTERMINALS = "(<(.+?)>)|([^<>]+)";  // bilo bez ? u drugom delu
-    private static final double MINFACTOR = 0.8;
-    private static final double MAXFACTOR = 1.2;
     private String input =
             "<p> ::= <malo_slovo>:\\<put>\n" +
                     "<put> ::= <dir> | <put>\\<dir> | \"<dir>\"\\<put>\n" +
@@ -33,6 +31,7 @@ public class ParseGrammar {
                     "<cifra> ::= 0|1|2|3|4|5|6|7|8|9";
 
     private String[] array = null;
+    private boolean[] compRule;
     Graph g = new Graph(this);
     CombinationGenerator gen = new CombinationGenerator(this);
 
@@ -40,8 +39,7 @@ public class ParseGrammar {
         input = grammar;
     }
 
-    public ParseGrammar() {
-    }
+    public ParseGrammar() {}
 
     public String getGrammar() {
         return input;
@@ -50,6 +48,8 @@ public class ParseGrammar {
     public void parse() {
         Node<Symbol> localRoot = null;
         parseAllRules();
+        compRule = new boolean[array.length];
+        for (int i=0;i<compRule.length;i++) compRule[i] = false;
         for (int i = 0; i < array.length; i++) {  // parse every rule
             String[] terminals = array[i].split(EQUAL); // terminals[0] - left side; terminals[1] - right side
             String nonterminal = "";
@@ -59,7 +59,7 @@ public class ParseGrammar {
             String[] parts = terminals[1].split(OR); // parts on right side of rule
             for (int j = 0; j < parts.length; j++) {
                 //System.out.println(parts[j]);
-                Node<Symbol> rroot = g.addCompositeNode(localRoot, parts[j]);
+                Node<Symbol> rroot = g.addCompositeNode(localRoot, parts[j], i);
                 String part = "";
                 Pattern patt = Pattern.compile(TERMINALSNONTERMINALS);
                 Matcher match = patt.matcher(parts[j]);
@@ -88,6 +88,20 @@ public class ParseGrammar {
         }
     }
 
+    public void setCompRuleToTrue(int i) {
+        compRule[i] = true;
+    }
+
+    public int numOfCompRule() {
+        int sum = 0;
+        for (boolean b : compRule) {
+            if (b) {
+                sum++;
+            }
+        }
+        return sum;
+    }
+
     private boolean isNonterminal(String part) {
         return part.startsWith("<") ? true : false;
     }
@@ -99,37 +113,6 @@ public class ParseGrammar {
         }
     }
 
-    public void genereteCorrectAnswer(int length) {   // URADITI!
-        int minLen = (int) MINFACTOR * length;
-        int maxLen = (int) MAXFACTOR * length;
-        int currLen = 0;
-        Node<Symbol> currRoot = g.root;
-        if (currRoot.getData().isInfinite()) {  // ako se ponavlja beskonacno
-            List<Node<Symbol>> children = currRoot.getChildren();
-            int numOfChildren = currRoot.getChildren().size();
-            if (numOfChildren > 1) {
-                int numOfInfiniteChildren = 0;
-                int numOfNonInfiniteChildren = 0;
-                List<Node<Symbol>> infiniteChildren = new ArrayList<Node<Symbol>>();
-                List<Node<Symbol>> nonInfiniteChildren = new ArrayList<Node<Symbol>>();
-                List<List<Integer>> childrenInfiniteWidths = new ArrayList<List<Integer>>();
-                List<List<Integer>> childrenNonInfiniteWidths = new ArrayList<List<Integer>>();
-                for (Node<Symbol> child : children) {
-                    if (child.getData().isInfinite()) {
-                        numOfInfiniteChildren++;
-                        infiniteChildren.add(child);
-                        childrenInfiniteWidths.add(child.getData().getWidths());
-                    }
-                    else {
-                        numOfNonInfiniteChildren++;
-                        nonInfiniteChildren.add(child);
-                        childrenNonInfiniteWidths.add(child.getData().getWidths());
-                    }
-                }
-            }
-            else currRoot = children.get(0);
-        }
-    }
 
     public static void main(String[] args) {
        /* ParseGrammar pg = new ParseGrammar("<p> ::= <p><pom> | <pom>\n" +
@@ -139,14 +122,14 @@ public class ParseGrammar {
                 "<a> ::= 1|<a><b>|<a><c><b>\n" +
                 "<b> ::= 101|<b>01\n" +
                 "<c> ::= 1100|<c>11|<c>00\n");*/
-        ParseGrammar pg = new ParseGrammar("<p> ::= <korisnik>!<domen>\n" +
+       /* ParseGrammar pg = new ParseGrammar("<p> ::= <korisnik>!<domen>\n" +
                 "<korisnik> ::= <rec> | <korisnik>_<rec>\n" +
                 "<domen> ::= <kraj_domena> | <rec>.<domen>\n" +
                 "<kraj_domena> ::= com | co.rs\n" +
                 "<rec> ::= <slovo> | <slovo><rec> | <rec><cifra>\n" +
                 "<slovo> ::= a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z\n" +
-                "<cifra> ::= 0|1|2|3|4|5|6|7|8|9");
-        //ParseGrammar pg = new ParseGrammar();
+                "<cifra> ::= 0|1|2|3|4|5|6|7|8|9"); */
+        ParseGrammar pg = new ParseGrammar();
         pg.parse();
         pg.g.setCompositeNodesToRecursive();
         pg.g.setNodesToRecursive();
@@ -155,23 +138,25 @@ public class ParseGrammar {
         pg.g.setDifferenceLenToRecursiveNodes();
 
         CheckGrammar cg = new CheckGrammar(pg.input);
-        //for (int i = 0; i < 50; i++) {
-        GenerateAnswer ga = new GenerateAnswer(pg.g, false);
-        ga.generateIncorrectAnswer(pg.g.root, 10, 20);
-        boolean correct = false;
-        String str = "";
-        //while (!correct) {
-        str = ga.generateAnswerForNode(pg.g.root, 20);
-        //  System.out.print("***GENERISANI STRING*** ");
-        //  System.out.println(str + " duzina: " + str.length());
-        //cg.setAnswer(str);
-        //correct = cg.testGrammar();
-        // }
-        System.out.print("***GENERISANI STRING*** ");
-        System.out.println(str + " duzina: " + str.length());
-      //   }
-        String corrupt = ga.corruptCorrectAnswer(str);
-        System.out.println(corrupt + " duzina: " + corrupt.length());
+       // for (int i = 0; i < 50; i++) {
+            GenerateAnswer ga = new GenerateAnswer(pg.g, false);
+            ga.generateIncorrectAnswer(pg.g.root, 10, 20);
+            boolean correct = false;
+            String str = "";
+            //while (!correct) {
+            str = ga.generateAnswerForNode(pg.g.root, 20);
+            //  System.out.print("***GENERISANI STRING*** ");
+            //  System.out.println(str + " duzina: " + str.length());
+            //cg.setAnswer(str);
+            //correct = cg.testGrammar();
+            // }
+            System.out.print("***GENERISANI STRING*** ");
+            System.out.println(str + " duzina: " + str.length());
+            //   }
+            String corrupt = ga.corruptCorrectAnswer(str);
+            System.out.println(corrupt + " duzina: " + corrupt.length());
+    //    }
+        System.out.println("Num of comp rules: " + pg.numOfCompRule());
 
     }
 }
