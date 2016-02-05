@@ -1,6 +1,7 @@
 package src.correct.java.com.etf.rti.p1;
 
 import com.etf.rti.p1.bnf.BNFCompiler;
+import com.etf.rti.p1.exceptions.EParseError;
 import com.etf.rti.p1.generator.AParser;
 import com.etf.rti.p1.generator.Compiler;
 import com.etf.rti.p1.generator.Generator;
@@ -58,6 +59,10 @@ public class CheckGrammar {
             //c.setInput(new ByteArrayInputStream("f:\\\"d_a4f\"\\\"abc8ab\"\\pe5a_r\\pa8f1k".getBytes("UTF-8")));
             c.setInput(new ByteArrayInputStream(answer.getBytes("UTF-8")));
             c.getParser().init();
+            if (c.getParser().getNumberOfSyntaxErrors() > 0) {
+                throw new EParseError("Input stream syntax error");
+            }
+
 
         }
 
