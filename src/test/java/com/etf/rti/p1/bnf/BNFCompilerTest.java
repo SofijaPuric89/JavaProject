@@ -55,7 +55,7 @@ public class BNFCompilerTest {
         parser.init();
         Compiler c = generator.generate();
         //c.setInput(new ByteArrayInputStream("f:\\\"d_a4f\"\\\"abc8ab\"\\pe5a_r\\pa8f1k".getBytes("UTF-8")));
-        c.setInput(new ByteArrayInputStream("f8v_m!tucrc449.j.com".getBytes("UTF-8")));
+        c.setInput(new ByteArrayInputStream("f8v_!tucrc449.j.com".getBytes("UTF-8")));
         c.getParser().init();
 
     }

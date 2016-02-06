@@ -4,6 +4,7 @@ package src.correct.java.com.etf.rti.p1;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.math3.distribution.ExponentialDistribution;
+import org.apache.commons.math3.util.MultidimensionalCounter;
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -94,12 +95,23 @@ public class GenerateAnswer {
                 HashMap<String, Lists> cloneMap = (HashMap<String, Lists>) mapOfNode.clone();
                 List<Node<Symbol>> childrenList = randomNode.getChildren();
                 for (Node<Symbol> child : childrenList) {
-                    if (child.getData().getDifferenceLen().isEmpty()) {
+                   // if (child.getData().getDifferenceLen().isEmpty()/* && child.getData().isNode()*/) {
                         List<Integer> minimus = child.getData().getWidths();
                         List<Integer> diffs = new ArrayList<Integer>();
+                        if (!child.getData().getDifferenceLen().isEmpty()) {
+                            HashMap<String, Lists> map = child.getData().getDifferenceLen();
+                            Iterator it = map.entrySet().iterator();
+                            while (it.hasNext()) {
+                                Map.Entry pair = (Map.Entry) it.next();
+                                Lists lists = (Lists) pair.getValue();
+                                diffs.addAll(lists.getDifferences());
+                            }
+                            //  diffs = child.getData().getDifferenceLen().
+                        }
                         Lists twoList = new Lists(minimus, diffs);
-                        cloneMap.put(child.getData().getName(), twoList);
-                    }
+                        if (!(cloneMap.containsKey(child.getData().getName())))
+                            cloneMap.put(child.getData().getName(), twoList);
+                   // }
                 }
                 int randNumInSet = 0;
                 if(len == 3) {

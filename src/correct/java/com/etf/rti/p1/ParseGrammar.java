@@ -122,14 +122,14 @@ public class ParseGrammar {
                 "<a> ::= 1|<a><b>|<a><c><b>\n" +
                 "<b> ::= 101|<b>01\n" +
                 "<c> ::= 1100|<c>11|<c>00\n");*/
-       /* ParseGrammar pg = new ParseGrammar("<p> ::= <korisnik>!<domen>\n" +
+        ParseGrammar pg = new ParseGrammar("<p> ::= <korisnik>!<domen>\n" +
                 "<korisnik> ::= <rec> | <korisnik>_<rec>\n" +
                 "<domen> ::= <kraj_domena> | <rec>.<domen>\n" +
                 "<kraj_domena> ::= com | co.rs\n" +
                 "<rec> ::= <slovo> | <slovo><rec> | <rec><cifra>\n" +
                 "<slovo> ::= a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z\n" +
-                "<cifra> ::= 0|1|2|3|4|5|6|7|8|9"); */
-        ParseGrammar pg = new ParseGrammar();
+                "<cifra> ::= 0|1|2|3|4|5|6|7|8|9");
+       // ParseGrammar pg = new ParseGrammar();
         pg.parse();
         pg.g.setCompositeNodesToRecursive();
         pg.g.setNodesToRecursive();
@@ -138,13 +138,13 @@ public class ParseGrammar {
         pg.g.setDifferenceLenToRecursiveNodes();
 
         CheckGrammar cg = new CheckGrammar(pg.input);
-       // for (int i = 0; i < 50; i++) {
-            GenerateAnswer ga = new GenerateAnswer(pg.g, false);
-            ga.generateIncorrectAnswer(pg.g.root, 10, 20);
+        for (int i = 0; i < 50; i++) {
+            GenerateAnswer ga = new GenerateAnswer(pg.g, true);
+           // ga.generateIncorrectAnswer(pg.g.root, 10, 20);
             boolean correct = false;
             String str = "";
             //while (!correct) {
-            str = ga.generateAnswerForNode(pg.g.root, 20);
+            str = ga.generateAnswerForNode(pg.g.root, 40);
             //  System.out.print("***GENERISANI STRING*** ");
             //  System.out.println(str + " duzina: " + str.length());
             //cg.setAnswer(str);
@@ -152,11 +152,11 @@ public class ParseGrammar {
             // }
             System.out.print("***GENERISANI STRING*** ");
             System.out.println(str + " duzina: " + str.length());
-            //   }
-            String corrupt = ga.corruptCorrectAnswer(str);
-            System.out.println(corrupt + " duzina: " + corrupt.length());
+               }
+           // String corrupt = ga.corruptCorrectAnswer(str);
+           // System.out.println(corrupt + " duzina: " + corrupt.length());
     //    }
-        System.out.println("Num of comp rules: " + pg.numOfCompRule());
+      //  System.out.println("Num of comp rules: " + pg.numOfCompRule());
 
     }
 }
