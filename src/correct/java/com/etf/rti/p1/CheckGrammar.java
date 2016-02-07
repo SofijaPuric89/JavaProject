@@ -27,6 +27,8 @@ public class CheckGrammar {
         private AParser parser;
         private Generator generator;
         private Path tmpDir;
+        private int correct = 0;
+        private int incorrect = 0;
 
         public CheckGrammar(String i) {
             input = i;
@@ -72,14 +74,20 @@ public class CheckGrammar {
                 testGetParser();
                 tearDown();
                 System.out.println("Grammar is ok!");
+                correct++;
                 isCorrect = true;
             }
             catch (Exception e) {
                 System.out.println(e.getMessage());
                 isCorrect = false;
+                incorrect++;
             }
             return isCorrect;
         }
+
+    public void print() {
+        System.out.println("Tacni: " + correct + " Netacni: " + incorrect);
+    }
 
 
 }

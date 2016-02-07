@@ -118,11 +118,11 @@ public class ParseGrammar {
        /* ParseGrammar pg = new ParseGrammar("<p> ::= <p><pom> | <pom>\n" +
                 "<pom> ::= _ | <cifra>\n" +
                 "<cifra> ::= 0|1|2|3|4|5|6|7|8|9");*/
-       /* ParseGrammar pg = new ParseGrammar("<start> ::= 11<a>|<b>1\n" +
+      /*  ParseGrammar pg = new ParseGrammar("<start> ::= 11<a>|<b>1\n" +
                 "<a> ::= 1|<a><b>|<a><c><b>\n" +
                 "<b> ::= 101|<b>01\n" +
-                "<c> ::= 1100|<c>11|<c>00\n");*/
-        ParseGrammar pg = new ParseGrammar("<p> ::= <korisnik>!<domen>\n" +
+                "<c> ::= 1100|<c>11|<c>00\n"); */
+       ParseGrammar pg = new ParseGrammar("<p> ::= <korisnik>!<domen>\n" +
                 "<korisnik> ::= <rec> | <korisnik>_<rec>\n" +
                 "<domen> ::= <kraj_domena> | <rec>.<domen>\n" +
                 "<kraj_domena> ::= com | co.rs\n" +
@@ -138,25 +138,33 @@ public class ParseGrammar {
         pg.g.setDifferenceLenToRecursiveNodes();
 
         CheckGrammar cg = new CheckGrammar(pg.input);
-        for (int i = 0; i < 50; i++) {
-            GenerateAnswer ga = new GenerateAnswer(pg.g, true);
-           // ga.generateIncorrectAnswer(pg.g.root, 10, 20);
+        for (int i = 0; i < 1000; i++) {
+            GenerateAnswer ga = new GenerateAnswer(pg.g, false);
+            ga.generateIncorrectAnswer(pg.g.root, 5, 10);
             boolean correct = false;
             String str = "";
-            //while (!correct) {
-            str = ga.generateAnswerForNode(pg.g.root, 40);
+           // while (!correct) {
+            str = ga.generateAnswerForNode(pg.g.root, 10);
+            String corrupt = ga.corruptCorrectAnswer(str);
             //  System.out.print("***GENERISANI STRING*** ");
             //  System.out.println(str + " duzina: " + str.length());
-            //cg.setAnswer(str);
-            //correct = cg.testGrammar();
-            // }
+            if (corrupt.length() == 0)
+                cg.setAnswer(str);
+            else
+                cg.setAnswer(corrupt);
+            cg.testGrammar();
+           //  }
             System.out.print("***GENERISANI STRING*** ");
-            System.out.println(str + " duzina: " + str.length());
-               }
-           // String corrupt = ga.corruptCorrectAnswer(str);
-           // System.out.println(corrupt + " duzina: " + corrupt.length());
-    //    }
+            if (corrupt.length() == 0)
+                System.out.println(str + " duzina: " + str.length());
+            else
+                System.out.println(corrupt + " duzina: " + str.length());
+           //    }
+          //  String corrupt = ga.corruptCorrectAnswer(str);
+          //  System.out.println(corrupt + " duzina: " + corrupt.length());
+        }
       //  System.out.println("Num of comp rules: " + pg.numOfCompRule());
+        cg.print();
 
     }
 }
