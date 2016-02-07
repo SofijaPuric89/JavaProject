@@ -29,6 +29,7 @@ public class CheckGrammar {
         private Path tmpDir;
         private int correct = 0;
         private int incorrect = 0;
+        private Compiler c;
 
         public CheckGrammar(String i) {
             input = i;
@@ -49,6 +50,8 @@ public class CheckGrammar {
             BNFCompiler compiler = new BNFCompiler(name, "com.etf.rti.p1.bnf", out);
             compiler.setInput(new ByteArrayInputStream(input.getBytes("UTF-8")));
             parser = compiler.getParser();
+            parser.init();
+            c = generator.generate();
         }
 
         public void tearDown() throws Exception {
@@ -56,9 +59,7 @@ public class CheckGrammar {
         }
 
         public void testGetParser() throws Exception {
-            parser.init();
-            Compiler c = generator.generate();
-            //c.setInput(new ByteArrayInputStream("f:\\\"d_a4f\"\\\"abc8ab\"\\pe5a_r\\pa8f1k".getBytes("UTF-8")));
+            c.reset();
             c.setInput(new ByteArrayInputStream(answer.getBytes("UTF-8")));
             c.getParser().init();
             if (c.getParser().getNumberOfSyntaxErrors() > 0) {
@@ -70,9 +71,7 @@ public class CheckGrammar {
 
         public boolean testGrammar() {
             try {
-                setUp();
                 testGetParser();
-                tearDown();
                 System.out.println("Grammar is ok!");
                 correct++;
                 isCorrect = true;

@@ -138,14 +138,25 @@ public class ParseGrammar {
         pg.g.setDifferenceLenToRecursiveNodes();
 
         CheckGrammar cg = new CheckGrammar(pg.input);
+        try {
+            cg.setUp();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.exit(-1);
+        }
+
+        GenerateAnswer ga = new GenerateAnswer(pg.g, false);
+        int len = 10;
+        ga.setDistribution(len);
         for (int i = 0; i < 1000; i++) {
-            GenerateAnswer ga = new GenerateAnswer(pg.g, false);
-            ga.generateIncorrectAnswer(pg.g.root, 5, 10);
+
+            ga.generateIncorrectAnswer(pg.g.root, len, len);
             boolean correct = false;
             String str = "";
            // while (!correct) {
-            str = ga.generateAnswerForNode(pg.g.root, 10);
+            str = ga.generateAnswerForNode(pg.g.root, len);
             String corrupt = ga.corruptCorrectAnswer(str);
+
             //  System.out.print("***GENERISANI STRING*** ");
             //  System.out.println(str + " duzina: " + str.length());
             if (corrupt.length() == 0)
@@ -154,7 +165,7 @@ public class ParseGrammar {
                 cg.setAnswer(corrupt);
             cg.testGrammar();
            //  }
-            System.out.print("***GENERISANI STRING*** ");
+           System.out.print("***GENERISANI STRING*** ");
             if (corrupt.length() == 0)
                 System.out.println(str + " duzina: " + str.length());
             else
@@ -163,8 +174,15 @@ public class ParseGrammar {
           //  String corrupt = ga.corruptCorrectAnswer(str);
           //  System.out.println(corrupt + " duzina: " + corrupt.length());
         }
-      //  System.out.println("Num of comp rules: " + pg.numOfCompRule());
+        //  System.out.println("Num of comp rules: " + pg.numOfCompRule());
         cg.print();
+
+        try {
+            cg.tearDown();
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.exit(-1);
+        }
 
     }
 }

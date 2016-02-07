@@ -26,7 +26,8 @@ public class GenerateAnswer {
     private static Random randGenerator = new Random();
     int correctLen;
     int generateLen = 0;
-    boolean once = false;
+    boolean once;
+    private ExponentialDistribution eg;
 
     static {
         Calendar cal = Calendar.getInstance();
@@ -40,12 +41,18 @@ public class GenerateAnswer {
         length = l;
     }
 
+    public void setDistribution(int len) {
+         eg = new ExponentialDistribution(len/1.5);
+    }
+
     public void generateIncorrectAnswer(Node<Symbol> node, int len, int sumLen) {
-        ExponentialDistribution eg = new ExponentialDistribution(len/2.);
         boolean ok = false;
         while (!ok) {
-            correctLen = (int) Math.round(eg.sample());
-            if (!(correctLen == 0 || correctLen == sumLen))  {
+            correctLen = len - (int) Math.round(eg.sample());
+            if (!(correctLen <= 0 || correctLen >= sumLen))  {
+                //System.out.println(correctLen);
+                once = false;
+                generateLen = 0;
                 ok = true;
             }
         }

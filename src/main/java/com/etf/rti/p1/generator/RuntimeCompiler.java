@@ -27,6 +27,12 @@ public class RuntimeCompiler implements Compiler {
         this.packageName = packageName;
     }
 
+    public void reset() {
+        lexer = null;
+        tokenStream = null;
+        parser = null;
+    }
+
     public void setInput(InputStream in) throws IOException {
         input = new ANTLRInputStream(in);
     }
