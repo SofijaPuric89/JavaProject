@@ -4,38 +4,46 @@ import com.etf.rti.p1.ebnf.rules.IRule;
 import com.etf.rti.p1.ebnf.transformations.ITransform;
 import com.etf.rti.p1.ebnf.transformations.TransformInnerOption;
 import com.etf.rti.p1.ebnf.transformations.TransformRecursion;
+import com.etf.rti.p1.exceptions.Exception;
+import com.etf.rti.p1.generator.Compiler;
 
-import java.io.OutputStream;
-import java.io.PrintStream;
 import java.util.LinkedList;
 
 /**
- * Transforming grammar rules and stream transformed rules to provided output stream
- * TODO: make GrammarTransformer more generic by parametrize rules/grammar/notation...
+ * Transforming grammar rules to EBNF notation for provided compiler
  */
 public class GrammarTransformer {
-    private LinkedList<IRule> rules;
-    private PrintStream output;
+    private final Compiler compiler;
     private LinkedList<ITransform> transformations = new LinkedList<>();
 
-    //TODO: instead of list of rules as a parameter, try putting grammar
-    public GrammarTransformer(LinkedList<IRule> rules, OutputStream output) {
-        this.rules = rules;
-        this.output = new PrintStream(output);
-        transformations.addLast(new TransformInnerOption());
-        transformations.addLast(new TransformRecursion());
+    public GrammarTransformer(Compiler compiler) {
+        this.compiler = compiler;
     }
 
     /**
-     * Printing transformed list of rules
+     * Transforming parser rules to EBNF notation by performing two types of transformations:
+     * inner option transformation and recursion transformation.
      */
-    public void transform() {
-        for (IRule rule : rules) {
+    public LinkedList<IRule> transformToEBNF() throws Exception {
+        transformations.add(new TransformInnerOption());
+        transformations.add(new TransformRecursion());
+        return transformRules();
+    }
+
+    /**
+     * Transforming all rules from parser with set transformations
+     *
+     * @return list of transformed rules
+     */
+    public LinkedList<IRule> transformRules() throws Exception {
+        LinkedList<IRule> transformedRules = new LinkedList<>();
+        for (IRule rule : compiler.getParser().getRules()) {
             IRule transformedRule = rule;
             for (ITransform transformation : transformations) {
                 transformedRule = transformation.transform(transformedRule);
             }
-            output.println(transformedRule);
+            transformedRules.add(transformedRule);
         }
+        return transformedRules;
     }
 }
