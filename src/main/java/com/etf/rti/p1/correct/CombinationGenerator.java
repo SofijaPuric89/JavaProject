@@ -32,7 +32,7 @@ public class CombinationGenerator {
             if (!ifMatrixHasEmptyArray(array)) {
                 int s = 0;
                 List<Integer> all = callGetAllCombinations(sumTerminals, array, s);
-                pg.g.updateWidths(parent, all);
+                pg.grammarGraph.updateWidths(parent, all);
 
             }
             return null;
@@ -67,7 +67,7 @@ public class CombinationGenerator {
     public int[][] createMatrixOfChildrenWidths(int numOfChildrenNonterminals, List<String> nameNonterminals) {
         int[][] array = new int[numOfChildrenNonterminals][];
         for (int i = 0; i < numOfChildrenNonterminals; i++) {
-            Node<Symbol> nonterminal = pg.g.find(nameNonterminals.get(i), pg.g.root);
+            Node<Symbol> nonterminal = pg.grammarGraph.find(nameNonterminals.get(i), pg.grammarGraph.root);
             int[] lens = new int[nonterminal.getData().getWidths().size()];
             int j = 0;
             for (int width : nonterminal.getData().getWidths()) {

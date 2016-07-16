@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 /**
  * Created by Korisnik on 8.1.2016.
  */
+//TODO: Think about class rename, it is more like BNFNotationGrammarParser with testing purposes
 public class ParseGrammar {
     private static final String EQUAL = "::=";
     private static final String NEWLINE = "\n";
@@ -13,8 +14,8 @@ public class ParseGrammar {
     private static final String EMPTY = "";
     private static final String OR = "\\|";
     private static final String NONTERMINAL = "<(.+?)>";
-    private static final String TERMINALSNONTERMINALS = "(<(.+?)>)|([^<>]+)";  // bilo bez ? u drugom delu
-    private String input =
+    private static final String TERMINALS_NONTERMINALS = "(<(.+?)>)|([^<>]+)";  // bilo bez ? u drugom delu
+    private static final String DEFAULT_GRAMMAR_INPUT =
             "<p> ::= <malo_slovo>:\\<put>\n" +
                     "<put> ::= <dir> | <put>\\<dir> | \"<dir>\"\\<put>\n" +
                     "<dir> ::= <malo_slovo> | <dir><pom>\n" +
@@ -22,58 +23,58 @@ public class ParseGrammar {
                     "<malo_slovo> ::= a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z\n" +
                     "<cifra> ::= 0|1|2|3|4|5|6|7|8|9";
 
-    private String[] array = null;
-    private boolean[] compRule;
-    Graph g = new Graph(this);
+    private String grammar = "";
+
+    private String[] array = null; //TODO: check array is actually an array of grammar rules?
+    private boolean[] compRule; //TODO: refactor this, it might not be necessary -> only counting number of compiled rules
+    Graph grammarGraph = new Graph(this); //graph for storing parsed symbols of grammar
+    //TODO: CombinationGenerator not being used in ParseGrammar, refactor and move to Graph?
     CombinationGenerator gen = new CombinationGenerator(this);
 
+    /**
+     * @param grammar input grammar for notation parser
+     */
     public ParseGrammar(String grammar) {
-        input = grammar;
+        this.grammar = grammar;
     }
 
-    public ParseGrammar() {}
-
-    public String getGrammar() {
-        return input;
+    public ParseGrammar() {
+        grammar = DEFAULT_GRAMMAR_INPUT;
     }
 
     public void parse() {
         Node<Symbol> localRoot = null;
         parseAllRules();
-        compRule = new boolean[array.length];
-        for (int i=0;i<compRule.length;i++) compRule[i] = false;
+        compRule = new boolean[array.length]; // what if array is null?
+        for (int i = 0; i < compRule.length; i++) compRule[i] = false;
         for (int i = 0; i < array.length; i++) {  // parse every rule
             String[] terminals = array[i].split(EQUAL); // terminals[0] - left side; terminals[1] - right side
             String nonterminal = "";
-            Pattern pattern = Pattern.compile(NONTERMINAL);
-            Matcher matcher = pattern.matcher(terminals[0]);
-            localRoot = g.parseLeftSideOfRule(localRoot, terminals[1], nonterminal, matcher);
+            Pattern nonterminalPattern = Pattern.compile(NONTERMINAL);
+            Matcher matcher = nonterminalPattern.matcher(terminals[0]);
+            localRoot = grammarGraph.parseLeftSideOfRule(localRoot, terminals[1], nonterminal, matcher);
             String[] parts = terminals[1].split(OR); // parts on right side of rule
-            for (int j = 0; j < parts.length; j++) {
-                //System.out.println(parts[j]);
-                Node<Symbol> rroot = g.addCompositeNode(localRoot, parts[j], i);
-                String part = "";
-                Pattern patt = Pattern.compile(TERMINALSNONTERMINALS);
-                Matcher match = patt.matcher(parts[j]);
-                //System.out.println(match.groupCount());
+            for (String part : parts) {
+                Node<Symbol> root = grammarGraph.addCompositeNode(localRoot, part, i); //TODO: compositeNode instead of root?
+                String matchPart = "";
+                Pattern pattern = Pattern.compile(TERMINALS_NONTERMINALS);
+                Matcher match = pattern.matcher(part);
                 while (match.find()) {
-                    part = match.group(0);    // tu treba ispitati da li se simbol vec nalazi u stablu ako je neterminal...
-                    //System.out.println(part);
+                    matchPart = match.group(0);    // tu treba ispitati da li se simbol vec nalazi u stablu ako je neterminal...
                     Node<Symbol> node = null;
-                    boolean b = isNonterminal(part);
+                    boolean matchPartIsNonterminal = isNonterminal(matchPart);
                     Symbol sym = null;
-                    if (b) {
-                        matcher = pattern.matcher(part);
+                    if (matchPartIsNonterminal) {
+                        matcher = nonterminalPattern.matcher(matchPart);
                         if (matcher.find()) {
-                            //System.out.println(matcher.group(1));
                             String nonterminalName = matcher.group(1);
-                            node = g.find(nonterminalName, g.root);
-                            sym = new Symbol(nonterminalName, true, 0, b, false);
+                            node = grammarGraph.find(nonterminalName, grammarGraph.root);
+                            sym = new Symbol(nonterminalName, true, 0, matchPartIsNonterminal, false);
                         }
                     } else
-                        sym = new Symbol(part, true, 0, b, false);
-                    Node<Symbol> nod = new Node<Symbol>(sym);
-                    g.addNode(localRoot, rroot, node, nod);
+                        sym = new Symbol(matchPart, true, 0, matchPartIsNonterminal, false);
+                    Node<Symbol> nod = new Node<>(sym);
+                    grammarGraph.addNode(localRoot, root, node, nod);
                 }
             }
 
@@ -84,22 +85,12 @@ public class ParseGrammar {
         compRule[i] = true;
     }
 
-    public int numOfCompRule() {
-        int sum = 0;
-        for (boolean b : compRule) {
-            if (b) {
-                sum++;
-            }
-        }
-        return sum;
-    }
-
-    private boolean isNonterminal(String part) {
-        return part.startsWith("<") ? true : false;
+    private boolean isNonterminal(String part) { //TODO: can be part of some Util class related to ParseGrammar?
+        return part.startsWith("<");
     }
 
     private void parseAllRules() {
-        array = input.split(NEWLINE);
+        array = grammar.split(NEWLINE);
         for (int i = 0; i < array.length; i++) {
             array[i] = array[i].replaceAll(SPACE, EMPTY);
         }
@@ -114,63 +105,58 @@ public class ParseGrammar {
                 "<a> ::= 1|<a><b>|<a><c><b>\n" +
                 "<b> ::= 101|<b>01\n" +
                 "<c> ::= 1100|<c>11|<c>00\n"); */
-       ParseGrammar pg = new ParseGrammar("<p> ::= <korisnik>!<domen>\n" +
+        ParseGrammar pg = new ParseGrammar("<p> ::= <korisnik>!<domen>\n" +
                 "<korisnik> ::= <rec> | <korisnik>_<rec>\n" +
                 "<domen> ::= <kraj_domena> | <rec>.<domen>\n" +
                 "<kraj_domena> ::= com | co.rs\n" +
                 "<rec> ::= <slovo> | <slovo><rec> | <rec><cifra>\n" +
-                "<slovo> ::= a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z\n" +
+                "<slovo> ::= a|b|c|d|e|f|grammarGraph|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z\n" +
                 "<cifra> ::= 0|1|2|3|4|5|6|7|8|9");
-       // ParseGrammar pg = new ParseGrammar();
+        // ParseGrammar pg = new ParseGrammar();
         pg.parse();
-        pg.g.setCompositeNodesToRecursive();
-        pg.g.setNodesToRecursive();
-        pg.g.setNodesToInfinite();
-        pg.g.setWidthToAllNodes();
-        pg.g.setDifferenceLenToRecursiveNodes();
+        pg.grammarGraph.setCompositeNodesToRecursive();
+        pg.grammarGraph.setNodesToRecursive();
+        pg.grammarGraph.setNodesToInfinite();
+        pg.grammarGraph.setWidthToAllNodes();
+        pg.grammarGraph.setDifferenceLenToRecursiveNodes();
 
-        CheckGrammar cg = new CheckGrammar(pg.input);
+        CheckGrammar checkGrammar = new CheckGrammar(pg.grammar);
         try {
-            cg.setUp();
+            //TODO: check what setUp is actually doing and if it could be moved to ChechGrammar constructor
+            checkGrammar.setUp();
         } catch (Exception e) {
             e.printStackTrace();
             System.exit(-1);
         }
 
-        GenerateAnswer ga = new GenerateAnswer(pg.g, false);
+        GenerateAnswer generateAnswer = new GenerateAnswer(pg.grammarGraph, false);
         int len = 10;
-        ga.setDistribution(len);
+        generateAnswer.setDistribution(len);
         for (int i = 0; i < 1000; i++) {
 
-            ga.generateIncorrectAnswer(pg.g.root, len, len);
-            boolean correct = false;
-            String str = "";
-           // while (!correct) {
-            str = ga.generateAnswerForNode(pg.g.root, len);
-            String corrupt = ga.corruptCorrectAnswer(str);
+            generateAnswer.generateIncorrectAnswer(pg.grammarGraph.root, len, len);
 
-            //  System.out.print("***GENERISANI STRING*** ");
-            //  System.out.println(str + " duzina: " + str.length());
-            if (corrupt.length() == 0)
-                cg.setAnswer(str);
-            else
-                cg.setAnswer(corrupt);
-            cg.testGrammar();
-           //  }
-           System.out.print("***GENERISANI STRING*** ");
-            if (corrupt.length() == 0)
-                System.out.println(str + " duzina: " + str.length());
-            else
-                System.out.println(corrupt + " duzina: " + str.length());
-           //    }
-          //  String corrupt = ga.corruptCorrectAnswer(str);
-          //  System.out.println(corrupt + " duzina: " + corrupt.length());
+            String generatedAnswer = generateAnswer.generateAnswerForNode(pg.grammarGraph.root, len);
+            String corruptedAnswer = generateAnswer.corruptCorrectAnswer(generatedAnswer);
+
+            System.out.print("***GENERISANI STRING*** ");
+            //TODO: check what is the difference between if and else branch?
+            if (corruptedAnswer.length() == 0) {
+                checkGrammar.setAnswer(generatedAnswer);
+                System.out.println(generatedAnswer + " duzina: " + generatedAnswer.length());
+            } else {
+                checkGrammar.setAnswer(corruptedAnswer);
+                System.out.println(corruptedAnswer + " duzina: " + generatedAnswer.length());
+            }
+
+            checkGrammar.testGrammar();
         }
-        //  System.out.println("Num of comp rules: " + pg.numOfCompRule());
-        cg.print();
+
+        checkGrammar.print(); //prints number of correct and corrupted answers
 
         try {
-            cg.tearDown();
+            //TODO: user only for delete temp folder, refactor that consumer of CheckGrammar class takes care about provided folder
+            checkGrammar.tearDown();
         } catch (Exception e) {
             e.printStackTrace();
             System.exit(-1);
