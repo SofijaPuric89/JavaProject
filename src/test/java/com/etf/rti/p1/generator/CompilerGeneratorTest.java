@@ -1,6 +1,10 @@
 package com.etf.rti.p1.generator;
 
+import com.etf.rti.p1.bnf.BNFCompiler;
 import com.etf.rti.p1.util.Util;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.io.File;
 
@@ -11,16 +15,17 @@ public class CompilerGeneratorTest {
 
     private CompilerGenerator gen;
 
-    @org.junit.Before
-    public void setUp() throws Exception {
+    @Before
+    public void setup() throws Exception {
         File classDir = new File(Util.getInstance().getResourcePath());
         File grammarFile = new File(classDir, "bnf.g4");
         String grammar = grammarFile.getAbsolutePath();
         gen = new CompilerGenerator(grammar);
     }
 
-    @org.junit.Test
-    public void testGenerate() throws Exception {
-        gen.generate();
+    @Test
+    public void testGenerateRuntimeCompiler() throws Exception {
+        Compiler compiler = gen.generate();
+        Assert.assertTrue(compiler instanceof RuntimeCompiler);
     }
 }

@@ -92,6 +92,7 @@ public class PermutationGenerator {
         }
     }
 
+    //TODO: check the purpose of this method. Try to create test instead of main
     public static void main(String[] args) {
         PermutationGenerator pg = new PermutationGenerator(30);
         List<Integer> mins = new ArrayList<Integer>();

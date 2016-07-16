@@ -1,7 +1,7 @@
 package com.etf.rti.p1.generator;
 
-import com.etf.rti.p1.util.PatterFileFilter;
-import com.etf.rti.p1.util.Regex;
+import com.etf.rti.p1.util.FilenamePatternFilter;
+import com.etf.rti.p1.util.RegexPatternFinder;
 import com.etf.rti.p1.util.Util;
 import org.antlr.v4.Tool;
 import org.antlr.v4.tool.ErrorType;
@@ -41,7 +41,7 @@ public class CompilerGenerator {
 
     private void compile() throws Exception {
         String srcs = "";
-        for (String x : tempDir.list(new PatterFileFilter(".*\\.java$"))) {
+        for (String x : tempDir.list(new FilenamePatternFilter(".*\\.java$"))) {
             String fileJava = new File(tempDir, x).getAbsolutePath();
             srcs += " " + fileJava;
         }
@@ -70,6 +70,23 @@ public class CompilerGenerator {
         }
     }
 
+    private void copy() throws IOException {
+        Path dstDir = new File(Util.getInstance().getResourcePath()).toPath();
+        for (String s : packageName.split("\\.")) {
+            dstDir = dstDir.resolve(s);
+        }
+        Files.createDirectories(dstDir);
+
+        for (String x : tempDir.list(new FilenamePatternFilter(".*\\.class$"))) {
+            File classFile = new File(tempDir.getAbsolutePath(), x);
+            Files.copy(classFile.toPath(), dstDir.resolve(x), StandardCopyOption.REPLACE_EXISTING);
+        }
+    }
+
+    /**
+     * @return RuntimeCompiler generated with param args
+     * @throws Exception
+     */
     public Compiler generate() throws Exception {
         try {
             String[] args = params();
@@ -80,23 +97,9 @@ public class CompilerGenerator {
             Util.getInstance().deleteFolder(tempDir);
         }
 
-
         String pattern = "([^\\:]*?)\\.[^\\.]*$";
-        String grammarName = Regex.getInstance().find(grammar.replace(File.separatorChar, ':'), pattern, 1);
+        String grammarName = RegexPatternFinder.find(grammar.replace(File.separatorChar, ':'), pattern, 1);
         return new RuntimeCompiler(grammarName, packageName);
 
-    }
-
-    private void copy() throws IOException {
-        Path dstDir = new File(Util.getInstance().getResourcePath()).toPath();
-        for (String s : packageName.split("\\.")) {
-            dstDir = dstDir.resolve(s);
-        }
-        Files.createDirectories(dstDir);
-
-        for (String x : tempDir.list(new PatterFileFilter(".*\\.class$"))) {
-            File classFile = new File(tempDir.getAbsolutePath(), x);
-            Files.copy(classFile.toPath(), dstDir.resolve(x), StandardCopyOption.REPLACE_EXISTING);
-        }
     }
 }

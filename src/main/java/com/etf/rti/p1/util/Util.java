@@ -3,7 +3,8 @@ package com.etf.rti.p1.util;
 import java.io.*;
 
 /**
- * Created by zika on 09.12.2015..
+ * TODO: think about creating SinGen runner class that will be in charge for running the processes.
+ * TODO: think about importing commons.io with FileUtils classes that will take care about folder managing instead of Util
  */
 public class Util {
     private static Util instance;
@@ -45,8 +46,7 @@ public class Util {
     }
 
     private void readOutput(InputStream ins) throws IOException {
-        BufferedReader in = new BufferedReader(
-                new InputStreamReader(ins));
-        while ((in.readLine()) != null);
+        BufferedReader in = new BufferedReader(new InputStreamReader(ins));
+        while ((in.readLine()) != null) ;
     }
 }

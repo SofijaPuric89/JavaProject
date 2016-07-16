@@ -9,26 +9,16 @@ import java.util.regex.Pattern;
 /**
  * Created by zika on 09.12.2015..
  */
-public class Regex {
-    private static Regex instance;
+public class RegexPatternFinder {
 
-    private Regex() {
-    }
-
-    public static Regex getInstance() {
-        if (instance == null)
-            instance = new Regex();
-        return instance;
-    }
-
-    public String find(String source, String pattern, int group) throws ERegexFail {
+    public static String find(String source, String pattern, int groupIndex) throws ERegexFail {
         Pattern p = Pattern.compile(pattern);
         Matcher m = p.matcher(source);
         if (m.find()) {
             MatchResult r = m.toMatchResult();
-            String ret = r.group(group);
+            String ret = r.group(groupIndex);
             if (ret == null) {
-                throw new ERegexFail(String.format("Group %d not present in pattern %s", group, pattern));
+                throw new ERegexFail(String.format("Group %d not present in pattern %s", groupIndex, pattern));
             }
             return ret;
         }

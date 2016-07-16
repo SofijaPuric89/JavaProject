@@ -11,30 +11,30 @@ import java.nio.file.Path;
 
 /**
  * Created by zika on 15.12.2015..
+ * TODO: change class name! Not fitting to logic!
+ * TODO: Code duplicate in translateBnf as in GrammarChecker.setupCompiler() !!!
  */
 public class Graph {
-    public Path grammarFile;
-
     private Path tmpDir;
 
-    public void generate(String input) throws Exception {
-        translateBnf(input);
-        String[] args = {"-f", grammarFile.toAbsolutePath().toString(), "-o", "output","-sd", "eps", "-verbose"};
+    public void generate(String grammar) throws Exception {
+        Path pathToGrammarFile = translateBnf(grammar);
+        String[] args = {"-f", pathToGrammarFile.toString(), "-o", "output","-sd", "eps", "-verbose"};
         Console.main(args);
         Util.deleteFolder(tmpDir.toFile());
     }
 
-    public void translateBnf(String input) throws Exception{
+    private Path translateBnf(String input) throws Exception{
         tmpDir = Files.createTempDirectory("test");
         final String name = "test";
-        Path grammar =  tmpDir.resolve(name + ".g4");
-        String grammarName = grammar.toAbsolutePath().toString();
+        Path grammarDirPath =  tmpDir.resolve(name + ".g4");
+        String grammarName = grammarDirPath.toAbsolutePath().toString();
         FileOutputStream out = new FileOutputStream(grammarName);
 
         BNFCompiler compiler = new BNFCompiler(name, "com.etf.rti.p1.bnf", out);
         compiler.setInput(new ByteArrayInputStream(input.getBytes("UTF-8")));
         AParser parser = compiler.getParser();
         parser.init();
-        grammarFile = grammar;
+        return grammarDirPath.toAbsolutePath();
     }
 }

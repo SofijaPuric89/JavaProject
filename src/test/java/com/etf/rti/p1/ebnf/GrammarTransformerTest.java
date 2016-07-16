@@ -13,8 +13,8 @@ import static org.junit.Assert.*;
 /**
  * Created by sule on 12/12/15.
  */
-public class GrammarTransformTest {
-    private GrammarTransform transform;
+public class GrammarTransformerTest {
+    private GrammarTransformer transform;
     private static final String input =
             "<p> ::= <korisnik>!<domen>\n" +
                     "<korisnik> ::= <rec> | <korisnik>_<rec>\n" +
@@ -28,7 +28,7 @@ public class GrammarTransformTest {
     private ByteArrayOutputStream outResult;
 
     @Before
-    public void setUp() throws Exception {
+    public void setup() throws Exception {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         BNFCompiler compiler = new BNFCompiler("test", "com.etf.rti.p1.bnf", out);
         compiler.setInput(new ByteArrayInputStream(input.getBytes("UTF-8")));
@@ -36,13 +36,12 @@ public class GrammarTransformTest {
         parser.init();
 
         outResult = new ByteArrayOutputStream();
-        transform = new GrammarTransform(parser.getRules(), outResult);
+        transform = new GrammarTransformer(parser.getRules(), outResult);
     }
 
     @Test
-    public void testDoJob() throws Exception {
-        transform.doJob();
+    public void testTransform() throws Exception {
+        transform.transform();
         assertEquals(result, outResult.toString());
-
     }
 }
