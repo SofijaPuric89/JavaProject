@@ -1,4 +1,4 @@
-package src.correct.java.com.etf.rti.p1;
+package com.etf.rti.p1.correct;
 
 /**
  * Created by Korisnik on 21.1.2016.

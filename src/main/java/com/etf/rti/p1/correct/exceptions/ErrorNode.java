@@ -1,4 +1,4 @@
-package src.correct.java.com.etf.rti.p1.exceptions;
+package com.etf.rti.p1.correct.exceptions;
 
 
 /**

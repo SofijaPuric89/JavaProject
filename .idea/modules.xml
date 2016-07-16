@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/JavaProject.iml" filepath="$PROJECT_DIR$/JavaProject.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/MasterRad.iml" filepath="$PROJECT_DIR$/.idea/MasterRad.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Syntax.iml" filepath="$PROJECT_DIR$/Syntax.iml" />
     </modules>
   </component>
 </project>

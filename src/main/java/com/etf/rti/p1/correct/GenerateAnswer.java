@@ -1,4 +1,4 @@
-package src.correct.java.com.etf.rti.p1;
+package com.etf.rti.p1.correct;
 
 
 import org.apache.commons.lang3.tuple.MutablePair;

@@ -17,16 +17,18 @@
       <profile default="true" name="Default" enabled="false">
         <processorPath useClasspath="true" />
       </profile>
-      <profile default="false" name="Annotation profile for JavaProject" enabled="true">
+      <profile default="false" name="Maven default annotation processors profile" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
-        <module name="JavaProject" />
+        <module name="MasterRad" />
+        <module name="Syntax" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="JavaProject" target="1.6" />
+      <module name="MasterRad" target="1.7" />
+      <module name="Syntax" target="1.7" />
     </bytecodeTargetLevel>
   </component>
 </project>

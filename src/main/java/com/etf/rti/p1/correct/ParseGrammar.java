@@ -1,13 +1,5 @@
-package src.correct.java.com.etf.rti.p1;
+package com.etf.rti.p1.correct;
 
-import org.antlr.v4.runtime.ParserRuleContext;
-import org.apache.commons.lang3.StringUtils;
-import src.correct.java.com.etf.rti.p1.exceptions.ErrorNode;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

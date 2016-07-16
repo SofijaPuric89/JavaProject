@@ -1,4 +1,4 @@
-package src.correct.java.com.etf.rti.p1;
+package com.etf.rti.p1.correct;
 
 import java.util.*;
 
@@ -32,7 +32,7 @@ public class Symbol {
     }
 
     public void setDifferencesLengths(HashMap<String, Lists> diffs) {
-        for (HashMap.Entry<String, Lists> entry : diffs.entrySet()) {
+        for (Map.Entry<String, Lists> entry : diffs.entrySet()) {
             String key = entry.getKey();
             Lists value = entry.getValue();
             setDifferenceLenArray(key, value);
