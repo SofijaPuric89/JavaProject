@@ -1,4 +1,4 @@
-package com.etf.rti.p1.correct;
+package com.etf.rti.p1.correct.graph;
 
 /**
  * Created by Korisnik on 21.1.2016.

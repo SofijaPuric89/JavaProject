@@ -1,5 +1,8 @@
 package com.etf.rti.p1.correct;
 
+import com.etf.rti.p1.correct.graph.Node;
+import com.etf.rti.p1.correct.graph.Symbol;
+
 import java.util.ArrayList;
 import java.util.List;
 

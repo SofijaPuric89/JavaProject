@@ -1,5 +1,6 @@
 package com.etf.rti.p1.correct;
 
+import com.etf.rti.p1.correct.graph.Graph;
 import org.junit.Assert;
 import org.junit.Test;
 

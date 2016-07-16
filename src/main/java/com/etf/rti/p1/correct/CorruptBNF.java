@@ -1,5 +1,7 @@
 package com.etf.rti.p1.correct;
 
+import com.etf.rti.p1.correct.graph.Graph;
+
 import java.util.Calendar;
 import java.util.Random;
 import java.util.regex.Matcher;

@@ -1,5 +1,7 @@
-package com.etf.rti.p1.correct;
+package com.etf.rti.p1.correct.graph;
 
+import com.etf.rti.p1.correct.BNFGrammarParser;
+import com.etf.rti.p1.correct.CombinationGenerator;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
@@ -10,14 +12,14 @@ import java.util.regex.Matcher;
  */
 public class Graph {
     private Node<Symbol> root = null;
-    private BNFGrammarParser BNFGrammarParser;
+    private com.etf.rti.p1.correct.BNFGrammarParser BNFGrammarParser;
     private CombinationGenerator combinationGenerator;
 
-    Node<Symbol> getRoot() {
+    public Node<Symbol> getRoot() {
         return root;
     }
 
-    Graph(BNFGrammarParser grammar) {
+    public Graph(BNFGrammarParser grammar) {
         BNFGrammarParser = grammar;
         combinationGenerator = new CombinationGenerator(BNFGrammarParser);
     }
