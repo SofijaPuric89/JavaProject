@@ -46,7 +46,7 @@ public class AnswerGenerator {
      * @param len
      * @param sumLen
      */
-    private void calculateCorruptAnswerParameters(int len, int sumLen) {
+    public void calculateCorruptAnswerParameters(int len, int sumLen) {
         boolean ok = false;
         while (!ok) {
             correctLen = len - (int) Math.round(exponentialDistribution.sample());
@@ -61,7 +61,7 @@ public class AnswerGenerator {
 
 
     public String generateAnswer(Node<Symbol> node, int len) {
-        calculateCorruptAnswerParameters(answerLength, answerLength);
+//        calculateCorruptAnswerParameters(answerLength, answerLength);
 
         // faza 1 i faza 2: slucajno odabiramo dete koje ima duzinu najpriblizniju len iz liste dece koji imaju pribliznu duzinu len
         if (len < 1) len = 1;

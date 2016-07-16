@@ -44,7 +44,7 @@ public class GrammarChecker {
         this.compiler = compilerGenerator.generate();
     }
 
-    public boolean isAnswerCorrect(String answer) {
+    public boolean isAnswerGramaticallyCorrect(String answer) {
         compiler.reset();
         try {
             compiler.setInput(new ByteArrayInputStream(answer.getBytes("UTF-8")));

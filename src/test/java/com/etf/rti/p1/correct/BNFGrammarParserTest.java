@@ -20,14 +20,14 @@ public class BNFGrammarParserTest {
             "<domen> ::= <kraj_domena> | <rec>.<domen>\n" +
             "<kraj_domena> ::= com | co.rs\n" +
             "<rec> ::= <slovo> | <slovo><rec> | <rec><cifra>\n" +
-            "<slovo> ::= a|b|c|d|e|f|grammarGraph|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z\n" +
+            "<slovo> ::= a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z\n" +
             "<cifra> ::= 0|1|2|3|4|5|6|7|8|9";
 
     @Test
     public void testGrammarParser() {
         int correctCounter = 0;
         int corruptedCounter = 0;
-        BNFGrammarParser BNFGrammarParser = new BNFGrammarParser(GRAMMAR_INPUT_TEST_1);
+        BNFGrammarParser BNFGrammarParser = new BNFGrammarParser(GRAMMAR_INPUT_TEST_2);
 
         Graph grammarGraph = BNFGrammarParser.parse();
         //TODO: check what these grammarGraph methods are used for
@@ -42,35 +42,35 @@ public class BNFGrammarParserTest {
         try {
             grammarChecker = new GrammarChecker(BNFGrammarParser.getGrammar());
         } catch (Exception e) {
-            e.printStackTrace();
-            System.err.println("GrammarChecker couldn't be initialized");
-            System.exit(-1);
+            Assert.fail();
         }
 
         int answerLength = 10;
         AnswerGenerator answerGenerator = new AnswerGenerator(BNFGrammarParser.getGrammarGraph(), answerLength, false);
 
         for (int i = 0; i < 1000; i++) {
+            answerGenerator.calculateCorruptAnswerParameters(answerLength, answerLength);
 
             String generatedAnswer = answerGenerator.generateAnswer(BNFGrammarParser.getGrammarGraph().getRoot(), answerLength);
             String corruptedAnswer = answerGenerator.corruptCorrectAnswer(generatedAnswer);
 
-            System.out.print("***GENERISANI STRING*** ");
+            System.out.print("***GENERISANI ODGOVOR:");
             String answer = generatedAnswer;
-            if (corruptedAnswer.length() != 0) {
+
+            if (corruptedAnswer.length() != 0 && !grammarChecker.isAnswerGramaticallyCorrect(corruptedAnswer)) {
                 answer = corruptedAnswer;
+                corruptedCounter++;
+                System.out.print("[corrupted] ");
+            } else {
+                correctCounter++;
+                System.out.print("[correct] ");
             }
             System.out.println(answer + " duzina: " + answer.length());
-
-
-            if (grammarChecker.isAnswerCorrect(answer)) {
-                correctCounter++;
-            } else {
-                corruptedCounter++;
-            }
         }
         System.out.println("Brojac odgovora: tacni = " + correctCounter + ", netacni = " + corruptedCounter);
 
-        Assert.assertTrue(correctCounter > corruptedCounter);
+        //expect to have more generated corrupted answers
+        // while 1000 trials of generating corrupted answers
+        Assert.assertTrue(correctCounter < corruptedCounter);
     }
 }
