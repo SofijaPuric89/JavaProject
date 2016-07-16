@@ -39,8 +39,7 @@ public class CombinationGenerator {
 
             }
             return null;
-        }
-        else {
+        } else {
             int s = 0;
             List<Integer> all = callGetAllCombinations(sumTerminals, array, s);
             return all;

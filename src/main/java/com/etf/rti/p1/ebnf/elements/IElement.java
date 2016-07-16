@@ -5,9 +5,12 @@ package com.etf.rti.p1.ebnf.elements;
  */
 public interface IElement extends Cloneable {
     boolean isEqual(IElement e);
+
     String toString();
+
     Object clone();
 
     boolean isSpecial();
+
     boolean hiralMatch(IElement e);
 }

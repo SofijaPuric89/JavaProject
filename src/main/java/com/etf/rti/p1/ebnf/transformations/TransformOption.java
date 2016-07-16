@@ -63,9 +63,9 @@ public abstract class TransformOption implements ITransform {
         IElementArray merge(IElementArray baseArray, IElementArray optionsArray);
     }
 
-    protected class PrefixJob implements IJob{
+    protected class PrefixJob implements IJob {
         public boolean isMatch(IElementArray toFindArray, IElementArray searchArray, IElement rule) {
-            boolean ret =  searchArray.isPrefix(toFindArray);
+            boolean ret = searchArray.isPrefix(toFindArray);
             if (ret) {
                 ret = !searchArray.getWithoutPrefix(toFindArray).hasElement(rule);
             }
@@ -83,7 +83,7 @@ public abstract class TransformOption implements ITransform {
 
     protected class SuffixJob implements IJob {
         public boolean isMatch(IElementArray toFindArray, IElementArray searchArray, IElement rule) {
-            boolean ret =  searchArray.isSuffix(toFindArray);
+            boolean ret = searchArray.isSuffix(toFindArray);
             if (ret) {
                 ret = !searchArray.getWithoutSuffix(toFindArray).hasElement(rule);
             }
@@ -178,7 +178,7 @@ public abstract class TransformOption implements ITransform {
                 continue;
             }
 
-            if (job.isMatch(array1, array2, t.getRule() )) {
+            if (job.isMatch(array1, array2, t.getRule())) {
                 iter.remove();
                 ret.add(job.cut(array1, array2));
             }
@@ -200,8 +200,8 @@ public abstract class TransformOption implements ITransform {
     public static ArrayList<IElementArray> ruleToArray(IRule options) {
         Iterator<IElementArray> iter = options.iterator();
         ArrayList<IElementArray> list;
-        list= new ArrayList<IElementArray>();
-        while(iter.hasNext()) {
+        list = new ArrayList<IElementArray>();
+        while (iter.hasNext()) {
             list.add(iter.next());
         }
         return list;

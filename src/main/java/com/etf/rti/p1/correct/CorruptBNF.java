@@ -36,7 +36,7 @@ public class CorruptBNF {
     private int randRule() {
         int randNum = randomNumber(numOfCompRules);
         int j = -1;
-        for (int i = 0; i<compRules.length; i++) {
+        for (int i = 0; i < compRules.length; i++) {
             if (compRules[i])
                 j++;
             if (j == randNum) {

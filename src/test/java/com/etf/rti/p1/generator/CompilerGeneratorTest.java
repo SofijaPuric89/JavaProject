@@ -1,6 +1,5 @@
 package com.etf.rti.p1.generator;
 
-import com.etf.rti.p1.bnf.BNFCompiler;
 import com.etf.rti.p1.util.Util;
 import org.junit.Assert;
 import org.junit.Before;

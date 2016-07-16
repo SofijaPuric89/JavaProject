@@ -3,7 +3,7 @@ package com.etf.rti.p1.ebnf.elements;
 /**
  * Created by sule on 12/12/15.
  */
-public class Terminal implements IElement{
+public class Terminal implements IElement {
     private String value;
 
     public Terminal(String value) {
@@ -23,7 +23,7 @@ public class Terminal implements IElement{
         return "\"" + value + "\"";
     }
 
-    public Object clone(){
+    public Object clone() {
         Terminal t = null;
         try {
             t = (Terminal) (super.clone());

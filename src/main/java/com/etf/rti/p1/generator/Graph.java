@@ -19,15 +19,15 @@ public class Graph {
 
     public void generate(String grammar) throws Exception {
         Path pathToGrammarFile = translateBnf(grammar);
-        String[] args = {"-f", pathToGrammarFile.toString(), "-o", "output","-sd", "eps", "-verbose"};
+        String[] args = {"-f", pathToGrammarFile.toString(), "-o", "output", "-sd", "eps", "-verbose"};
         Console.main(args);
         Util.deleteFolder(tmpDir.toFile());
     }
 
-    private Path translateBnf(String input) throws Exception{
+    private Path translateBnf(String input) throws Exception {
         tmpDir = Files.createTempDirectory("test");
         final String name = "test";
-        Path grammarDirPath =  tmpDir.resolve(name + ".g4");
+        Path grammarDirPath = tmpDir.resolve(name + ".g4");
         String grammarName = grammarDirPath.toAbsolutePath().toString();
         FileOutputStream out = new FileOutputStream(grammarName);
 

@@ -64,7 +64,7 @@ public class TransformRecursion implements ITransform {
         if (t.size() > 1) {
             IElementArray merged = TransformOption.createOneChoice(TransformOption.ruleToArray(t));
             Iterator<IElementArray> iter = t.iterator();
-            while(iter.hasNext()) {
+            while (iter.hasNext()) {
                 iter.next();
                 iter.remove();
             }

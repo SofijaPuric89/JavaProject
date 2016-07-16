@@ -12,16 +12,17 @@ public class PermutationGenerator {
     public PermutationGenerator(int l) {
         length = l;
     }
+
     public Set<Integer> getSetOfLengths() {
         changeSet();
         return setOfLengths;
     }
 
     private void changeSet() {
-        Set<Integer> newSet = new TreeSet<Integer>();
+        Set<Integer> newSet = new TreeSet<>();
         Iterator<Integer> i;
         int min = 1000;
-        for (i=setOfLengths.iterator(); i.hasNext();) {
+        for (i = setOfLengths.iterator(); i.hasNext(); ) {
             int num = i.next();
             if (num <= length) {
                 newSet.add(num);
@@ -35,20 +36,21 @@ public class PermutationGenerator {
         }
         setOfLengths = newSet;
     }
+
     public void addToSet(List<Integer> minimums, List<Integer> differences) {
         int[] diffsCount = new int[differences.size()];
         int[] diffsMaxCount = new int[differences.size()];
-        for (int i=0;i<diffsCount.length; i++) {
-            diffsMaxCount[i] = length/differences.get(i);
-            if (i != 0 && i != diffsCount.length-1)
+        for (int i = 0; i < diffsCount.length; i++) {
+            diffsMaxCount[i] = length / differences.get(i);
+            if (i != 0 && i != diffsCount.length - 1)
                 diffsMaxCount[i]++;
         }
         for (int min : minimums) {
             setOfLengths.add(min);
-            for (int i=0;i<diffsCount.length; i++) {
+            for (int i = 0; i < diffsCount.length; i++) {
                 diffsCount[i] = 0;
             }
-            while (diffsCount.length > 0 && diffsCount[diffsCount.length-1] < diffsMaxCount[diffsCount.length-1]) {
+            while (diffsCount.length > 0 && diffsCount[diffsCount.length - 1] < diffsMaxCount[diffsCount.length - 1]) {
                 int j = 0;
                 while (j < diffsCount.length) {
                     if (diffsCount[j] > diffsMaxCount[j])
@@ -60,15 +62,15 @@ public class PermutationGenerator {
                     }
                     System.out.println();
                     */
-                    for (int k = 0; k <diffsCount.length; k++) {
-                        sum += diffsCount[k]*differences.get(k);
+                    for (int k = 0; k < diffsCount.length; k++) {
+                        sum += diffsCount[k] * differences.get(k);
                     }
                     if (sum <= length) {
                         setOfLengths.add(sum);
                     }
                     //diffsCount[j]++;
                     if (diffsCount[j] == diffsMaxCount[j]) {
-                        if (j == diffsCount.length-1) {
+                        if (j == diffsCount.length - 1) {
                             if (diffsCount.length == 1) {
                                 break;
                             }
@@ -79,8 +81,7 @@ public class PermutationGenerator {
                         j++;
                         diffsCount[j]++;
 
-                    }
-                    else {
+                    } else {
                         if (j == 0)
                             diffsCount[j]++;
                         else
@@ -95,10 +96,10 @@ public class PermutationGenerator {
     //TODO: check the purpose of this method. Try to create test instead of main
     public static void main(String[] args) {
         PermutationGenerator pg = new PermutationGenerator(30);
-        List<Integer> mins = new ArrayList<Integer>();
+        List<Integer> mins = new ArrayList<>();
         mins.add(1); //mins.add(3); mins.add(5);
-        List<Integer> diffs = new ArrayList<Integer>();
-      //  diffs.add(0); diffs.add(5);
+        List<Integer> diffs = new ArrayList<>();
+        //  diffs.add(0); diffs.add(5);
         pg.addToSet(mins, diffs);
         System.out.println(pg.getSetOfLengths());
     }

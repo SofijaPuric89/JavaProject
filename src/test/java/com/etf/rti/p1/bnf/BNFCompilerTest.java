@@ -35,7 +35,7 @@ public class BNFCompilerTest {
     public void setUp() throws Exception {
         tmpDir = Files.createTempDirectory("test");
         final String name = "test";
-        Path grammar =  tmpDir.resolve(name + ".g4");
+        Path grammar = tmpDir.resolve(name + ".g4");
         String grammarName = grammar.toAbsolutePath().toString();
         compilerGenerator = new CompilerGenerator(grammarName);
         FileOutputStream out = new FileOutputStream(grammarName);

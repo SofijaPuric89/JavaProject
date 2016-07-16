@@ -23,7 +23,9 @@ public class Nonterminal implements IElement {
         return value;
     }
 
-    public String getValue() { return value; }
+    public String getValue() {
+        return value;
+    }
 
     public Object clone() {
         Nonterminal t = null;

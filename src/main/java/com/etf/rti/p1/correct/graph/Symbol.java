@@ -44,8 +44,7 @@ public class Symbol {
         if (differenceLen.get(key) != null) {
             differenceLen.get(key).getDifferences().addAll(arr.getDifferences());
             differenceLen.get(key).getMinimums().addAll(arr.getMinimums());
-        }
-        else {
+        } else {
             Lists l = new Lists(arr.getMinimums(), arr.getDifferences());
             differenceLen.put(key, l);
         }
@@ -68,11 +67,17 @@ public class Symbol {
         setComposite(comp);
     }
 
-    public int getWidth() { return width; }
+    public int getWidth() {
+        return width;
+    }
 
-    public void setWidth(int w) { width = w; }
+    public void setWidth(int w) {
+        width = w;
+    }
 
-    public void setWidths(List<Integer> w) { widths = w; }
+    public void setWidths(List<Integer> w) {
+        widths = w;
+    }
 
     public void setDepth(int d) {
         depth = d;
@@ -97,6 +102,7 @@ public class Symbol {
     public int getInverseDepth() {
         return inverseDepth;
     }
+
     public void setNonterminal(boolean term) {
         isNonterminal = term;
     }

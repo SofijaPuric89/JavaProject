@@ -5,6 +5,7 @@ package com.etf.rti.p1.ebnf.elements;
  */
 public class Special extends Nonterminal {
     private String hiral;
+
     public Special(String value) {
         super(value);
         if ("[".equals(value)) {
@@ -32,7 +33,8 @@ public class Special extends Nonterminal {
         return e instanceof Special && hiral.equals(((Special) e).getValue());
     }
 
-    public enum Direction {LEFT, RIGHT, NONE;
+    public enum Direction {
+        LEFT, RIGHT, NONE;
 
         public Direction oposite() {
             if (this == NONE)

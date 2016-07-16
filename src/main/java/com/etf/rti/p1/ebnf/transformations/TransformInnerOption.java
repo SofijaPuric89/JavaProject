@@ -35,7 +35,7 @@ public class TransformInnerOption extends TransformOption {
         IElementArray match(IElementArray array1, IElementArray array2, IElement rule);
     }
 
-    protected class InnerPrefixJob extends PrefixJob implements IInnerJob  {
+    protected class InnerPrefixJob extends PrefixJob implements IInnerJob {
         public IElementArray match(IElementArray array1, IElementArray array2, IElement rule) {
 
             IElementArray samePrefix = array1.getSamePrefix(array2);
@@ -49,7 +49,7 @@ public class TransformInnerOption extends TransformOption {
         }
     }
 
-    protected class InnerSuffixJob extends SuffixJob implements IInnerJob  {
+    protected class InnerSuffixJob extends SuffixJob implements IInnerJob {
         public IElementArray match(IElementArray array1, IElementArray array2, IElement rule) {
             IElementArray sameSuffix = array1.getSameSuffix(array2);
             IElementArray resto = array1.getWithoutSuffix(sameSuffix);
@@ -98,7 +98,7 @@ public class TransformInnerOption extends TransformOption {
                 return true;
             }
             iter = newT.iterator();
-            while(iter.hasNext()) {
+            while (iter.hasNext()) {
                 IElementArray array = iter.next();
                 t.insertOption(job.merge(match, array));
                 iter.remove();
@@ -117,7 +117,7 @@ public class TransformInnerOption extends TransformOption {
             iter2 = t.iterator();
             IElementArray array1, array2;
             array1 = iter1.next();
-            while(iter2.hasNext()) {
+            while (iter2.hasNext()) {
                 array2 = iter2.next();
                 if (array1.isEqual(array2))
                     continue;

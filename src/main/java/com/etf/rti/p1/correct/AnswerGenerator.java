@@ -13,7 +13,7 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static java.util.Collections.*;
+import static java.util.Collections.sort;
 
 /**
  * Created by Sofija on 1/29/2016.
@@ -47,6 +47,7 @@ public class AnswerGenerator {
 
     /**
      * TODO: check what is the purpose of len and sumLen
+     *
      * @param len
      * @param sumLen
      */

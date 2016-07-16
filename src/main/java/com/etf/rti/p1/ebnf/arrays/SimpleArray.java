@@ -129,7 +129,7 @@ public class SimpleArray implements IElementArray {
             iter2.next();
         }
 
-        while(iter1.hasNext()) {
+        while (iter1.hasNext()) {
             ret.addElementSuffix(iter1.next());
         }
 

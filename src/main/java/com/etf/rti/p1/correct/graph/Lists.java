@@ -8,6 +8,7 @@ import java.util.List;
 public class Lists {
     private List<Integer> minimums;
     private List<Integer> differences;
+
     public Lists(List<Integer> m, List<Integer> d) {
         minimums = m;
         differences = d;
@@ -30,6 +31,6 @@ public class Lists {
     }
 
     public String toString() {
-         return "differences: "  + differences + " minimums: " + minimums;
+        return "differences: " + differences + " minimums: " + minimums;
     }
 }
