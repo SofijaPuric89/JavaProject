@@ -8,10 +8,10 @@ import java.util.List;
  */
 public class CombinationGenerator {
 
-    private ParseGrammar parseGrammar;
+    private BNFGrammarParser BNFGrammarParser;
 
-    public CombinationGenerator(ParseGrammar grammar) {
-        parseGrammar = grammar;
+    public CombinationGenerator(BNFGrammarParser grammar) {
+        BNFGrammarParser = grammar;
     }
 
     public List<Integer> calculateWidthOfCompositeNode(Node<Symbol> parent, boolean widhts) {
@@ -32,7 +32,7 @@ public class CombinationGenerator {
             if (!ifMatrixHasEmptyArray(array)) {
                 int s = 0;
                 List<Integer> all = callGetAllCombinations(sumTerminals, array, s);
-                parseGrammar.getGrammarGraph().updateWidths(parent, all);
+                BNFGrammarParser.getGrammarGraph().updateWidths(parent, all);
 
             }
             return null;
@@ -67,7 +67,7 @@ public class CombinationGenerator {
     public int[][] createMatrixOfChildrenWidths(int numOfChildrenNonterminals, List<String> nameNonterminals) {
         int[][] array = new int[numOfChildrenNonterminals][];
         for (int i = 0; i < numOfChildrenNonterminals; i++) {
-            Node<Symbol> nonterminal = parseGrammar.getGrammarGraph().find(nameNonterminals.get(i), parseGrammar.getGrammarGraph().getRoot());
+            Node<Symbol> nonterminal = BNFGrammarParser.getGrammarGraph().find(nameNonterminals.get(i), BNFGrammarParser.getGrammarGraph().getRoot());
             int[] lens = new int[nonterminal.getData().getWidths().size()];
             int j = 0;
             for (int width : nonterminal.getData().getWidths()) {

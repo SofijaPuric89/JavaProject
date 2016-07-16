@@ -2,7 +2,7 @@ package com.etf.rti.p1.bnf;
 
 import com.etf.rti.p1.generator.AParser;
 import com.etf.rti.p1.generator.Compiler;
-import com.etf.rti.p1.generator.Generator;
+import com.etf.rti.p1.generator.CompilerGenerator;
 import com.etf.rti.p1.util.Util;
 import org.junit.After;
 import org.junit.Before;
@@ -28,7 +28,7 @@ public class BNFCompilerTest {
 
     private AParser parser;
 
-    private Generator generator;
+    private CompilerGenerator compilerGenerator;
     private Path tmpDir;
 
     @Before
@@ -37,7 +37,7 @@ public class BNFCompilerTest {
         final String name = "test";
         Path grammar =  tmpDir.resolve(name + ".g4");
         String grammarName = grammar.toAbsolutePath().toString();
-        generator = new Generator(grammarName);
+        compilerGenerator = new CompilerGenerator(grammarName);
         FileOutputStream out = new FileOutputStream(grammarName);
 
         BNFCompiler compiler = new BNFCompiler(name, "com.etf.rti.p1.bnf", out);
@@ -53,7 +53,7 @@ public class BNFCompilerTest {
     @Test
     public void testGetParser() throws Exception {
         parser.init();
-        Compiler c = generator.generate();
+        Compiler c = compilerGenerator.generate();
         //c.setInput(new ByteArrayInputStream("f:\\\"d_a4f\"\\\"abc8ab\"\\pe5a_r\\pa8f1k".getBytes("UTF-8")));
         c.setInput(new ByteArrayInputStream("cx52!xwv6.com.icyo82".getBytes("UTF-8")));
         c.getParser().init();

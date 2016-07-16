@@ -10,16 +10,16 @@ import java.util.regex.Matcher;
  */
 public class Graph {
     private Node<Symbol> root = null;
-    private ParseGrammar parseGrammar;
+    private BNFGrammarParser BNFGrammarParser;
     private CombinationGenerator combinationGenerator;
 
     Node<Symbol> getRoot() {
         return root;
     }
 
-    Graph(ParseGrammar grammar) {
-        parseGrammar = grammar;
-        combinationGenerator = new CombinationGenerator(parseGrammar);
+    Graph(BNFGrammarParser grammar) {
+        BNFGrammarParser = grammar;
+        combinationGenerator = new CombinationGenerator(BNFGrammarParser);
     }
 
     public void addNode(Node<Symbol> localRoot, Node<Symbol> root, Node<Symbol> node, Node<Symbol> nod) {
@@ -56,7 +56,7 @@ public class Graph {
         int count = StringUtils.countMatches(part, "<"); // how many times contains character <
         Node<Symbol> rroot = null;
         if ((count > 1) || ((s.length() + 2) < part.length())) {
-            parseGrammar.setCompRuleToTrue(index);
+            BNFGrammarParser.setCompRuleToTrue(index);
             Symbol ss = new Symbol(part, false, 0, false, true);
             rroot = new Node<Symbol>(ss);
             if (localRoot != null)

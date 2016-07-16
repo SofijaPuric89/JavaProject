@@ -16,12 +16,12 @@ import java.nio.file.StandardCopyOption;
 /**
  * Created by zika on 09.12.2015..
  */
-public class Generator {
+public class CompilerGenerator {
     private static final String packageName = "com.etf.rti.p1.generated";
     private String grammar;
     private File tempDir;
 
-    public Generator(String grammar) {
+    public CompilerGenerator(String grammar) {
         this.grammar = grammar;
     }
 

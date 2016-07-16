@@ -14,9 +14,7 @@ import java.nio.file.Path;
  */
 public class Graph {
     public Path grammarFile;
-    private AParser parser;
 
-    private Generator generator;
     private Path tmpDir;
 
     public void generate(String input) throws Exception {
@@ -31,12 +29,11 @@ public class Graph {
         final String name = "test";
         Path grammar =  tmpDir.resolve(name + ".g4");
         String grammarName = grammar.toAbsolutePath().toString();
-        generator = new Generator(grammarName);
         FileOutputStream out = new FileOutputStream(grammarName);
 
         BNFCompiler compiler = new BNFCompiler(name, "com.etf.rti.p1.bnf", out);
         compiler.setInput(new ByteArrayInputStream(input.getBytes("UTF-8")));
-        parser = compiler.getParser();
+        AParser parser = compiler.getParser();
         parser.init();
         grammarFile = grammar;
     }

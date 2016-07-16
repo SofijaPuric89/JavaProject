@@ -14,14 +14,14 @@ import static org.junit.Assert.assertEquals;
  * Created by zika on 09.12.2015..
  */
 public class RuntimeCompilerTest {
-    private Generator gen;
+    private CompilerGenerator gen;
 
     @Before
     public void setUp() throws Exception {
         File classDir = new File(Util.getInstance().getResourcePath());
         File grammarFile = new File(classDir, "bnf.g4");
         String grammar = grammarFile.getAbsolutePath();
-        gen = new Generator(grammar);
+        gen = new CompilerGenerator(grammar);
     }
 
     @Test
