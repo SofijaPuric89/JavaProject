@@ -1,5 +1,7 @@
 package com.etf.rti.p1.correct;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -8,6 +10,7 @@ import java.util.regex.Pattern;
  */
 //TODO: Think about class rename, it is more like BNFNotationGrammarParser with testing purposes
 public class ParseGrammar {
+    //TODO: think about moving constants in Util class for ParseGrammar
     private static final String EQUAL = "::=";
     private static final String NEWLINE = "\n";
     private static final String SPACE = "\\s+";
@@ -25,9 +28,10 @@ public class ParseGrammar {
 
     private String grammar = "";
 
-    private String[] array = null; //TODO: check array is actually an array of grammar rules?
-    private boolean[] compRule; //TODO: refactor this, it might not be necessary -> only counting number of compiled rules
+    private String[] rules = null; //TODO: check rules is actually an rules of grammar rules?
+    private boolean[] compRule; //TODO: refactor this by renaming, check if necessary: used for tracking compiled rules, maybe Rule class?
     Graph grammarGraph = new Graph(this); //graph for storing parsed symbols of grammar
+
     //TODO: CombinationGenerator not being used in ParseGrammar, refactor and move to Graph?
     CombinationGenerator gen = new CombinationGenerator(this);
 
@@ -44,11 +48,11 @@ public class ParseGrammar {
 
     public void parse() {
         Node<Symbol> localRoot = null;
-        parseAllRules();
-        compRule = new boolean[array.length]; // what if array is null?
+        rules = parseRules(grammar);
+        compRule = new boolean[rules.length]; // TODO: what if rules is null?
         for (int i = 0; i < compRule.length; i++) compRule[i] = false;
-        for (int i = 0; i < array.length; i++) {  // parse every rule
-            String[] terminals = array[i].split(EQUAL); // terminals[0] - left side; terminals[1] - right side
+        for (int i = 0; i < rules.length; i++) {  // parse every rule
+            String[] terminals = rules[i].split(EQUAL); // terminals[0] - left side; terminals[1] - right side
             String nonterminal = "";
             Pattern nonterminalPattern = Pattern.compile(NONTERMINAL);
             Matcher matcher = nonterminalPattern.matcher(terminals[0]);
@@ -89,14 +93,24 @@ public class ParseGrammar {
         return part.startsWith("<");
     }
 
-    private void parseAllRules() {
-        array = grammar.split(NEWLINE);
-        for (int i = 0; i < array.length; i++) {
-            array[i] = array[i].replaceAll(SPACE, EMPTY);
+    private String[] parseRules(String grammar) {
+        List<String> rules = new ArrayList<>();
+        String[] grammarLines = grammar.split(NEWLINE);
+        for (String line : grammarLines) {
+            rules.add(line.replaceAll(SPACE, EMPTY));
         }
+        return (String[]) rules.toArray();
     }
 
 
+    /**
+     * Main method used for testing purposes of ParseGrammar glass by parsing input grammar setting generated graph for grammar,
+     * then creating CheckGrammar and GenerateAnswer which in 1000 iterations print generated correct and corrupt answers for
+     * input grammar.
+     * TODO: move this to test classes first, then think about parametrization of ParseGrammar in order to use in GUI
+     *
+     * @param args
+     */
     public static void main(String[] args) {
        /* ParseGrammar pg = new ParseGrammar("<p> ::= <p><pom> | <pom>\n" +
                 "<pom> ::= _ | <cifra>\n" +
@@ -114,6 +128,7 @@ public class ParseGrammar {
                 "<cifra> ::= 0|1|2|3|4|5|6|7|8|9");
         // ParseGrammar pg = new ParseGrammar();
         pg.parse();
+        //TODO: check what these grammarGraph methods are used for
         pg.grammarGraph.setCompositeNodesToRecursive();
         pg.grammarGraph.setNodesToRecursive();
         pg.grammarGraph.setNodesToInfinite();
@@ -131,7 +146,7 @@ public class ParseGrammar {
 
         GenerateAnswer generateAnswer = new GenerateAnswer(pg.grammarGraph, false);
         int len = 10;
-        generateAnswer.setDistribution(len);
+        generateAnswer.setDistribution(len); //TODO: move this logic to constructor
         for (int i = 0; i < 1000; i++) {
 
             generateAnswer.generateIncorrectAnswer(pg.grammarGraph.root, len, len);
@@ -152,7 +167,7 @@ public class ParseGrammar {
             checkGrammar.testGrammar();
         }
 
-        checkGrammar.print(); //prints number of correct and corrupted answers
+        checkGrammar.print(); //TODO: prints number of correct and corrupted answers, refactor this!
 
         try {
             //TODO: user only for delete temp folder, refactor that consumer of CheckGrammar class takes care about provided folder
