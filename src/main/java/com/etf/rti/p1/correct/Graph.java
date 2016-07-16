@@ -9,37 +9,43 @@ import java.util.regex.Matcher;
  * Created by Korisnik on 20.1.2016.
  */
 public class Graph {
-    Node<Symbol> root = null;
-    ParseGrammar pg;
+    private Node<Symbol> root = null;
+    private ParseGrammar parseGrammar;
+    private CombinationGenerator combinationGenerator;
 
-    public Graph(ParseGrammar grammar) {
-        pg = grammar;
+    Node<Symbol> getRoot() {
+        return root;
     }
 
-    public void addNode(Node<Symbol> localRoot, Node<Symbol> rroot, Node<Symbol> node, Node<Symbol> nod) {
+    Graph(ParseGrammar grammar) {
+        parseGrammar = grammar;
+        combinationGenerator = new CombinationGenerator(parseGrammar);
+    }
+
+    public void addNode(Node<Symbol> localRoot, Node<Symbol> root, Node<Symbol> node, Node<Symbol> nod) {
         if (node != null) {
             //dodavanje novog roditelja
-            if (rroot != null) {
-                setParentToExistingNode(localRoot, rroot, node);
+            if (root != null) {
+                setParentToExistingNode(localRoot, root, node);
             } else {
-                setParentToExistingNode(rroot, localRoot, node);
+                setParentToExistingNode(root, localRoot, node);
             }
         } else {
-            if (rroot != null)
-                rroot.addChild(nod);
+            if (root != null)
+                root.addChild(nod);
             else if (localRoot != null)
                 localRoot.addChild(nod);
         }
     }
 
-    public void setParentToExistingNode(Node<Symbol> localRoot, Node<Symbol> rroot, Node<Symbol> node) {
-        if (node.equals(rroot) || node.equals(localRoot))
+    public void setParentToExistingNode(Node<Symbol> localRoot, Node<Symbol> root, Node<Symbol> node) {
+        if (node.equals(root) || node.equals(localRoot))
             node.setRecursive(true);
         else {
             boolean bb = searchAllTree(node);
             if (bb) node.setRecursive(true);
             else
-                node.setParent(rroot);
+                node.setParent(root);
         }
     }
 
@@ -50,7 +56,7 @@ public class Graph {
         int count = StringUtils.countMatches(part, "<"); // how many times contains character <
         Node<Symbol> rroot = null;
         if ((count > 1) || ((s.length() + 2) < part.length())) {
-            pg.setCompRuleToTrue(index);
+            parseGrammar.setCompRuleToTrue(index);
             Symbol ss = new Symbol(part, false, 0, false, true);
             rroot = new Node<Symbol>(ss);
             if (localRoot != null)
@@ -59,14 +65,13 @@ public class Graph {
         return rroot;
     }
 
-
     public Node<Symbol> parseLeftSideOfRule(Node<Symbol> localRoot, String terminal, String nonterminal, Matcher matcher) {
         if (matcher.find()) {
-            nonterminal = matcher.group(1);
+            nonterminal = matcher.group(1); //get right side of rule
         }
         if (root == null) {
             Symbol s = new Symbol(nonterminal, true, 0, true, false);
-            root = localRoot = new Node<Symbol>(s);
+            root = localRoot = new Node<>(s);
         } else {
             Node<Symbol> sym = find(nonterminal, root);
             if (sym != null)
@@ -107,7 +112,6 @@ public class Graph {
     }
 
 
-
     public void updateDepth(Node<Symbol> node, int depth) {
         if (node != null) {
             node.getData().setDepth(depth);
@@ -143,7 +147,7 @@ public class Graph {
             for (Node<Symbol> parent : node.getParents()) {
                 if (parent != null) {
                     if (parent.getData().isComposite()) {
-                        pg.gen.calculateWidthOfCompositeNode(parent, true);
+                        combinationGenerator.calculateWidthOfCompositeNode(parent, true);
                     } else
                         updateWidths(parent, widths);
                 }
@@ -157,8 +161,7 @@ public class Graph {
         for (Node<Symbol> child : node.getChildren()) {
             if (child.isComplete()) {
                 allWidths.addAll(child.getData().getWidths());
-            }
-            else {
+            } else {
                 allChildrenComplete = false;
             }
         }
@@ -203,8 +206,7 @@ public class Graph {
         if (!(isNodeDirectRecursiveNonComposite(node) || isNodeCompositeDirectRecursive(node))) {
             node.getData().getWidths().addAll(widths);
             removeDuplicates(node.getData().getWidths());
-        }
-        else node.getData().setWidths(widths);
+        } else node.getData().setWidths(widths);
     }
 
     private boolean areAllChildrenComposite(Node<Symbol> node) {
@@ -228,7 +230,7 @@ public class Graph {
             l.add(leaf.getData().getName().length());
             updateWidths(leaf, l);
         }
-        for (Node<Symbol> l:list) {
+        for (Node<Symbol> l : list) {
             if (l.getData().isInfinite())
                 System.out.println(l.getData().getName() + " infinite!" + l.getData().getWidths());
             else
@@ -254,11 +256,8 @@ public class Graph {
         }
     }
 
-    public boolean isRecursive(String nonterminal, String rightSide) {
-        String nonTerm = "<" + nonterminal + ">";
-        if (rightSide.contains(nonTerm))
-            return true;
-        else return false;
+    private boolean isRecursive(String nonterminal, String rightSide) {
+        return rightSide.contains("<" + nonterminal + ">");
     }
 
     public String print(Node<Symbol> node) {
@@ -373,7 +372,7 @@ public class Graph {
         for (Node<Symbol> node : recNonCompNodes) {
             List<Node<Symbol>> childrenComposite = getChildrenComposite(node);
             for (Node<Symbol> child : childrenComposite) {
-                List<Integer> differencesOfCompositeNode = pg.gen.calculateWidthOfCompositeNode(child, false);
+                List<Integer> differencesOfCompositeNode = combinationGenerator.calculateWidthOfCompositeNode(child, false);
                 node.getData().setDifferenceLenArray(child.getData().getName(), new Lists(child.getData().getWidths(), differencesOfCompositeNode));
             }
         }
@@ -383,7 +382,8 @@ public class Graph {
             compRecNodes.add(el.getCompositeDirectRecursiveNode());
         }
         List<Node<Symbol>> recNodes = new ArrayList<Node<Symbol>>();
-        recNodes.addAll(recNonCompNodes); recNodes.addAll(compRecNodes);
+        recNodes.addAll(recNonCompNodes);
+        recNodes.addAll(compRecNodes);
         for (Node<Symbol> node : recNonCompNodes) {
             updateDifferences(node, node.getData().getDifferenceLen(), recNodes);  // bilo recNonCompNodes
         }
@@ -424,7 +424,7 @@ public class Graph {
         List<Node<Symbol>> brothers = new ArrayList<Node<Symbol>>();
         for (Node<Symbol> child : parent.getChildren()) {
             if (!child.equals(compNode)) {   // iteriramo kroz bracu
-                if (!child.getData().getName().contains("<"+parent.getData().getName()+">")) {
+                if (!child.getData().getName().contains("<" + parent.getData().getName() + ">")) {
                     brothers.add(child);
                 }
             }
@@ -445,7 +445,7 @@ public class Graph {
         List<Integer> returnList = new ArrayList<Integer>();
         for (int num1 : compWidths) {
             for (int num2 : anotherList) {
-                returnList.add(num1+num2);
+                returnList.add(num1 + num2);
             }
         }
         returnList = removeDuplicates(returnList);
@@ -493,7 +493,7 @@ public class Graph {
         List<Integer> partial = new ArrayList<Integer>();
         List<List<Integer>> all = new ArrayList<List<Integer>>();
         HashMap<String, Lists> map = new HashMap<String, Lists>();
-        pg.gen.catchAllCombinations(ordNumbersOfChildrenMaps, partial, all);  // all - sve kombinacije iz mapa dece
+        combinationGenerator.catchAllCombinations(ordNumbersOfChildrenMaps, partial, all);  // all - sve kombinacije iz mapa dece
         for (List<Integer> combination : all) {
             putOneCombinationToMap(childrenHasDifferences, map, combination, parent.getData().getWidths());
         }
@@ -506,7 +506,7 @@ public class Graph {
 
     private Node<Symbol> getLastNonterminalWithDiffs(Node<Symbol> parent) {
         Node<Symbol> node = null;
-        for (int i=parent.getChildren().size()-1;i>=0;i--) {
+        for (int i = parent.getChildren().size() - 1; i >= 0; i--) {
             Node<Symbol> child = parent.getChildren().get(i);
             if (child.getData().isNonterminal() && !child.getData().getDifferenceLen().isEmpty()) {
                 node = child;
@@ -524,7 +524,7 @@ public class Graph {
         int ordNumOfCombination = 1;
         for (int ordNum : combination) {
             Node<Symbol> child = childrenHasDifferences.get(ordNumOfChild++);
-            name += child.getData().getName()+ordNum;
+            name += child.getData().getName() + ordNum;
             ordNumOfCombination = 1;
             for (Lists value : child.getData().getDifferenceLen().values()) {
                 if (ordNum == ordNumOfCombination) {
@@ -535,11 +535,11 @@ public class Graph {
             }
         }
         //if (parent.getChildren().get(parent.getChildren().size()-1).equals(node)) {
-            if (map.get(name) != null)
-                map.get(name).getDifferences().addAll(diffs);
-            else
-                map.put(name, new Lists(compNodeWidths, diffs));
-       // }
+        if (map.get(name) != null)
+            map.get(name).getDifferences().addAll(diffs);
+        else
+            map.put(name, new Lists(compNodeWidths, diffs));
+        // }
     }
 
     private int[][] getOrdNumbersOfChildrenMaps(int numOfChildrenHasDifferences, List<Node<Symbol>> childrenHasDifferences) {
@@ -549,8 +549,8 @@ public class Graph {
         for (Node<Symbol> child : childrenHasDifferences) {
             int sizeOfChildMap = child.getData().getDifferenceLen().size();
             int[] ords = new int[sizeOfChildMap];
-            for (int i=1;i<=sizeOfChildMap;i++) {
-                ords[i-1] = i;
+            for (int i = 1; i <= sizeOfChildMap; i++) {
+                ords[i - 1] = i;
             }
             ordNumbersOfChildrenMaps[ind++] = ords;
         }
@@ -560,8 +560,7 @@ public class Graph {
     private void updateDifferencesOfNonCompositeNode(HashMap<String, Lists> differences, List<Node<Symbol>> list, Node<Symbol> parent) {
         if (parent.getChildren().size() == 1) {
             updateDifferences(parent, differences, list);  // ako nije kompozitni i ima jedno dete samo se propagira dalje
-        }
-        else {
+        } else {
             HashMap<String, Lists> map = new HashMap<String, Lists>();
             for (Node<Symbol> child : parent.getChildren()) {
                 if (!child.getData().getDifferenceLen().isEmpty()) {

@@ -255,7 +255,7 @@ public class GenerateAnswer {
             }
             else
                 nonterminalName = part;
-            Node<Symbol> child = graph.find(nonterminalName, graph.root);
+            Node<Symbol> child = graph.find(nonterminalName, graph.getRoot());
             nonTerminalsChildren.add(child);
         }
         return nonTerminalsChildren;

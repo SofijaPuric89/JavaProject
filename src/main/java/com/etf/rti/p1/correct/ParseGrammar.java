@@ -6,9 +6,9 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Created by Korisnik on 8.1.2016.
+ * Parsing grammar provided as input string in BNF notation. Input string contains \n as an indicator of new line
+ * TODO: Think about class rename, it is more like BNFNotationGrammarParser with testing purposes
  */
-//TODO: Think about class rename, it is more like BNFNotationGrammarParser with testing purposes
 public class ParseGrammar {
     //TODO: think about moving constants in Util class for ParseGrammar
     private static final String EQUAL = "::=";
@@ -28,12 +28,11 @@ public class ParseGrammar {
 
     private String grammar = "";
 
-    private String[] rules = null; //TODO: check rules is actually an rules of grammar rules?
     private boolean[] compRule; //TODO: refactor this by renaming, check if necessary: used for tracking compiled rules, maybe Rule class?
-    Graph grammarGraph = new Graph(this); //graph for storing parsed symbols of grammar
+    //TODO: check if this could be an output of the ParseGrammar class, or parse() method?
+    private Graph grammarGraph = new Graph(this); //graph for storing parsed symbols of grammar
 
     //TODO: CombinationGenerator not being used in ParseGrammar, refactor and move to Graph?
-    CombinationGenerator gen = new CombinationGenerator(this);
 
     /**
      * @param grammar input grammar for notation parser
@@ -46,17 +45,17 @@ public class ParseGrammar {
         grammar = DEFAULT_GRAMMAR_INPUT;
     }
 
-    public void parse() {
+    public Graph parse() {
         Node<Symbol> localRoot = null;
-        rules = parseRules(grammar);
-        compRule = new boolean[rules.length]; // TODO: what if rules is null?
+        ArrayList<String> rules = (ArrayList<String>) parseRules(grammar);
+        compRule = new boolean[rules.size()]; // TODO: what if rules is null?
         for (int i = 0; i < compRule.length; i++) compRule[i] = false;
-        for (int i = 0; i < rules.length; i++) {  // parse every rule
-            String[] terminals = rules[i].split(EQUAL); // terminals[0] - left side; terminals[1] - right side
+        for (int i = 0; i < rules.size(); i++) {  // parse each rule
+            String[] terminals = rules.get(i).split(EQUAL); // terminals[0] - left side; terminals[1] - right side
             String nonterminal = "";
             Pattern nonterminalPattern = Pattern.compile(NONTERMINAL);
-            Matcher matcher = nonterminalPattern.matcher(terminals[0]);
-            localRoot = grammarGraph.parseLeftSideOfRule(localRoot, terminals[1], nonterminal, matcher);
+            Matcher leftSideMatcher = nonterminalPattern.matcher(terminals[0]);
+            localRoot = grammarGraph.parseLeftSideOfRule(localRoot, terminals[1], nonterminal, leftSideMatcher);
             String[] parts = terminals[1].split(OR); // parts on right side of rule
             for (String part : parts) {
                 Node<Symbol> root = grammarGraph.addCompositeNode(localRoot, part, i); //TODO: compositeNode instead of root?
@@ -69,10 +68,10 @@ public class ParseGrammar {
                     boolean matchPartIsNonterminal = isNonterminal(matchPart);
                     Symbol sym = null;
                     if (matchPartIsNonterminal) {
-                        matcher = nonterminalPattern.matcher(matchPart);
-                        if (matcher.find()) {
-                            String nonterminalName = matcher.group(1);
-                            node = grammarGraph.find(nonterminalName, grammarGraph.root);
+                        leftSideMatcher = nonterminalPattern.matcher(matchPart);
+                        if (leftSideMatcher.find()) {
+                            String nonterminalName = leftSideMatcher.group(1);
+                            node = grammarGraph.find(nonterminalName, grammarGraph.getRoot());
                             sym = new Symbol(nonterminalName, true, 0, matchPartIsNonterminal, false);
                         }
                     } else
@@ -83,6 +82,11 @@ public class ParseGrammar {
             }
 
         }
+        return grammarGraph;
+    }
+
+    public Graph getGrammarGraph() {
+        return grammarGraph;
     }
 
     public void setCompRuleToTrue(int i) {
@@ -93,13 +97,13 @@ public class ParseGrammar {
         return part.startsWith("<");
     }
 
-    private String[] parseRules(String grammar) {
+    private List<String> parseRules(String grammar) {
         List<String> rules = new ArrayList<>();
         String[] grammarLines = grammar.split(NEWLINE);
         for (String line : grammarLines) {
             rules.add(line.replaceAll(SPACE, EMPTY));
         }
-        return (String[]) rules.toArray();
+        return rules;
     }
 
 
@@ -112,46 +116,47 @@ public class ParseGrammar {
      * @param args
      */
     public static void main(String[] args) {
-       /* ParseGrammar pg = new ParseGrammar("<p> ::= <p><pom> | <pom>\n" +
+       /* ParseGrammar parseGrammar = new ParseGrammar("<p> ::= <p><pom> | <pom>\n" +
                 "<pom> ::= _ | <cifra>\n" +
                 "<cifra> ::= 0|1|2|3|4|5|6|7|8|9");*/
-      /*  ParseGrammar pg = new ParseGrammar("<start> ::= 11<a>|<b>1\n" +
+      /*  ParseGrammar parseGrammar = new ParseGrammar("<start> ::= 11<a>|<b>1\n" +
                 "<a> ::= 1|<a><b>|<a><c><b>\n" +
                 "<b> ::= 101|<b>01\n" +
                 "<c> ::= 1100|<c>11|<c>00\n"); */
-        ParseGrammar pg = new ParseGrammar("<p> ::= <korisnik>!<domen>\n" +
+        ParseGrammar parseGrammar = new ParseGrammar("<p> ::= <korisnik>!<domen>\n" +
                 "<korisnik> ::= <rec> | <korisnik>_<rec>\n" +
                 "<domen> ::= <kraj_domena> | <rec>.<domen>\n" +
                 "<kraj_domena> ::= com | co.rs\n" +
                 "<rec> ::= <slovo> | <slovo><rec> | <rec><cifra>\n" +
                 "<slovo> ::= a|b|c|d|e|f|grammarGraph|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z\n" +
                 "<cifra> ::= 0|1|2|3|4|5|6|7|8|9");
-        // ParseGrammar pg = new ParseGrammar();
-        pg.parse();
+        // ParseGrammar parseGrammar = new ParseGrammar();
+        Graph grammarGraph = parseGrammar.parse();
         //TODO: check what these grammarGraph methods are used for
-        pg.grammarGraph.setCompositeNodesToRecursive();
-        pg.grammarGraph.setNodesToRecursive();
-        pg.grammarGraph.setNodesToInfinite();
-        pg.grammarGraph.setWidthToAllNodes();
-        pg.grammarGraph.setDifferenceLenToRecursiveNodes();
+        grammarGraph.setCompositeNodesToRecursive();
+        grammarGraph.setNodesToRecursive();
+        grammarGraph.setNodesToInfinite();
+        grammarGraph.setWidthToAllNodes();
+        grammarGraph.setDifferenceLenToRecursiveNodes();
 
-        CheckGrammar checkGrammar = new CheckGrammar(pg.grammar);
+        //TODO: shouldn't provide private field as constructor parameter! Think about providing ParseGrammar as an argument
+        CheckGrammar checkGrammar = new CheckGrammar(parseGrammar.grammar);
         try {
-            //TODO: check what setUp is actually doing and if it could be moved to ChechGrammar constructor
+            //TODO: check what setUp is actually doing and if it could be moved to CheckGrammar constructor
             checkGrammar.setUp();
         } catch (Exception e) {
             e.printStackTrace();
             System.exit(-1);
         }
 
-        GenerateAnswer generateAnswer = new GenerateAnswer(pg.grammarGraph, false);
+        GenerateAnswer generateAnswer = new GenerateAnswer(parseGrammar.grammarGraph, false);
         int len = 10;
         generateAnswer.setDistribution(len); //TODO: move this logic to constructor
         for (int i = 0; i < 1000; i++) {
 
-            generateAnswer.generateIncorrectAnswer(pg.grammarGraph.root, len, len);
+            generateAnswer.generateIncorrectAnswer(parseGrammar.grammarGraph.getRoot(), len, len);
 
-            String generatedAnswer = generateAnswer.generateAnswerForNode(pg.grammarGraph.root, len);
+            String generatedAnswer = generateAnswer.generateAnswerForNode(parseGrammar.grammarGraph.getRoot(), len);
             String corruptedAnswer = generateAnswer.corruptCorrectAnswer(generatedAnswer);
 
             System.out.print("***GENERISANI STRING*** ");

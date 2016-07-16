@@ -4,16 +4,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by Korisnik on 8.1.2016.
+ * Storing data relevant for grammar graph node. Tracking children and parents of the single node, and ordered number
+ * of recursive children. Class keeping an information about if the node is recursive and complete
  */
 public class Node<T> {
-    private List<Node<T>> children = new ArrayList<Node<T>>();
-    //private Node<T> parent = null;
-    private List<Node<T>> parents = new ArrayList<Node<T>>();
+    private List<Node<T>> children = new ArrayList<>();
+    private List<Node<T>> parents = new ArrayList<>();
     private T data = null;
     private boolean isRecursive;
     private boolean isComplete;
     private List<Node<T>> ordNumOfRecursiveChildren = new ArrayList<Node<T>>();
+
+    public Node(T data) {
+        this.data = data;
+    }
+
+    public Node(T data, Node<T> parent) {
+        this.data = data;
+        this.parents.add(parent);
+    }
 
     public List<Node<T>> getOrdNumOfRecursiveChildren() {
         return ordNumOfRecursiveChildren;
@@ -25,15 +34,6 @@ public class Node<T> {
 
     public void addOrdNumOfRecursiveChildren(Node<T> recChild) {
         ordNumOfRecursiveChildren.add(recChild);
-    }
-
-    public Node(T data) {
-        this.data = data;
-    }
-
-    public Node(T data, Node<T> parent) {
-        this.data = data;
-        this.parents.add(parent);
     }
 
     public void setRecursive(boolean recursive) {
@@ -98,23 +98,21 @@ public class Node<T> {
     }
 
     public boolean isLeaf() {
-        if (this.children.size() == 0)
-            return true;
-        else
-            return false;
+        return this.children.size() == 0;
     }
 
     public void removeParent(int num) {
         this.parents.remove(num);
     }
 
-    public String print() {
+    @Override
+    public String toString() {
         String result = "";
-        for (int i = 0; i < children.size(); i++)
-            if (children.get(i) != null)
-                result += children.get(i).print() + "\n";
+        for (Node<T> child : children)
+            if (child != null)
+                result += child + "\n";
         return result;
-    }  // method toString
+    }
 
     public boolean isComplete() {
         return isComplete;
