@@ -1,6 +1,6 @@
 package com.etf.rti.p1.generator;
 
-import com.etf.rti.p1.util.Util;
+import com.etf.rti.p1.util.Utils;
 import org.junit.Test;
 
 /**
@@ -24,7 +24,7 @@ public class GraphTest {
 
     @Test
     public void testGenerate() throws Exception {
-        String resourcePath = Util.getInstance().getResourcePath().substring(3);
+        String resourcePath = Utils.getResourcePath().substring(3);
         Graph graph = new Graph();
 
         graph.generate(GRAMMAR_INPUT_1);

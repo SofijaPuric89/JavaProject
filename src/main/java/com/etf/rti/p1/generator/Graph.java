@@ -1,7 +1,7 @@
 package com.etf.rti.p1.generator;
 
 import com.etf.rti.p1.bnf.BNFCompiler;
-import com.etf.rti.p1.util.Util;
+import com.etf.rti.p1.util.Utils;
 import org.antlr.works.Console;
 
 import java.io.ByteArrayInputStream;
@@ -21,11 +21,11 @@ public class Graph {
         Path pathToGrammarFile = translateBnf(grammar);
         String[] args = {"-f", pathToGrammarFile.toString(), "-o", "output", "-sd", "eps", "-verbose"};
         Console.main(args);
-        Util.deleteFolder(tmpDir.toFile());
     }
 
     private Path translateBnf(String input) throws Exception {
         tmpDir = Files.createTempDirectory("test");
+        tmpDir.toFile().deleteOnExit();
         final String name = "test";
         Path grammarDirPath = tmpDir.resolve(name + ".g4");
         String grammarName = grammarDirPath.toAbsolutePath().toString();

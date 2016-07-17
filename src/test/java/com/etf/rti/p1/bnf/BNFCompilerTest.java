@@ -3,7 +3,7 @@ package com.etf.rti.p1.bnf;
 import com.etf.rti.p1.generator.AParser;
 import com.etf.rti.p1.generator.Compiler;
 import com.etf.rti.p1.generator.CompilerGenerator;
-import com.etf.rti.p1.util.Util;
+import com.etf.rti.p1.util.Utils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,11 +29,11 @@ public class BNFCompilerTest {
     private AParser parser;
 
     private CompilerGenerator compilerGenerator;
-    private Path tmpDir;
 
     @Before
-    public void setUp() throws Exception {
-        tmpDir = Files.createTempDirectory("test");
+    public void setup() throws Exception {
+        Path tmpDir = Files.createTempDirectory("test");
+        tmpDir.toFile().deleteOnExit();
         final String name = "test";
         Path grammar = tmpDir.resolve(name + ".g4");
         String grammarName = grammar.toAbsolutePath().toString();
@@ -43,11 +43,6 @@ public class BNFCompilerTest {
         BNFCompiler compiler = new BNFCompiler(name, "com.etf.rti.p1.bnf", out);
         compiler.setInput(new ByteArrayInputStream(input.getBytes("UTF-8")));
         parser = compiler.getParser();
-    }
-
-    @After
-    public void tearDown() throws Exception {
-        Util.deleteFolder(tmpDir.toFile());
     }
 
     @Test

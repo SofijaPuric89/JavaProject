@@ -1,6 +1,6 @@
 package com.etf.rti.p1.generator;
 
-import com.etf.rti.p1.util.Util;
+import com.etf.rti.p1.util.Utils;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,7 +16,7 @@ public class CompilerGeneratorTest {
 
     @Before
     public void setup() throws Exception {
-        File classDir = new File(Util.getInstance().getResourcePath());
+        File classDir = new File(Utils.getResourcePath());
         File grammarFile = new File(classDir, "bnf.g4");
         String grammar = grammarFile.getAbsolutePath();
         gen = new CompilerGenerator(grammar);

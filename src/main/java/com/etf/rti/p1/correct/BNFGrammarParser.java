@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
  * TODO: Think about class rename, it is more like BNFNotationGrammarParser with testing purposes
  */
 public class BNFGrammarParser {
-    //TODO: think about moving constants in Util class for BNFGrammarParser
+    //TODO: think about moving constants in Utils class for BNFGrammarParser
     private static final String EQUAL = "::=";
     private static final String NEWLINE = "\n";
     private static final String SPACE = "\\s+";
@@ -89,7 +89,7 @@ public class BNFGrammarParser {
         compRule[i] = true;
     }
 
-    private boolean isNonterminal(String part) { //TODO: can be part of some Util class related to BNFGrammarParser?
+    private boolean isNonterminal(String part) { //TODO: can be part of some Utils class related to BNFGrammarParser?
         return part.startsWith("<");
     }
 

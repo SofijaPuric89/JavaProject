@@ -2,7 +2,7 @@ package com.etf.rti.p1.generator;
 
 import com.etf.rti.p1.util.FilenamePatternFilter;
 import com.etf.rti.p1.util.RegexPatternFinder;
-import com.etf.rti.p1.util.Util;
+import com.etf.rti.p1.util.Utils;
 import org.antlr.v4.Tool;
 import org.antlr.v4.tool.ErrorType;
 
@@ -31,6 +31,7 @@ public class CompilerGenerator {
         ret[0] = grammar;
 
         tempDir = Files.createTempDirectory("temp" + Long.toString(System.nanoTime())).toFile();
+        tempDir.deleteOnExit();
 
         ret[1] = "-o";
         ret[2] = tempDir.getAbsolutePath();
@@ -45,7 +46,7 @@ public class CompilerGenerator {
             String fileJava = new File(tempDir, x).getAbsolutePath();
             srcs += " " + fileJava;
         }
-        Util.getInstance().runProcess("javac" + srcs, new String[]{"CLASSPATH=" +
+        Utils.runProcess("javac" + srcs, new String[]{"CLASSPATH=" +
                 System.getProperty("java.class.path")});
     }
 
@@ -71,7 +72,7 @@ public class CompilerGenerator {
     }
 
     private void copy() throws IOException {
-        Path dstDir = new File(Util.getInstance().getResourcePath()).toPath();
+        Path dstDir = new File(Utils.getResourcePath()).toPath();
         for (String s : packageName.split("\\.")) {
             dstDir = dstDir.resolve(s);
         }
@@ -88,14 +89,10 @@ public class CompilerGenerator {
      * @throws Exception
      */
     public Compiler generate() throws Exception {
-        try {
-            String[] args = params();
-            build(args);
-            compile();
-            copy();
-        } finally {
-            Util.getInstance().deleteFolder(tempDir);
-        }
+        String[] args = params();
+        build(args);
+        compile();
+        copy();
 
         String pattern = "([^\\:]*?)\\.[^\\.]*$";
         String grammarName = RegexPatternFinder.find(grammar.replace(File.separatorChar, ':'), pattern, 1);
