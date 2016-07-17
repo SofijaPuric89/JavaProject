@@ -1,8 +1,8 @@
-package com.etf.rti.p1.correct;
+package com.etf.rti.p1.translator;
 
-import com.etf.rti.p1.correct.graph.Graph;
-import com.etf.rti.p1.correct.graph.Node;
-import com.etf.rti.p1.correct.graph.Symbol;
+import com.etf.rti.p1.translator.graph.Graph;
+import com.etf.rti.p1.translator.graph.Node;
+import com.etf.rti.p1.translator.graph.Symbol;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,8 +13,8 @@ import java.util.regex.Pattern;
  * Parsing grammar provided as input string in BNF notation. Input string contains \n as an indicator of new line
  * TODO: Think about class rename, it is more like BNFNotationGrammarParser with testing purposes
  */
-public class BNFGrammarParser {
-    //TODO: think about moving constants in Utils class for BNFGrammarParser
+public class BNFGrammarToGraphTranslator {
+    //TODO: think about moving constants in Utils class for BNFGrammarToGraphTranslator
     private static final String EQUAL = "::=";
     private static final String NEWLINE = "\n";
     private static final String SPACE = "\\s+";
@@ -27,13 +27,13 @@ public class BNFGrammarParser {
 
     private boolean[] compRule; //TODO: refactor this by renaming, check if necessary: used for tracking compiled rules, maybe Rule class?
 
-    private Graph grammarGraph = new Graph(this); //graph for storing parsed symbols of grammar
+    private Graph grammarGraph = new Graph(this); //model for storing parsed symbols of grammar
 
 
     /**
      * @param grammar input grammar for notation parser
      */
-    public BNFGrammarParser(String grammar) {
+    public BNFGrammarToGraphTranslator(String grammar) {
         this.grammar = grammar;
     }
 
@@ -89,7 +89,7 @@ public class BNFGrammarParser {
         compRule[i] = true;
     }
 
-    private boolean isNonterminal(String part) { //TODO: can be part of some Utils class related to BNFGrammarParser?
+    private boolean isNonterminal(String part) { //TODO: can be part of some Utils class related to BNFGrammarToGraphTranslator?
         return part.startsWith("<");
     }
 

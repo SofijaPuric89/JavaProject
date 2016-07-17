@@ -1,6 +1,6 @@
-package com.etf.rti.p1.transformer.rules;
+package com.etf.rti.p1.translator.ebnf.rules;
 
-import com.etf.rti.p1.transformer.arrays.IElementArray;
+import com.etf.rti.p1.translator.ebnf.arrays.IElementArray;
 
 import java.util.Iterator;
 

@@ -1,8 +1,8 @@
-package com.etf.rti.p1.transformer.rules;
+package com.etf.rti.p1.translator.ebnf.rules;
 
-import com.etf.rti.p1.transformer.arrays.IElementArray;
-import com.etf.rti.p1.transformer.arrays.SimpleArray;
-import com.etf.rti.p1.transformer.elements.IElement;
+import com.etf.rti.p1.translator.ebnf.arrays.IElementArray;
+import com.etf.rti.p1.translator.ebnf.arrays.SimpleArray;
+import com.etf.rti.p1.translator.ebnf.elements.IElement;
 
 import java.util.LinkedList;
 import java.util.ListIterator;

@@ -1,4 +1,4 @@
-package com.etf.rti.p1.correct;
+package com.etf.rti.p1.questions;
 
 import java.util.*;
 

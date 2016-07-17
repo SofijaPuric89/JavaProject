@@ -1,9 +1,9 @@
-package com.etf.rti.p1.correct;
+package com.etf.rti.p1.questions;
 
-import com.etf.rti.p1.compiler.bnf.BNFCompiler;
 import com.etf.rti.p1.compiler.AParser;
 import com.etf.rti.p1.compiler.Compiler;
 import com.etf.rti.p1.compiler.CompilerGenerator;
+import com.etf.rti.p1.compiler.bnf.BNFCompiler;
 
 import java.io.ByteArrayInputStream;
 import java.io.FileOutputStream;
@@ -18,13 +18,13 @@ public class GrammarChecker {
     private String grammar;
     private Compiler compiler;
 
-    public GrammarChecker(String grammar) throws java.lang.Exception {
+    public GrammarChecker(String grammar) throws Exception {
         this.grammar = grammar;
 
         setupCompiler();
     }
 
-    private void setupCompiler() throws java.lang.Exception {
+    private void setupCompiler() throws Exception {
         Path tmpDir = Files.createTempDirectory("test");
         tmpDir.toFile().deleteOnExit();
         final String name = "test";
@@ -42,7 +42,7 @@ public class GrammarChecker {
         this.compiler = compilerGenerator.generate();
     }
 
-    public boolean isAnswerGramaticallyCorrect(String answer) {
+    public boolean isAnswerGrammaticallyCorrect(String answer) {
         compiler.reset();
         try {
             compiler.setInput(new ByteArrayInputStream(answer.getBytes("UTF-8")));

@@ -1,7 +1,7 @@
-package com.etf.rti.p1.transformer;
+package com.etf.rti.p1.translator;
 
 import com.etf.rti.p1.compiler.bnf.BNFCompiler;
-import com.etf.rti.p1.transformer.rules.IRule;
+import com.etf.rti.p1.translator.ebnf.rules.IRule;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,7 +15,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * Testing grammar transformations to EBNF
  */
-public class BNFGrammarTransformerTest {
+public class BNFGrammarToEBNFRuleTranslatorTest {
     private static final String GRAMMAR_INPUT_TEST_1 =
             "<p> ::= <korisnik>!<domen>\n" +
                     "<korisnik> ::= <rec> | <korisnik>_<rec>\n" +
@@ -32,7 +32,7 @@ public class BNFGrammarTransformerTest {
                     "<c> ::= 1100|<c>11|<c>00\n";
 
     private BNFCompiler compiler;
-    private BNFGrammarTransformer transformer;
+    private BNFGrammarToEBNFRuleTranslator transformer;
 
     @Before
     public void setup() throws Exception {
@@ -40,7 +40,7 @@ public class BNFGrammarTransformerTest {
         compiler = new BNFCompiler("test", "com.etf.rti.p1.compiler.bnf", out);
         compiler.setInput(new ByteArrayInputStream(GRAMMAR_INPUT_TEST_1.getBytes("UTF-8")));
         compiler.getParser().init();
-        transformer = new BNFGrammarTransformer();
+        transformer = new BNFGrammarToEBNFRuleTranslator();
     }
 
     @Test

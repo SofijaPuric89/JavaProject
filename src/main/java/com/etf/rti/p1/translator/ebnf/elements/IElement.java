@@ -1,4 +1,4 @@
-package com.etf.rti.p1.transformer.elements;
+package com.etf.rti.p1.translator.ebnf.elements;
 
 /**
  * Created by sule on 12/12/15.

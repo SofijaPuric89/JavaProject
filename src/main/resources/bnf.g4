@@ -32,10 +32,10 @@ grammar bnf;
     import com.etf.rti.p1.compiler.AParser;
     import org.apache.commons.lang3.StringEscapeUtils;
     import java.util.LinkedList;
-    import com.etf.rti.p1.transformer.elements.Nonterminal;
-    import com.etf.rti.p1.transformer.elements.Terminal;
-    import com.etf.rti.p1.transformer.rules.IRule;
-    import com.etf.rti.p1.transformer.rules.SimpleRule;
+    import com.etf.rti.p1.translator.ebnf.elements.Nonterminal;
+    import com.etf.rti.p1.translator.ebnf.elements.Terminal;
+    import com.etf.rti.p1.translator.ebnf.rules.IRule;
+    import com.etf.rti.p1.translator.ebnf.rules.SimpleRule;
 
 }
 
@@ -83,7 +83,7 @@ options {
                 "}\n"+
             "@header {\n"+
                 "import com.etf.rti.p1.compiler.AParser;\n" +
-                "import com.etf.rti.p1.transformer.rules.IRule;\n" +
+                "import com.etf.rti.p1.translator.ebnf.rules.IRule;\n" +
                 "import java.util.LinkedList;\n" +
             "}\n" +
             "@parser::members {\n" +

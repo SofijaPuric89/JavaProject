@@ -1,10 +1,10 @@
-package com.etf.rti.p1.correct;
+package com.etf.rti.p1.questions;
 
 
-import com.etf.rti.p1.correct.graph.Graph;
-import com.etf.rti.p1.correct.graph.Lists;
-import com.etf.rti.p1.correct.graph.Node;
-import com.etf.rti.p1.correct.graph.Symbol;
+import com.etf.rti.p1.translator.graph.Graph;
+import com.etf.rti.p1.translator.graph.Lists;
+import com.etf.rti.p1.translator.graph.Node;
+import com.etf.rti.p1.translator.graph.Symbol;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.math3.distribution.ExponentialDistribution;

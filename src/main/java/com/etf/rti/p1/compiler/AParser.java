@@ -1,6 +1,6 @@
 package com.etf.rti.p1.compiler;
 
-import com.etf.rti.p1.transformer.rules.IRule;
+import com.etf.rti.p1.translator.ebnf.rules.IRule;
 import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.RecognitionException;
