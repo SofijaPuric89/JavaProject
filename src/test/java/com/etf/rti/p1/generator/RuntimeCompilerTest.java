@@ -27,7 +27,7 @@ public class RuntimeCompilerTest {
     @Test
     public void testGetParser() throws Exception {
         Compiler compiler = gen.generate();
-        assertEquals("bnf", compiler.getName());
+        assertEquals("bnf", compiler.getGrammarName());
         AParser parser;
         try {
             compiler.getParser();

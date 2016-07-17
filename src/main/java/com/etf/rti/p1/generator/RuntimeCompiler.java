@@ -14,7 +14,7 @@ import java.lang.reflect.Constructor;
  */
 public class RuntimeCompiler implements Compiler {
 
-    private String name;
+    private String grammarName;
     private String packageName;
 
     private ANTLRInputStream input = null;
@@ -22,8 +22,8 @@ public class RuntimeCompiler implements Compiler {
     private CommonTokenStream tokenStream = null;
     private AParser parser = null;
 
-    public RuntimeCompiler(String name, String packageName) {
-        this.name = name;
+    public RuntimeCompiler(String grammarName, String packageName) {
+        this.grammarName = grammarName;
         this.packageName = packageName;
     }
 
@@ -38,9 +38,6 @@ public class RuntimeCompiler implements Compiler {
     }
 
     public Lexer getLexer() throws Exception {
-        if (input == null) {
-            throw new EMethodCallOrder("The method getLexer() called before set input");
-        }
         if (lexer == null) {
             try {
                 lexer = getObject("Lexer", new Class<?>[]{CharStream.class}, new Object[]{input});
@@ -53,7 +50,7 @@ public class RuntimeCompiler implements Compiler {
 
     public AParser getParser() throws Exception {
         if (tokenStream == null) {
-            getTokenStream();
+            tokenStream = getTokenStream();
         }
         if (parser == null) {
             try {
@@ -69,20 +66,17 @@ public class RuntimeCompiler implements Compiler {
         if (lexer == null) {
             lexer = getLexer();
         }
-        if (tokenStream == null) {
-            tokenStream = new CommonTokenStream(lexer);
-        }
-        return tokenStream;
+        return new CommonTokenStream(lexer);
     }
 
-    public String getName() {
-        return name;
+    public String getGrammarName() {
+        return grammarName;
     }
 
 
     protected <T> T getObject(String name, Class<?>[] argsType, Object[] args) throws java.lang.Exception {
         assert (argsType.length == args.length);
-        Class<?> c = Class.forName(packageName + "." + this.name + name);
+        Class<?> c = Class.forName(packageName + "." + this.grammarName + name);
         Constructor<?> ctor = c.getConstructor(argsType);
         return (T) ctor.newInstance(args);
     }

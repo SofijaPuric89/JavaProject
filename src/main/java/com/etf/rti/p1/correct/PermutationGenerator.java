@@ -6,7 +6,7 @@ import java.util.*;
  * Created by Sofija on 1/29/2016.
  */
 public class PermutationGenerator {
-    private Set<Integer> setOfLengths = new TreeSet<Integer>();
+    private Set<Integer> setOfLengths = new TreeSet<>();
     private int length;
 
     public PermutationGenerator(int l) {

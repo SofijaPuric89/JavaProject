@@ -7,7 +7,7 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import java.io.OutputStream;
 
 /**
- * Created by zika on 10.12.2015..
+ * Compiles input grammar in BNF format
  */
 public class BNFCompiler extends RuntimeCompiler {
     private OutputStream output;
@@ -17,13 +17,13 @@ public class BNFCompiler extends RuntimeCompiler {
         output = out;
     }
 
-    protected <T> T getObject(String name, Class<?>[] argsType, Object[] args) throws java.lang.Exception {
-        Object object;
+    protected <T> T getObject(String name, Class<?>[] argsType, Object[] args) throws Exception {
         if ("Lexer".equals(name)) {
-            object = new bnfLexer((ANTLRInputStream) args[0]);
-        } else {
-            object = new bnfParser((CommonTokenStream) args[0], output, getName());
+            return (T) new bnfLexer((ANTLRInputStream) args[0]);
         }
-        return (T) object;
+        if ("Parser".equals(name)) {
+            return (T) new bnfParser((CommonTokenStream) args[0], output, getGrammarName());
+        }
+        throw new Exception("Unknown object with name '" + name + "' requested");
     }
 }

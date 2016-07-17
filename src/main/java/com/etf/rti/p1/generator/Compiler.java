@@ -18,7 +18,7 @@ public interface Compiler {
 
     CommonTokenStream getTokenStream() throws com.etf.rti.p1.exceptions.Exception;
 
-    String getName();
+    String getGrammarName();
 
     void reset();
 }
