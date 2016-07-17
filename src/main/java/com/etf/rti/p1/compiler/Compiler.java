@@ -1,4 +1,4 @@
-package com.etf.rti.p1.generator;
+package com.etf.rti.p1.compiler;
 
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.Lexer;

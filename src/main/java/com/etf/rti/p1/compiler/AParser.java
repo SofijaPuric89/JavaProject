@@ -1,4 +1,4 @@
-package com.etf.rti.p1.generator;
+package com.etf.rti.p1.compiler;
 
 import com.etf.rti.p1.transformer.rules.IRule;
 import org.antlr.v4.runtime.Parser;

@@ -1,11 +1,11 @@
 // Generated from C:/Users/zika/IdeaProjects/JavaProject/src/main/resources\bnf.g4 by ANTLR 4.5.1
-package com.etf.rti.p1.bnf;
+package com.etf.rti.p1.compiler.bnf;
 
 import com.etf.rti.p1.transformer.elements.Nonterminal;
 import com.etf.rti.p1.transformer.elements.Terminal;
 import com.etf.rti.p1.transformer.rules.IRule;
 import com.etf.rti.p1.transformer.rules.SimpleRule;
-import com.etf.rti.p1.generator.AParser;
+import com.etf.rti.p1.compiler.AParser;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.atn.ATN;
 import org.antlr.v4.runtime.atn.ATNDeserializer;
@@ -144,7 +144,7 @@ public class bnfParser extends AParser {
                     "superClass=AParser;\n" +
                     "}\n" +
                     "@header {\n" +
-                    "import com.etf.rti.p1.generator.AParser;\n" +
+                    "import com.etf.rti.p1.compiler.AParser;\n" +
                     "import com.etf.rti.p1.transformer.rules.IRule;\n" +
                     "import java.util.LinkedList;\n" +
                     "}\n" +

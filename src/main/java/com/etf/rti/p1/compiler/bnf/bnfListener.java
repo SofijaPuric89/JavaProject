@@ -1,5 +1,5 @@
 // Generated from C:/Users/zika/IdeaProjects/JavaProject/src/main/resources\bnf.g4 by ANTLR 4.5.1
-package com.etf.rti.p1.bnf;
+package com.etf.rti.p1.compiler.bnf;
 
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 

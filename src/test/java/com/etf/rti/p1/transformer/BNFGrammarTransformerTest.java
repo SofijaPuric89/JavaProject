@@ -1,6 +1,6 @@
 package com.etf.rti.p1.transformer;
 
-import com.etf.rti.p1.bnf.BNFCompiler;
+import com.etf.rti.p1.compiler.bnf.BNFCompiler;
 import com.etf.rti.p1.transformer.rules.IRule;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,7 +37,7 @@ public class BNFGrammarTransformerTest {
     @Before
     public void setup() throws Exception {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        compiler = new BNFCompiler("test", "com.etf.rti.p1.bnf", out);
+        compiler = new BNFCompiler("test", "com.etf.rti.p1.compiler.bnf", out);
         compiler.setInput(new ByteArrayInputStream(GRAMMAR_INPUT_TEST_1.getBytes("UTF-8")));
         compiler.getParser().init();
         transformer = new BNFGrammarTransformer();

@@ -1,6 +1,6 @@
-package com.etf.rti.p1.bnf;
+package com.etf.rti.p1.compiler.bnf;
 
-import com.etf.rti.p1.generator.RuntimeCompiler;
+import com.etf.rti.p1.compiler.RuntimeCompiler;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 

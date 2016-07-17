@@ -1,7 +1,7 @@
 package com.etf.rti.p1.transformer;
 
-import com.etf.rti.p1.bnf.BNFCompiler;
-import com.etf.rti.p1.generator.AParser;
+import com.etf.rti.p1.compiler.bnf.BNFCompiler;
+import com.etf.rti.p1.compiler.AParser;
 import com.etf.rti.p1.transformer.rules.IRule;
 import com.etf.rti.p1.transformer.transformations.ITransform;
 import com.etf.rti.p1.transformer.transformations.TransformInnerOption;
@@ -66,7 +66,7 @@ public class BNFGrammarTransformer {
         String grammarName = grammarDirPath.toAbsolutePath().toString();
         FileOutputStream out = new FileOutputStream(grammarName);
 
-        BNFCompiler compiler = new BNFCompiler(name, "com.etf.rti.p1.bnf", out);
+        BNFCompiler compiler = new BNFCompiler(name, "com.etf.rti.p1.compiler.bnf", out);
         compiler.setInput(new ByteArrayInputStream(input.getBytes("UTF-8")));
         AParser parser = compiler.getParser();
         parser.init();

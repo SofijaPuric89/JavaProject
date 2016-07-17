@@ -1,4 +1,4 @@
-package com.etf.rti.p1.generator;
+package com.etf.rti.p1.compiler;
 
 import com.etf.rti.p1.util.FilenamePatternFilter;
 import com.etf.rti.p1.util.RegexPatternFinder;

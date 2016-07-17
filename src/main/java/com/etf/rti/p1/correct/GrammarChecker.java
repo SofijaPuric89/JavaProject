@@ -1,13 +1,12 @@
 package com.etf.rti.p1.correct;
 
-import com.etf.rti.p1.bnf.BNFCompiler;
-import com.etf.rti.p1.generator.AParser;
-import com.etf.rti.p1.generator.Compiler;
-import com.etf.rti.p1.generator.CompilerGenerator;
+import com.etf.rti.p1.compiler.bnf.BNFCompiler;
+import com.etf.rti.p1.compiler.AParser;
+import com.etf.rti.p1.compiler.Compiler;
+import com.etf.rti.p1.compiler.CompilerGenerator;
 
 import java.io.ByteArrayInputStream;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -36,7 +35,7 @@ public class GrammarChecker {
         FileOutputStream out = new FileOutputStream(grammarName);
 
         //TODO: parametrize compiler, it could be maybe Compiler interface instead of BNFCompiler
-        BNFCompiler bnfCompiler = new BNFCompiler(name, "com.etf.rti.p1.bnf", out);
+        BNFCompiler bnfCompiler = new BNFCompiler(name, "com.etf.rti.p1.compiler.bnf", out);
         bnfCompiler.setInput(new ByteArrayInputStream(this.grammar.getBytes("UTF-8")));
         AParser parser = bnfCompiler.getParser();
         parser.init();
