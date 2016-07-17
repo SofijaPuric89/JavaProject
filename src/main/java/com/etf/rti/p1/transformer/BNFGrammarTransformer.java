@@ -4,19 +4,16 @@ import com.etf.rti.p1.transformer.rules.IRule;
 import com.etf.rti.p1.transformer.transformations.ITransform;
 import com.etf.rti.p1.transformer.transformations.TransformInnerOption;
 import com.etf.rti.p1.transformer.transformations.TransformRecursion;
-import com.etf.rti.p1.exceptions.Exception;
 
 import java.util.LinkedList;
 import java.util.List;
 
 /**
  * Transforming grammar rules to EBNF notation for provided rules in BNF notation.
- *
- *                              +-----------------------+
+ * <p>
  * +---------------------+      |-----------------------|      +----------------------+
  * |Rules in BNF notation+ +--> ||BNFGrammarTransformer|| +--> |Rules in EBNF notation|
  * +---------------------+      |-----------------------|      +----------------------+
- *                              +-----------------------+
  */
 public class BNFGrammarTransformer {
     private List<ITransform> bnfToEbnfTransformations = new LinkedList<>();

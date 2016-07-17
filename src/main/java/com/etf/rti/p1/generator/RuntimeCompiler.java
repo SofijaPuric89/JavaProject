@@ -1,8 +1,5 @@
 package com.etf.rti.p1.generator;
 
-import com.etf.rti.p1.exceptions.EMethodCallOrder;
-import com.etf.rti.p1.exceptions.EObjectNotCreated;
-import com.etf.rti.p1.exceptions.Exception;
 import org.antlr.v4.runtime.*;
 
 import java.io.IOException;
@@ -39,13 +36,13 @@ public class RuntimeCompiler implements Compiler {
 
     public Lexer getLexer() throws Exception {
         if (input == null) {
-            throw new EMethodCallOrder("The method getLexer() called before set input");
+            throw new Exception("The method getLexer() called before set input");
         }
         if (lexer == null) {
             try {
                 lexer = getObject("Lexer", new Class<?>[]{CharStream.class}, new Object[]{input});
             } catch (java.lang.Exception e) {
-                throw new EObjectNotCreated("Lexer object cannot be created", e);
+                throw new Exception("Lexer object cannot be created", e);
             }
         }
         return lexer;
@@ -59,7 +56,7 @@ public class RuntimeCompiler implements Compiler {
             try {
                 parser = getObject("Parser", new Class<?>[]{TokenStream.class}, new Object[]{tokenStream});
             } catch (java.lang.Exception e) {
-                throw new EObjectNotCreated("Parser object cannot be created", e);
+                throw new Exception("Parser object cannot be created", e);
             }
         }
         return parser;

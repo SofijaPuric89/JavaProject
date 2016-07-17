@@ -1,7 +1,6 @@
 package com.etf.rti.p1.correct;
 
 import com.etf.rti.p1.bnf.BNFCompiler;
-import com.etf.rti.p1.exceptions.Exception;
 import com.etf.rti.p1.generator.AParser;
 import com.etf.rti.p1.generator.Compiler;
 import com.etf.rti.p1.generator.CompilerGenerator;
@@ -50,7 +49,7 @@ public class GrammarChecker {
             compiler.setInput(new ByteArrayInputStream(answer.getBytes("UTF-8")));
             compiler.getParser().init();
             return compiler.getParser().getNumberOfSyntaxErrors() <= 0;
-        } catch (Exception | IOException e) {
+        } catch (Exception e) {
             System.err.println(e);
             return false;
         }

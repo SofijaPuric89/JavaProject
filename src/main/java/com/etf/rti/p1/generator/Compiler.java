@@ -12,11 +12,11 @@ import java.io.InputStream;
 public interface Compiler {
     void setInput(InputStream in) throws IOException;
 
-    Lexer getLexer() throws com.etf.rti.p1.exceptions.Exception;
+    Lexer getLexer() throws Exception;
 
-    AParser getParser() throws com.etf.rti.p1.exceptions.Exception;
+    AParser getParser() throws Exception;
 
-    CommonTokenStream getTokenStream() throws com.etf.rti.p1.exceptions.Exception;
+    CommonTokenStream getTokenStream() throws Exception;
 
     String getGrammarName();
 
