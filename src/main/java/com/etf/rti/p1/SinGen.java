@@ -1,5 +1,7 @@
 package com.etf.rti.p1;
 
+import com.etf.rti.p1.ui.MainForm;
+
 import javax.swing.*;
 
 /**
@@ -8,7 +10,11 @@ import javax.swing.*;
 public class SinGen {
     public static void main(String[] args) {
         JFrame frame = new JFrame("SinGen");
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setSize(600, 400);
+
+        frame.add(new MainForm().getPanel1());
+
         frame.setVisible(true);
     }
 }
