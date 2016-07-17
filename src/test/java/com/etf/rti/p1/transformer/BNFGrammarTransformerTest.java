@@ -1,13 +1,13 @@
-package com.etf.rti.p1.ebnf;
+package com.etf.rti.p1.transformer;
 
 import com.etf.rti.p1.bnf.BNFCompiler;
-import com.etf.rti.p1.ebnf.rules.IRule;
+import com.etf.rti.p1.transformer.rules.IRule;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.util.LinkedList;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
@@ -15,8 +15,7 @@ import static org.junit.Assert.assertTrue;
 /**
  * Testing grammar transformations to EBNF
  */
-public class GrammarTransformerTest {
-    private GrammarTransformer transform;
+public class BNFGrammarTransformerTest {
     private static final String GRAMMAR_INPUT_TEST_1 =
             "<p> ::= <korisnik>!<domen>\n" +
                     "<korisnik> ::= <rec> | <korisnik>_<rec>\n" +
@@ -26,19 +25,21 @@ public class GrammarTransformerTest {
                     "<slovo> ::= a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z\n" +
                     "<cifra> ::= 0|1|2|3|4|5|6|7|8|9";
 
+    private BNFCompiler compiler;
+    private BNFGrammarTransformer transformer;
+
     @Before
     public void setup() throws Exception {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        BNFCompiler compiler = new BNFCompiler("test", "com.etf.rti.p1.bnf", out);
+        compiler = new BNFCompiler("test", "com.etf.rti.p1.bnf", out);
         compiler.setInput(new ByteArrayInputStream(GRAMMAR_INPUT_TEST_1.getBytes("UTF-8")));
         compiler.getParser().init();
-
-        transform = new GrammarTransformer(compiler);
+        transformer = new BNFGrammarTransformer();
     }
 
     @Test
     public void testTransformToEBNF() throws Exception {
-        LinkedList<IRule> rules = transform.transformToEBNF();
+        List<IRule> rules = transformer.transformToEBNF(compiler.getParser().getRules());
 
         assertTrue(!rules.isEmpty());
         assertEquals(7, rules.size());

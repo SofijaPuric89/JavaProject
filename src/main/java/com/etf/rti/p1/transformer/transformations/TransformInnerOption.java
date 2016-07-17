@@ -1,10 +1,10 @@
-package com.etf.rti.p1.ebnf.transformations;
+package com.etf.rti.p1.transformer.transformations;
 
-import com.etf.rti.p1.ebnf.arrays.IElementArray;
-import com.etf.rti.p1.ebnf.arrays.SimpleArray;
-import com.etf.rti.p1.ebnf.elements.IElement;
-import com.etf.rti.p1.ebnf.rules.IRule;
-import com.etf.rti.p1.ebnf.rules.SimpleRule;
+import com.etf.rti.p1.transformer.arrays.IElementArray;
+import com.etf.rti.p1.transformer.arrays.SimpleArray;
+import com.etf.rti.p1.transformer.elements.IElement;
+import com.etf.rti.p1.transformer.rules.IRule;
+import com.etf.rti.p1.transformer.rules.SimpleRule;
 
 import java.util.Iterator;
 

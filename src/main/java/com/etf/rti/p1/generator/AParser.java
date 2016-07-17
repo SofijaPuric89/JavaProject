@@ -1,6 +1,6 @@
 package com.etf.rti.p1.generator;
 
-import com.etf.rti.p1.ebnf.rules.IRule;
+import com.etf.rti.p1.transformer.rules.IRule;
 import org.antlr.v4.runtime.Parser;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.RecognitionException;

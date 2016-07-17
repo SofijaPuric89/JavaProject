@@ -1,6 +1,6 @@
-package com.etf.rti.p1.ebnf.transformations;
+package com.etf.rti.p1.transformer.transformations;
 
-import com.etf.rti.p1.ebnf.rules.IRule;
+import com.etf.rti.p1.transformer.rules.IRule;
 
 /**
  * Created by sule on 12/12/15.

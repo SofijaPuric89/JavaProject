@@ -1,7 +1,7 @@
-package com.etf.rti.p1.ebnf.rules;
+package com.etf.rti.p1.transformer.rules;
 
-import com.etf.rti.p1.ebnf.arrays.IElementArray;
-import com.etf.rti.p1.ebnf.elements.IElement;
+import com.etf.rti.p1.transformer.arrays.IElementArray;
+import com.etf.rti.p1.transformer.elements.IElement;
 
 /**
  * Created by sule on 12/12/15.

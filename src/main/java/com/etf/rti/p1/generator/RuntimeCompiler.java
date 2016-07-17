@@ -38,6 +38,9 @@ public class RuntimeCompiler implements Compiler {
     }
 
     public Lexer getLexer() throws Exception {
+        if (input == null) {
+            throw new EMethodCallOrder("The method getLexer() called before set input");
+        }
         if (lexer == null) {
             try {
                 lexer = getObject("Lexer", new Class<?>[]{CharStream.class}, new Object[]{input});
