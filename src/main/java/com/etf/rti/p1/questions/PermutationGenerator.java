@@ -92,15 +92,4 @@ public class PermutationGenerator {
             }
         }
     }
-
-    //TODO: check the purpose of this method. Try to create test instead of main
-    public static void main(String[] args) {
-        PermutationGenerator pg = new PermutationGenerator(30);
-        List<Integer> mins = new ArrayList<>();
-        mins.add(1); //mins.add(3); mins.add(5);
-        List<Integer> diffs = new ArrayList<>();
-        //  diffs.add(0); diffs.add(5);
-        pg.addToSet(mins, diffs);
-        System.out.println(pg.getSetOfLengths());
-    }
 }
