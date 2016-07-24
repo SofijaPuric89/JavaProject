@@ -11,8 +11,23 @@ public class MainForm {
     private JButton importButton;
     private JButton exportButton;
     private JButton createQuestion;
+    private JPanel notationsPanel;
+    private JTabbedPane logPanel;
+    private JPanel logTabPanel;
+    private JTextArea logTextArea;
+    private JTextArea BNFNotationTextArea;
+    private JTextArea EBNFNotationTextArea;
+    private JTextArea syntaxDiagramTextArea;
+
+    public MainForm() {
+        logPanel.setName("Log");
+    }
 
     public JPanel getMainPanel() {
         return mainPanel;
+    }
+
+    public JTextArea getBNFNotationTextArea() {
+        return BNFNotationTextArea;
     }
 }

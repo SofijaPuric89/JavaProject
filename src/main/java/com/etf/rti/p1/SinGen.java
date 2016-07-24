@@ -1,15 +1,24 @@
 package com.etf.rti.p1;
 
 import com.etf.rti.p1.ui.MainForm;
-import com.etf.rti.p1.ui.TestForm;
 
 import javax.swing.*;
-import java.awt.*;
 
 /**
  * Main application class
  */
 public class SinGen {
+
+    private static MainForm mainForm;
+    private static final String input =
+            "<p> ::= <korisnik>!<domen>\n" +
+                    "<korisnik> ::= <rec> | <korisnik>_<rec>\n" +
+                    "<domen> ::= <kraj_domena> | <rec>.<domen>\n" +
+                    "<kraj_domena> ::= com | co.rs\n" +
+                    "<rec> ::= <slovo> | <slovo><rec> | <rec><cifra>\n" +
+                    "<slovo> ::= a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z\n" +
+                    "<cifra> ::= 0|1|2|3|4|5|6|7|8|9";
+
     public static void main(String[] args) {
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -17,17 +26,14 @@ public class SinGen {
             e.printStackTrace();
         }
 
+        mainForm = new MainForm();
+
         JFrame frame = new JFrame("SinGen");
+        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.setSize(600, 400);
-        JMenuBar menuBar = new JMenuBar();
-        JMenuItem menuItem = new JMenuItem("File");
-        menuItem.add(new Label("Exit"));
-        menuBar.add(menuItem);
-        frame.setJMenuBar(menuBar);
-
-        frame.add(new MainForm().getMainPanel());
-
+        frame.add(mainForm.getMainPanel());
         frame.setVisible(true);
+
+        mainForm.getBNFNotationTextArea().setText(input);
     }
 }
