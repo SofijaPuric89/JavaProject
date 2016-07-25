@@ -3,6 +3,8 @@ package com.etf.rti.p1;
 import com.etf.rti.p1.ui.MainForm;
 
 import javax.swing.*;
+import java.awt.*;
+import java.net.URL;
 
 /**
  * Main application class
@@ -32,6 +34,10 @@ public class SinGen {
         frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.add(mainForm.getMainPanel());
+        URL resource = JFrame.class.getResource("/images/etf_favicon.ico");
+        Toolkit kit = Toolkit.getDefaultToolkit();
+        Image img = kit.createImage(resource);
+        frame.setIconImage(img);
         frame.setVisible(true);
 
         mainForm.getBNFNotationTextArea().setText(input);

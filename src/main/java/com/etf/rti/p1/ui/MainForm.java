@@ -1,6 +1,7 @@
 package com.etf.rti.p1.ui;
 
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * Created by Vikica on 22.7.2016.
@@ -20,7 +21,9 @@ public class MainForm {
     private JTextArea syntaxDiagramTextArea;
 
     public MainForm() {
-        logPanel.setName("Log");
+        importButton.addActionListener(e -> {
+//            JDialog.
+        });
     }
 
     public JPanel getMainPanel() {

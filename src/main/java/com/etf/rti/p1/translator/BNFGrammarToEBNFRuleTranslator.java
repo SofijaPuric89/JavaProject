@@ -6,7 +6,7 @@ import com.etf.rti.p1.translator.ebnf.rules.IRule;
 import com.etf.rti.p1.translator.ebnf.transformations.ITransform;
 import com.etf.rti.p1.translator.ebnf.transformations.TransformInnerOption;
 import com.etf.rti.p1.translator.ebnf.transformations.TransformRecursion;
-import org.antlr.works.Console;
+//import org.antlr.works.Console;
 
 import java.io.ByteArrayInputStream;
 import java.io.FileOutputStream;

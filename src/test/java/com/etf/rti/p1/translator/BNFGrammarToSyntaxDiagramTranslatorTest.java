@@ -3,6 +3,8 @@ package com.etf.rti.p1.translator;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.File;
+
 public class BNFGrammarToSyntaxDiagramTranslatorTest {
     private static final String GRAMMAR_INPUT_TEST_2 =
             "<start> ::= 11<a>|<b>1\n" +
@@ -22,5 +24,11 @@ public class BNFGrammarToSyntaxDiagramTranslatorTest {
         translator.transformToSyntaxDiagram(GRAMMAR_INPUT_TEST_2);
 
         //TODO: write some assertions when method is finally defined and implemented
+    }
+
+    @Test
+    public void testGeneratingSyntaxDiagram() throws Exception {
+        File pngFileLocation = translator.transformToSyntaxDiagram(GRAMMAR_INPUT_TEST_2);
+        System.out.println("png file location: " + pngFileLocation.getAbsolutePath());
     }
 }

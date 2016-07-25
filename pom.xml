@@ -40,12 +40,22 @@
             <artifactId>commons-math3</artifactId>
             <version>3.4</version>
         </dependency>
-        <dependency>
-            <groupId>org.antlr</groupId>
-            <artifactId>antlrworks</artifactId>
-            <version>1.5.2</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>de.flashpixx</groupId>-->
+            <!--<artifactId>rrd-antlr4</artifactId>-->
+            <!--<version>0.0.2-SNAPSHOT</version>-->
+            <!--<type>maven-plugin</type>-->
+        <!--</dependency>-->
     </dependencies>
+    <!--<reporting>-->
+        <!--<plugins>-->
+            <!--<plugin>-->
+                <!--<groupId>de.flashpixx</groupId>-->
+                <!--<artifactId>rrd-antlr4</artifactId>-->
+                <!--<version>0.0.1</version>-->
+            <!--</plugin>-->
+        <!--</plugins>-->
+    <!--</reporting>-->
 
 
 </project>
