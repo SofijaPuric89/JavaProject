@@ -17,13 +17,66 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>ideauidesigner-maven-plugin</artifactId>
+                <version>1.0-beta-1</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>javac2</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <fork>false</fork>
+                    <debug>true</debug>
+                    <failOnError>true</failOnError>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.2.1</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <mainClass>com.etf.rti.p1.SinGen</mainClass>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-install-plugin</artifactId>
+                <version>2.5.2</version>
+                <executions>
+                    <execution>
+                        <id>singen</id>
+                        <phase>validate</phase>
+                        <goals>
+                            <goal>install-file</goal>
+                        </goals>
+                        <configuration>
+                            <groupId>nl.bigo</groupId>
+                            <artifactId>rrdantlr4</artifactId>
+                            <version>0.1.2</version>
+                            <packaging>jar</packaging>
+                            <file>${basedir}/libs/rrd-antlr4-0.1.2.jar</file>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
     <dependencies>
         <dependency>
             <groupId>org.antlr</groupId>
             <artifactId>antlr4</artifactId>
-            <version>4.5.1</version>
+            <version>4.5.3</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>
@@ -40,22 +93,16 @@
             <artifactId>commons-math3</artifactId>
             <version>3.4</version>
         </dependency>
-        <!--<dependency>-->
-            <!--<groupId>de.flashpixx</groupId>-->
-            <!--<artifactId>rrd-antlr4</artifactId>-->
-            <!--<version>0.0.2-SNAPSHOT</version>-->
-            <!--<type>maven-plugin</type>-->
-        <!--</dependency>-->
+        <dependency>
+            <groupId>nl.bigo</groupId>
+            <artifactId>rrdantlr4</artifactId>
+            <version>0.1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>com.intellij</groupId>
+            <artifactId>forms_rt</artifactId>
+            <version>7.0.3</version>
+        </dependency>
     </dependencies>
-    <!--<reporting>-->
-        <!--<plugins>-->
-            <!--<plugin>-->
-                <!--<groupId>de.flashpixx</groupId>-->
-                <!--<artifactId>rrd-antlr4</artifactId>-->
-                <!--<version>0.0.1</version>-->
-            <!--</plugin>-->
-        <!--</plugins>-->
-    <!--</reporting>-->
-
 
 </project>

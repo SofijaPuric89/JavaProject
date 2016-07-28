@@ -1,7 +1,8 @@
 package com.etf.rti.p1.ui;
 
 import javax.swing.*;
-import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 /**
  * Created by Vikica on 22.7.2016.
@@ -21,9 +22,12 @@ public class MainForm {
     private JTextArea syntaxDiagramTextArea;
 
     public MainForm() {
-        importButton.addActionListener(e -> {
-//            JDialog.
-        });
+       importButton.addActionListener(new ActionListener() {
+           @Override
+           public void actionPerformed(ActionEvent e) {
+
+           }
+       });
     }
 
     public JPanel getMainPanel() {
