@@ -27,7 +27,6 @@ public class MainForm implements UIObservable {
     private JTextArea BNFNotationTextArea;
     private JTextArea EBNFNotationTextArea;
     private JLabel syntaxDiagramImageLabel;
-    private JPanel syntaxDiagramImagePanel;
 
     //listens for input events on the UI
     private Set<UIListener> listeners = new HashSet<>();
@@ -40,11 +39,11 @@ public class MainForm implements UIObservable {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String importedGrammar = parent.showImportDialog();
-                if(importedGrammar == null || importedGrammar.isEmpty()){
+                if (importedGrammar == null || importedGrammar.isEmpty()) {
                     return;
                 }
 
-                for(UIListener listener: listeners){
+                for (UIListener listener : listeners) {
                     listener.grammarImported(importedGrammar);
                 }
             }
@@ -79,6 +78,7 @@ public class MainForm implements UIObservable {
 
     /**
      * Used for reaching main panel that will be exposed to the MainFrame
+     *
      * @return
      */
     public JPanel getMainPanel() {

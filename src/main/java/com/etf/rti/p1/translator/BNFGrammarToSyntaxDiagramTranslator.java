@@ -47,23 +47,26 @@ public class BNFGrammarToSyntaxDiagramTranslator {
 //        System.out.println("the svg looks like this: " + svg);
 //
 //// Create the PNG railroad diagram
-        boolean success = generator.createDiagram(ruleName);
+//        boolean success = generator.createDiagram(ruleName);
 //        System.out.println("successfully created diagram: " + success);
 //
 //// Create an html file containing all rules
-        success = generator.createDiagram(ruleName);
+        /*success = */generator.createDiagram(ruleName);
+        generator.createPdf(generator.getRules());
 
-        System.out.println("successfully created the html file: " + success);
+//        System.out.println("successfully created the html file: " + success);
         return new File("output/test/" + ruleName + ".png");
+//        return new File("output/test/index.pdf");
     }
 
-    public File transformToSyntaxDiagramHTML(String grammar) throws Exception {
+    public String transformToSyntaxDiagramHTML(String grammar) throws Exception {
         Path pathToGrammarFile = translateBnf(grammar);
         DiagramGenerator generator = new DiagramGenerator(pathToGrammarFile.toString());
         Set<String> rules = generator.getRules().keySet();
         String ruleName = rules.toArray(new String[rules.size()])[0];
         generator.createHtml(ruleName);
-        return new File("output/test/" + ruleName + ".html");
+        return generator.getHtml(ruleName);
+//        return new File("output/test/" + ruleName + ".html");
     }
 
     //TODO: extract these code and reuse instead of coping the same concept
