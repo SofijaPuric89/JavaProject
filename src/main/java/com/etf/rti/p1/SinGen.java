@@ -4,14 +4,12 @@ import com.etf.rti.p1.ui.MainForm;
 import com.etf.rti.p1.ui.MainFrame;
 
 import javax.swing.*;
-import java.net.URL;
 
 /**
  * Main application class
  */
 public class SinGen {
 
-    private static MainForm mainForm;
     private static final String input =
             "<p> ::= <korisnik>!<domen>\n" +
                     "<korisnik> ::= <rec> | <korisnik>_<rec>\n" +
@@ -28,10 +26,7 @@ public class SinGen {
             e.printStackTrace();
         }
 
-        mainForm = new MainForm();
-        mainForm.getBNFNotationTextArea().setText(input);
-
-        MainFrame mainFrame = new MainFrame(mainForm);
+        MainFrame mainFrame = new MainFrame();
         mainFrame.setVisible(true);
     }
 }

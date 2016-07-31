@@ -11,14 +11,34 @@ import java.net.URL;
  */
 public class MainFrame extends JFrame {
 
-    public MainFrame(MainForm mainForm) throws HeadlessException {
+    private final MainForm mainForm;
+    UIListener mainFormListener = new UIController();
+
+    public MainFrame() throws HeadlessException {
         super("SinGen");
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        add(mainForm.getMainPanel());
+        setFrameIcon();
 
+        mainForm = new MainForm(this);
+        mainForm.addUIListener(mainFormListener);
+        add(mainForm.getMainPanel());
+    }
+
+    private void setFrameIcon() {
         URL resource = SinGen.class.getResource("/images/etf_favicon.png");
         ImageIcon imageIcon = new ImageIcon(resource);
         setIconImage(imageIcon.getImage());
+    }
+
+    public JDialog showImportDialog() {
+        JDialog jDialog = new JDialog(this, "SinGen - Import Grammar", true);
+        Panel panel = new Panel();
+        JTextArea jTextArea = new JTextArea("Type BNF grammar here");
+        panel.add(jTextArea);
+        jDialog.add(panel);
+        jDialog.setSize(600, 400);
+        jDialog.setVisible(true);
+        return jDialog;
     }
 }
