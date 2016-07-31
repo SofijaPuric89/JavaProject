@@ -6,4 +6,6 @@ package com.etf.rti.p1.ui;
 public interface UIObservable<T> {
 
     void addUIListener(UIListener<T> listener);
+
+    void refreshBNFGrammar(String importedGrammar);
 }

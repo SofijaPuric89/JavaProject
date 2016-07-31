@@ -34,10 +34,10 @@ public class MainForm implements UIObservable {
         importButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JDialog jDialog = parent.showImportDialog();
+                String importedGrammar = parent.showImportDialog();
 
                 for(UIListener listener: listeners){
-                    listener.importButtonClicked();
+                    listener.importGrammarButtonClicked(importedGrammar);
                 }
             }
         });
@@ -48,6 +48,11 @@ public class MainForm implements UIObservable {
         listeners.add(listener);
     }
 
+    @Override
+    public void refreshBNFGrammar(String importedGrammar) {
+        BNFNotationTextArea.setText(importedGrammar);
+    }
+
     /**
      * Used for reaching main panel that will be exposed to the MainFrame
      * @return
@@ -55,9 +60,4 @@ public class MainForm implements UIObservable {
     public JPanel getMainPanel() {
         return mainPanel;
     }
-
-    public JTextArea getBNFNotationTextArea() {
-        return BNFNotationTextArea;
-    }
-
 }

@@ -12,7 +12,7 @@ import java.net.URL;
 public class MainFrame extends JFrame {
 
     private final MainForm mainForm;
-    UIListener mainFormListener = new UIController();
+    UIListener mainFormListener;
 
     public MainFrame() throws HeadlessException {
         super("SinGen");
@@ -21,7 +21,7 @@ public class MainFrame extends JFrame {
         setFrameIcon();
 
         mainForm = new MainForm(this);
-        mainForm.addUIListener(mainFormListener);
+        mainFormListener = new UIController(mainForm);
         add(mainForm.getMainPanel());
     }
 
@@ -31,14 +31,13 @@ public class MainFrame extends JFrame {
         setIconImage(imageIcon.getImage());
     }
 
-    public JDialog showImportDialog() {
+    public String showImportDialog() {
         JDialog jDialog = new JDialog(this, "SinGen - Import Grammar", true);
-        Panel panel = new Panel();
-        JTextArea jTextArea = new JTextArea("Type BNF grammar here");
-        panel.add(jTextArea);
-        jDialog.add(panel);
-        jDialog.setSize(600, 400);
-        jDialog.setVisible(true);
-        return jDialog;
+//        Panel panel = new Panel();
+//        JTextArea jTextArea = new JTextArea("Type BNF grammar here");
+//        panel.add(jTextArea);
+//        jDialog.add(panel);
+//        jDialog.setSize(600, 400);
+        return JOptionPane.showInputDialog(jDialog, "Type BNF grammar", JOptionPane.PLAIN_MESSAGE);
     }
 }
