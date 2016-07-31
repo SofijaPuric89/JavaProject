@@ -63,9 +63,9 @@
                         <configuration>
                             <groupId>nl.bigo</groupId>
                             <artifactId>rrdantlr4</artifactId>
-                            <version>0.1.2</version>
+                            <version>0.1.3</version>
                             <packaging>jar</packaging>
-                            <file>${basedir}/libs/rrd-antlr4-0.1.2.jar</file>
+                            <file>${basedir}/libs/rrd-antlr4-0.1.3.jar</file>
                         </configuration>
                     </execution>
                 </executions>
@@ -96,7 +96,7 @@
         <dependency>
             <groupId>nl.bigo</groupId>
             <artifactId>rrdantlr4</artifactId>
-            <version>0.1.2</version>
+            <version>0.1.3</version>
         </dependency>
         <dependency>
             <groupId>com.intellij</groupId>
