@@ -32,12 +32,8 @@ public class MainFrame extends JFrame {
     }
 
     public String showImportDialog() {
-        JDialog jDialog = new JDialog(this, "SinGen - Import Grammar", true);
-//        Panel panel = new Panel();
-//        JTextArea jTextArea = new JTextArea("Type BNF grammar here");
-//        panel.add(jTextArea);
-//        jDialog.add(panel);
-//        jDialog.setSize(600, 400);
-        return JOptionPane.showInputDialog(jDialog, "Type BNF grammar", JOptionPane.PLAIN_MESSAGE);
+        ImportExportDialog importExportDialog = new ImportExportDialog(600, 400);
+        importExportDialog.setVisible(true);
+        return importExportDialog.getDialogValue();
     }
 }
