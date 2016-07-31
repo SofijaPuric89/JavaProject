@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Set;
 
 /**
  * TODO: implement class
@@ -25,7 +26,7 @@ public class BNFGrammarToSyntaxDiagramTranslator {
      */
     public void transformToSyntaxDiagramOld(String grammar) throws Exception {
         Path pathToGrammarFile = translateBnf(grammar);
-        String[] args = {"-f", pathToGrammarFile.toString(), "-o", "output", "-sd", "eps", "-verbose"};
+//        String[] args = {"-f", pathToGrammarFile.toString(), "-o", "output", "-sd", "eps", "-verbose"};
 //        Console.main(args);
     }
 
@@ -35,18 +36,19 @@ public class BNFGrammarToSyntaxDiagramTranslator {
         DiagramGenerator generator = new DiagramGenerator(pathToGrammarFile.toString());
 //
 //// Print all parsed rules
-        System.out.println("all parsed rules: " + generator.getRules().keySet());
+        Set<String> rules = generator.getRules().keySet();
+//        System.out.println("all parsed rules: " + rules);
 //
 //// The name of the rule to create a railroad diagram of
-        String ruleName = "a";
+        String ruleName = rules.toArray(new String[rules.size()])[0];
 //
 //// Get the SVG of the rule
         String svg = generator.getSVG(ruleName);
-        System.out.println("the svg looks like this: " + svg);
+//        System.out.println("the svg looks like this: " + svg);
 //
 //// Create the PNG railroad diagram
         boolean success = generator.createDiagram(ruleName);
-        System.out.println("successfully created diagram: " + success);
+//        System.out.println("successfully created diagram: " + success);
 //
 //// Create an html file containing all rules
         success = generator.createDiagram(ruleName);
@@ -55,6 +57,16 @@ public class BNFGrammarToSyntaxDiagramTranslator {
         return new File("output/test/" + ruleName + ".png");
     }
 
+    public File transformToSyntaxDiagramHTML(String grammar) throws Exception {
+        Path pathToGrammarFile = translateBnf(grammar);
+        DiagramGenerator generator = new DiagramGenerator(pathToGrammarFile.toString());
+        Set<String> rules = generator.getRules().keySet();
+        String ruleName = rules.toArray(new String[rules.size()])[0];
+        generator.createHtml(ruleName);
+        return new File("output/test/" + ruleName + ".html");
+    }
+
+    //TODO: extract these code and reuse instead of coping the same concept
     private Path translateBnf(String input) throws Exception {
         Path tmpDir = Files.createTempDirectory("test");
         tmpDir.toFile().deleteOnExit();

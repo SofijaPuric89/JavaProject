@@ -1,8 +1,12 @@
 package com.etf.rti.p1.ui;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -22,7 +26,8 @@ public class MainForm implements UIObservable {
     private JTextArea logTextArea;
     private JTextArea BNFNotationTextArea;
     private JTextArea EBNFNotationTextArea;
-    private JTextArea syntaxDiagramTextArea;
+    private JLabel syntaxDiagramImageLabel;
+    private JPanel syntaxDiagramImagePanel;
 
     //listens for input events on the UI
     private Set<UIListener> listeners = new HashSet<>();
@@ -62,8 +67,14 @@ public class MainForm implements UIObservable {
     }
 
     @Override
-    public void refreshSyntaxDiagramPanel(String syntaxDiagramGrammar) {
-        syntaxDiagramTextArea.setText(syntaxDiagramGrammar);
+    public void refreshSyntaxDiagramPanel(File syntaxDiagramGrammarFile) {
+        try {
+            BufferedImage syntaxDiagramImage = ImageIO.read(syntaxDiagramGrammarFile);
+            syntaxDiagramImageLabel.setIcon(new ImageIcon(syntaxDiagramImage));
+        } catch (IOException e) {
+            //TODO: add to log panel, set default display image?!
+            e.printStackTrace();
+        }
     }
 
     /**

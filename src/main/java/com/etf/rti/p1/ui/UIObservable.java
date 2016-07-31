@@ -1,5 +1,7 @@
 package com.etf.rti.p1.ui;
 
+import java.io.File;
+
 /**
  * Created by Vikica on 31.7.2016.
  */
@@ -11,5 +13,5 @@ public interface UIObservable<T> {
 
     void refreshEBNFPanel(String ebnfGrammar);
 
-    void refreshSyntaxDiagramPanel(String syntaxDiagramGrammar);
+    void refreshSyntaxDiagramPanel(File syntaxDiagramGrammarFile);
 }
