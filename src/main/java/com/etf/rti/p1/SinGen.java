@@ -1,6 +1,7 @@
 package com.etf.rti.p1;
 
 import com.etf.rti.p1.ui.MainForm;
+import com.etf.rti.p1.ui.MainFrame;
 
 import javax.swing.*;
 import java.net.URL;
@@ -28,16 +29,9 @@ public class SinGen {
         }
 
         mainForm = new MainForm();
-
-        JFrame frame = new JFrame("SinGen");
-        frame.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.add(mainForm.getMainPanel());
-        URL resource = SinGen.class.getResource("/images/etf_favicon.png");
-        ImageIcon imageIcon = new ImageIcon(resource);
-        frame.setIconImage(imageIcon.getImage());
-        frame.setVisible(true);
-
         mainForm.getBNFNotationTextArea().setText(input);
+
+        MainFrame mainFrame = new MainFrame(mainForm);
+        mainFrame.setVisible(true);
     }
 }
