@@ -7,5 +7,9 @@ public interface UIObservable<T> {
 
     void addUIListener(UIListener<T> listener);
 
-    void refreshBNFGrammar(String importedGrammar);
+    void refreshBNFPanel(String bnfGrammar);
+
+    void refreshEBNFPanel(String ebnfGrammar);
+
+    void refreshSyntaxDiagramPanel(String syntaxDiagramGrammar);
 }

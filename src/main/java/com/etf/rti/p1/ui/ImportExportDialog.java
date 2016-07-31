@@ -14,6 +14,7 @@ public class ImportExportDialog extends JDialog {
         setTitle("SinGen - Import/Export Grammar");
         setContentPane(contentPane);
         setSize(width, height);
+        setLocationRelativeTo(null);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
 

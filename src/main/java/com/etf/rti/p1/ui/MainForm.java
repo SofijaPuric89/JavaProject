@@ -49,8 +49,18 @@ public class MainForm implements UIObservable {
     }
 
     @Override
-    public void refreshBNFGrammar(String importedGrammar) {
-        BNFNotationTextArea.setText(importedGrammar);
+    public void refreshBNFPanel(String bnfGrammar) {
+        BNFNotationTextArea.setText(bnfGrammar);
+    }
+
+    @Override
+    public void refreshEBNFPanel(String ebnfGrammar) {
+        EBNFNotationTextArea.setText(ebnfGrammar);
+    }
+
+    @Override
+    public void refreshSyntaxDiagramPanel(String syntaxDiagramGrammar) {
+        syntaxDiagramTextArea.setText(syntaxDiagramGrammar);
     }
 
     /**
