@@ -25,41 +25,31 @@
           <title-color color="-3618616"/>
         </border>
         <children>
-          <component id="e3e77" class="javax.swing.JButton" binding="importButton">
+          <component id="e3e77" class="javax.swing.JButton" binding="importExportButton">
             <constraints/>
             <properties>
-              <maximumSize width="48" height="48"/>
+              <maximumSize width="120" height="48"/>
               <minimumSize width="48" height="48"/>
               <opaque value="false"/>
-              <preferredSize width="48" height="48"/>
-              <text resource-bundle="messages" key="grammar_import"/>
+              <preferredSize width="96" height="48"/>
+              <text resource-bundle="messages" key="grammar_import_export"/>
               <toolTipText resource-bundle="messages" key="grammar_import_tooltip"/>
             </properties>
             <clientProperties>
               <hideActionText class="java.lang.Boolean" value="false"/>
             </clientProperties>
           </component>
-          <component id="b24d2" class="javax.swing.JButton" binding="exportButton">
-            <constraints/>
-            <properties>
-              <maximumSize width="48" height="48"/>
-              <minimumSize width="48" height="48"/>
-              <preferredSize width="48" height="48"/>
-              <text resource-bundle="messages" key="grammar_export"/>
-              <toolTipText resource-bundle="messages" key="grammar_export_tooltip"/>
-            </properties>
-          </component>
           <component id="583c2" class="javax.swing.JToolBar$Separator">
             <constraints/>
             <properties/>
           </component>
-          <component id="2ea14" class="javax.swing.JButton" binding="createQuestion">
+          <component id="2ea14" class="javax.swing.JButton" binding="generateQuestion">
             <constraints/>
             <properties>
-              <maximumSize width="48" height="48"/>
+              <maximumSize width="120" height="48"/>
               <minimumSize width="48" height="48"/>
-              <preferredSize width="48" height="48"/>
-              <text resource-bundle="messages" key="toolbar_create_question"/>
+              <preferredSize width="100" height="48"/>
+              <text resource-bundle="messages" key="toolbar_generate_question"/>
             </properties>
           </component>
         </children>
@@ -208,7 +198,9 @@
                     <rowspec value="center:d:noGrow"/>
                     <colspec value="fill:d:noGrow"/>
                     <constraints/>
-                    <properties/>
+                    <properties>
+                      <background color="-1"/>
+                    </properties>
                     <border type="none"/>
                     <children>
                       <component id="f4e6e" class="javax.swing.JLabel" binding="syntaxDiagramImageLabel">

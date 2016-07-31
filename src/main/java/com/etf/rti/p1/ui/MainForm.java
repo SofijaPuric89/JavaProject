@@ -17,9 +17,8 @@ public class MainForm implements UIObservable {
     private final MainFrame parent;
     private JPanel mainPanel;
     private JToolBar grammarToolBar;
-    private JButton importButton;
-    private JButton exportButton;
-    private JButton createQuestion;
+    private JButton importExportButton;
+    private JButton generateQuestion;
     private JPanel notationsPanel;
     private JTabbedPane logPanel;
     private JPanel logTabPanel;
@@ -35,7 +34,7 @@ public class MainForm implements UIObservable {
         this.parent = parent;
 
         //define button actions
-        importButton.addActionListener(new ActionListener() {
+        importExportButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String importedGrammar = parent.showImportDialog();

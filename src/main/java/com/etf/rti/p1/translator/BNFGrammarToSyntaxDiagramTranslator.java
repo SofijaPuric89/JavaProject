@@ -32,31 +32,9 @@ public class BNFGrammarToSyntaxDiagramTranslator {
 
     public File transformToSyntaxDiagram(String grammar) throws Exception {
         Path pathToGrammarFile = translateBnf(grammar);
-//        String grammarFileName = "/path/to/Json.g4";
+        
         DiagramGenerator generator = new DiagramGenerator(pathToGrammarFile.toString());
-//
-//// Print all parsed rules
-        Set<String> rules = generator.getRules().keySet();
-//        System.out.println("all parsed rules: " + rules);
-//
-//// The name of the rule to create a railroad diagram of
-        String ruleName = rules.toArray(new String[rules.size()])[0];
-//
-//// Get the SVG of the rule
-        String svg = generator.getSVG(ruleName);
-//        System.out.println("the svg looks like this: " + svg);
-//
-//// Create the PNG railroad diagram
-//        boolean success = generator.createDiagram(ruleName);
-//        System.out.println("successfully created diagram: " + success);
-//
-//// Create an html file containing all rules
-        /*success = */generator.createDiagram(ruleName);
-        generator.createPdf(generator.getRules());
-
-//        System.out.println("successfully created the html file: " + success);
-        return new File("output/test/" + ruleName + ".png");
-//        return new File("output/test/index.pdf");
+        return generator.createDiagram();
     }
 
     public String transformToSyntaxDiagramHTML(String grammar) throws Exception {
