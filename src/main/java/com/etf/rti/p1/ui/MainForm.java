@@ -35,9 +35,12 @@ public class MainForm implements UIObservable {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String importedGrammar = parent.showImportDialog();
+                if(importedGrammar == null || importedGrammar.isEmpty()){
+                    return;
+                }
 
                 for(UIListener listener: listeners){
-                    listener.importGrammarButtonClicked(importedGrammar);
+                    listener.grammarImported(importedGrammar);
                 }
             }
         });

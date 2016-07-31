@@ -24,7 +24,7 @@ public class UIController implements UIListener {
     }
 
     @Override
-    public void importGrammarButtonClicked(String bnfGrammar) {
+    public void grammarImported(String bnfGrammar) {
         try {
             myObservable.refreshBNFPanel(bnfGrammar);
 
