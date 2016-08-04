@@ -32,7 +32,7 @@
               <minimumSize width="48" height="48"/>
               <opaque value="false"/>
               <preferredSize width="96" height="48"/>
-              <text resource-bundle="messages" key="grammar_import_export"/>
+              <text resource-bundle="messages" key="grammar_import"/>
               <toolTipText resource-bundle="messages" key="grammar_import_tooltip"/>
             </properties>
             <clientProperties>

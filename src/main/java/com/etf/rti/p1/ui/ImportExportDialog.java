@@ -12,6 +12,7 @@ public class ImportExportDialog extends JDialog {
     private JButton buttonOK;
     private JButton buttonCancel;
     private JTextArea grammarTextArea;
+    private JComboBox grammarSamplesComboBox;
     private String dialogValue;
 
     public ImportExportDialog(int width, int height) {
@@ -51,10 +52,26 @@ public class ImportExportDialog extends JDialog {
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
         //set grammar sample text
-        String grammarSample = GrammarSamples.readGrammarSample(0);
+        refreshGrammarTextArea(GrammarSamples.readGrammarSample(0));
+
+        //set sample grammar combo box
+        DefaultComboBoxModel comboBoxModel = new DefaultComboBoxModel(GrammarSamples.getGrammarSampleFileNames().toArray());
+        grammarSamplesComboBox.setModel(comboBoxModel);
+        grammarSamplesComboBox.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                String selectedFileName = e.getItem().toString();
+                String grammarSample = GrammarSamples.readGrammarSample(selectedFileName);
+                refreshGrammarTextArea(grammarSample);
+            }
+        });
+    }
+
+    private void refreshGrammarTextArea(String grammarSample) {
         grammarTextArea.setText(grammarSample);
         grammarTextArea.selectAll();
         grammarTextArea.grabFocus();
+        pack();
     }
 
     private void onOK() {

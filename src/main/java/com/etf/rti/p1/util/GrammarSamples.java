@@ -67,8 +67,8 @@ public class GrammarSamples {
         }
     }
 
-    public static String readRandomGrammarSample(){
-        if (grammarExampleFileNames == null){
+    public static String readRandomGrammarSample() {
+        if (grammarExampleFileNames == null) {
             loadGrammarSampleFileNames();
         }
         if (grammarExampleFileNames == null) {
@@ -76,5 +76,21 @@ public class GrammarSamples {
         }
         int index = new Random(System.currentTimeMillis()).nextInt(grammarExampleFileNames.size());
         return readGrammarSample(index);
+    }
+
+    public static String readGrammarSample(String readFileName) {
+        if (grammarExampleFileNames == null) {
+            loadGrammarSampleFileNames();
+        }
+        if (grammarExampleFileNames == null) {
+            return null;
+        }
+        try {
+            return readGrammarSample(grammarExampleFileNames.indexOf(readFileName));
+        } catch (Exception e) {
+            System.err.println("Couldn't read grammar sample file " + readFileName);
+            e.printStackTrace();
+            return null;
+        }
     }
 }
