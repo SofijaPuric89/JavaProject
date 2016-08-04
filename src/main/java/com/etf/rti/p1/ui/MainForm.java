@@ -11,7 +11,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Created by Vikica on 22.7.2016.
+ * Main form that is responsible for all UI elements. Class implements UIObservable that makes the
+ * listeners can register on UI events and then do the proper controller action. *
  */
 public class MainForm implements UIObservable {
     private final MainFrame parent;
