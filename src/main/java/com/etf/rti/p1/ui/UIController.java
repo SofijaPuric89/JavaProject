@@ -11,7 +11,8 @@ import java.io.File;
 import java.util.List;
 
 /**
- * Created by Vikica on 31.7.2016.
+ * Main controller class that observes and manages UI events. Uses translator layer to provide data for UI.
+ * Invokes re-rendering of UI if needed with providing necessary data.
  */
 public class UIController implements UIListener {
 
@@ -23,7 +24,6 @@ public class UIController implements UIListener {
         this.myObservable = myObservable;
 
         myObservable.addUIListener(this);
-
     }
 
     @Override

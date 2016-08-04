@@ -1,7 +1,11 @@
 package com.etf.rti.p1.ui;
 
+import com.etf.rti.p1.SinGen;
+import com.etf.rti.p1.util.GrammarSamples;
+
 import javax.swing.*;
 import java.awt.event.*;
+import java.net.URL;
 
 public class ImportExportDialog extends JDialog {
     private JPanel contentPane;
@@ -17,6 +21,7 @@ public class ImportExportDialog extends JDialog {
         setLocationRelativeTo(null);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
+        setFrameIcon();
 
         buttonOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -44,6 +49,12 @@ public class ImportExportDialog extends JDialog {
                 onCancel();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+
+        //set grammar sample text
+        String grammarSample = GrammarSamples.readGrammarSample(0);
+        grammarTextArea.setText(grammarSample);
+        grammarTextArea.selectAll();
+        grammarTextArea.grabFocus();
     }
 
     private void onOK() {
@@ -61,5 +72,9 @@ public class ImportExportDialog extends JDialog {
         return dialogValue;
     }
 
-
+    private void setFrameIcon() {
+        URL resource = SinGen.class.getResource("/images/etf_favicon.png");
+        ImageIcon imageIcon = new ImageIcon(resource);
+        setIconImage(imageIcon.getImage());
+    }
 }
