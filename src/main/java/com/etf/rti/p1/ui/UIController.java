@@ -55,7 +55,7 @@ public class UIController implements UIListener {
         List<IRule> rules = toEBNFRuleTranslator.transformToEBNF(compiler.getParser().getRules());
         String ebnfGrammar = "";
         for(IRule rule: rules){
-            ebnfGrammar = ebnfGrammar.concat(rule.toString() + "\n");
+            ebnfGrammar = ebnfGrammar.concat(rule.toString() + "\n").replace(" ", "");
         }
         return ebnfGrammar;
     }
