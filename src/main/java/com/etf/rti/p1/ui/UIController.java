@@ -4,10 +4,16 @@ import com.etf.rti.p1.compiler.bnf.BNFCompiler;
 import com.etf.rti.p1.translator.BNFGrammarToEBNFRuleTranslator;
 import com.etf.rti.p1.translator.BNFGrammarToSyntaxDiagramTranslator;
 import com.etf.rti.p1.translator.ebnf.rules.IRule;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.Base64;
 import java.util.List;
 
 /**
@@ -42,6 +48,24 @@ public class UIController implements UIListener {
         }
     }
 
+    @Override
+    public void exportFileSelected(File selectedFile, String bnfGrammar, String ebnfGrammar,
+                                   File syntaxDiagramGrammarFile) {
+        try {
+            String encodedSyntaxDiagram = Base64.getEncoder().encodeToString(Files.readAllBytes(syntaxDiagramGrammarFile.toPath()));
+            String templateFile = IOUtils.toString(UIController.class.getClassLoader().getResourceAsStream("templates/grammar_export.html"));
+            String rendered = templateFile.replace("{$file_name$}", FilenameUtils.getBaseName(selectedFile.getName()))
+                    .replace("{$bnf_grammar$}", StringEscapeUtils.escapeHtml4(bnfGrammar).replaceAll("\\r\\n", "<br/>"))
+                    .replace("{$ebnf_grammar$}", StringEscapeUtils.escapeHtml4(ebnfGrammar).replaceAll("\\r\\n", "<br/>"))
+                    .replace("{$syntax_diagrams$}", encodedSyntaxDiagram);
+
+            Files.write(selectedFile.toPath(), rendered.getBytes());
+        } catch (IOException e) {
+            //TODO: add message to Log panel!
+            e.printStackTrace();
+        }
+    }
+
     private File startSyntaxDiagramTranslator(String bnfGrammar) throws Exception {
         return toSyntaxDiagramTranslator.transformToSyntaxDiagram(bnfGrammar);
     }
@@ -55,7 +79,7 @@ public class UIController implements UIListener {
         List<IRule> rules = toEBNFRuleTranslator.transformToEBNF(compiler.getParser().getRules());
         String ebnfGrammar = "";
         for(IRule rule: rules){
-            ebnfGrammar = ebnfGrammar.concat(rule.toString() + "\n").replace(" ", "");
+            ebnfGrammar = ebnfGrammar.concat(rule.toString() + "\r\n").replace(" ", "");
         }
         return ebnfGrammar;
     }

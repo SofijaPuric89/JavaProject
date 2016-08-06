@@ -7,7 +7,7 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.net.URL;
 
-public class ImportExportDialog extends JDialog {
+public class ImportDialog extends JDialog {
     private JPanel contentPane;
     private JButton buttonOK;
     private JButton buttonCancel;
@@ -15,8 +15,8 @@ public class ImportExportDialog extends JDialog {
     private JComboBox grammarSamplesComboBox;
     private String dialogValue;
 
-    public ImportExportDialog(int width, int height) {
-        setTitle("SinGen - Import/Export Grammar");
+    public ImportDialog(int width, int height) {
+        setTitle("SinGen - Import Grammar");
         setContentPane(contentPane);
         setSize(width, height);
         setLocationRelativeTo(null);

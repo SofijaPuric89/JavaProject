@@ -18,7 +18,7 @@ public class MainForm implements UIObservable {
     private final MainFrame parent;
     private JPanel mainPanel;
     private JToolBar grammarToolBar;
-    private JButton importExportButton;
+    private JButton importButton;
     private JButton generateQuestion;
     private JPanel notationsPanel;
     private JTabbedPane logPanel;
@@ -27,15 +27,19 @@ public class MainForm implements UIObservable {
     private JTextArea BNFNotationTextArea;
     private JTextArea EBNFNotationTextArea;
     private JLabel syntaxDiagramImageLabel;
+    private JButton exportButton;
 
     //listens for input events on the UI
     private Set<UIListener> listeners = new HashSet<>();
+
+    // TODO: move to context
+    private File syntaxDiagramGrammarFile;
 
     public MainForm(MainFrame parent) {
         this.parent = parent;
 
         //define button actions
-        importExportButton.addActionListener(new ActionListener() {
+        importButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String importedGrammar = parent.showImportDialog();
@@ -45,6 +49,20 @@ public class MainForm implements UIObservable {
 
                 for (UIListener listener : listeners) {
                     listener.grammarImported(importedGrammar);
+                }
+            }
+        });
+        exportButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser jFileChooser = new JFileChooser();
+                int saveDialogValue = jFileChooser.showSaveDialog(mainPanel);
+                if(saveDialogValue == JFileChooser.APPROVE_OPTION){
+                    File selectedFile = jFileChooser.getSelectedFile();
+
+                    for (UIListener listener : listeners) {
+                        listener.exportFileSelected(selectedFile, BNFNotationTextArea.getText(), EBNFNotationTextArea.getText(), syntaxDiagramGrammarFile);
+                    }
                 }
             }
         });
@@ -67,6 +85,7 @@ public class MainForm implements UIObservable {
 
     @Override
     public void refreshSyntaxDiagramPanel(File syntaxDiagramGrammarFile) {
+        this.syntaxDiagramGrammarFile = syntaxDiagramGrammarFile;
         try {
             BufferedImage syntaxDiagramImage = ImageIO.read(syntaxDiagramGrammarFile);
             syntaxDiagramImageLabel.setIcon(new ImageIcon(syntaxDiagramImage));

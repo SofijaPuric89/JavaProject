@@ -33,8 +33,8 @@ public class MainFrame extends JFrame {
 
     //TODO: move this part of code to Form
     public String showImportDialog() {
-        ImportExportDialog importExportDialog = new ImportExportDialog(600, 400);
-        importExportDialog.setVisible(true);
-        return importExportDialog.getDialogValue();
+        ImportDialog importDialog = new ImportDialog(600, 400);
+        importDialog.setVisible(true);
+        return importDialog.getDialogValue();
     }
 }
