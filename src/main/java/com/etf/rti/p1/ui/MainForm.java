@@ -2,6 +2,11 @@ package com.etf.rti.p1.ui;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
@@ -23,7 +28,7 @@ public class MainForm implements UIObservable {
     private JPanel notationsPanel;
     private JTabbedPane logPanel;
     private JPanel logTabPanel;
-    private JTextArea logTextArea;
+    private JTextPane logTextPane;
     private JTextArea BNFNotationTextArea;
     private JTextArea EBNFNotationTextArea;
     private JLabel syntaxDiagramImageLabel;
@@ -93,6 +98,38 @@ public class MainForm implements UIObservable {
             //TODO: add to log panel, set default display image?!
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void appendInfoLog(String log) {
+        appendToLogTextArea(log, Color.BLUE);
+    }
+
+    @Override
+    public void appendContentLog(String log) {
+        appendToLogTextArea(log, Color.BLACK);
+    }
+
+    @Override
+    public void appendErrorLog(String log) {
+        appendToLogTextArea(log, Color.RED);
+    }
+
+    private void appendToLogTextArea(final String log, Color color) {
+        SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                StyledDocument doc = logTextPane.getStyledDocument();
+                SimpleAttributeSet coloredLog = new SimpleAttributeSet();
+                StyleConstants.setForeground(coloredLog, color);
+                try {
+                    doc.insertString(doc.getLength(), log + "\n\n", coloredLog);
+                } catch (BadLocationException e) {
+                    e.printStackTrace();
+                }
+                logTextPane.setCaretPosition(logTextPane.getDocument().getLength());
+            }
+        });
     }
 
     /**

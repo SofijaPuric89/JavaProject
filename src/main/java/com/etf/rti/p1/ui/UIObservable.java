@@ -31,4 +31,10 @@ public interface UIObservable<T> {
      * @param syntaxDiagramGrammarFile new syntax diagram file for displaying
      */
     void refreshSyntaxDiagramPanel(File syntaxDiagramGrammarFile);
+
+    void appendInfoLog(String log);
+
+    void appendContentLog(String log);
+
+    void appendErrorLog(String log);
 }

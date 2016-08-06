@@ -4,6 +4,8 @@ import com.etf.rti.p1.compiler.bnf.BNFCompiler;
 import com.etf.rti.p1.translator.BNFGrammarToEBNFRuleTranslator;
 import com.etf.rti.p1.translator.BNFGrammarToSyntaxDiagramTranslator;
 import com.etf.rti.p1.translator.ebnf.rules.IRule;
+import com.etf.rti.p1.util.SinGenLogger;
+import com.etf.rti.p1.util.SinGenLoggerListener;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
@@ -20,7 +22,7 @@ import java.util.List;
  * Main controller class that observes and manages UI events. Uses translator layer to provide data for UI.
  * Invokes re-rendering of UI if needed with providing necessary data.
  */
-public class UIController implements UIListener {
+public class UIController implements UIListener, SinGenLoggerListener {
 
     private UIObservable myObservable;
     private BNFGrammarToEBNFRuleTranslator toEBNFRuleTranslator = new BNFGrammarToEBNFRuleTranslator();
@@ -30,21 +32,27 @@ public class UIController implements UIListener {
         this.myObservable = myObservable;
 
         myObservable.addUIListener(this);
+
+        SinGenLogger.addListener(this);
     }
 
     @Override
     public void grammarImported(String bnfGrammar) {
+        SinGenLogger.info("Imported grammar");
+        SinGenLogger.content(bnfGrammar);
         try {
             myObservable.refreshBNFPanel(bnfGrammar);
 
             String ebnfGrammar = startEBNFTranslator(bnfGrammar);
+            SinGenLogger.info("Translated to EBNF");
+            SinGenLogger.content(ebnfGrammar);
             myObservable.refreshEBNFPanel(ebnfGrammar);
 
             File syntaxDiagramTranslatorFile = startSyntaxDiagramTranslator(bnfGrammar);
+            SinGenLogger.info("Created syntax diagrams");
             myObservable.refreshSyntaxDiagramPanel(syntaxDiagramTranslatorFile);
         } catch (Exception e) {
-            //TODO: add message to Log panel!
-            e.printStackTrace();
+            SinGenLogger.error("Error importing and processing grammar", e);
         }
     }
 
@@ -82,5 +90,20 @@ public class UIController implements UIListener {
             ebnfGrammar = ebnfGrammar.concat(rule.toString() + "\r\n").replace(" ", "");
         }
         return ebnfGrammar;
+    }
+
+    @Override
+    public void onInfo(String log) {
+        myObservable.appendInfoLog(log);
+    }
+
+    @Override
+    public void onContent(String log) {
+        myObservable.appendContentLog(log);
+    }
+
+    @Override
+    public void onError(String log) {
+        myObservable.appendErrorLog(log);
     }
 }
