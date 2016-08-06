@@ -2,6 +2,7 @@ package com.etf.rti.p1.ui;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
@@ -61,6 +62,8 @@ public class MainForm implements UIObservable {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JFileChooser jFileChooser = new JFileChooser();
+                jFileChooser.setAcceptAllFileFilterUsed(false);
+                jFileChooser.setFileFilter(new FileNameExtensionFilter("HTML file (*.html)", "html"));
                 int saveDialogValue = jFileChooser.showSaveDialog(mainPanel);
                 if(saveDialogValue == JFileChooser.APPROVE_OPTION){
                     File selectedFile = jFileChooser.getSelectedFile();
