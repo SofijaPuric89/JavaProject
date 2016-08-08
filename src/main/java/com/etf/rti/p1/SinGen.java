@@ -1,5 +1,6 @@
 package com.etf.rti.p1;
 
+import com.etf.rti.p1.app.SinGenContext;
 import com.etf.rti.p1.ui.MainFrame;
 
 import javax.swing.*;
@@ -9,7 +10,10 @@ import javax.swing.*;
  */
 public class SinGen {
 
+    public SinGenContext context = new SinGenContext();
+
     public static void main(String[] args) {
+
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
         } catch (Exception e) {

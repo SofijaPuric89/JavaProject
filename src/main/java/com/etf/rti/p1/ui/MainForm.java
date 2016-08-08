@@ -74,6 +74,12 @@ public class MainForm implements UIObservable {
                 }
             }
         });
+        generateQuestion.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                parent.showGenerateQuestionDialog();
+            }
+        });
     }
 
     @Override

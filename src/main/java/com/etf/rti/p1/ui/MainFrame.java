@@ -37,4 +37,11 @@ public class MainFrame extends JFrame {
         importDialog.setVisible(true);
         return importDialog.getDialogValue();
     }
+
+    //TODO: move this part of code to Form
+    public void showGenerateQuestionDialog() {
+        GenerateQuestionDialog questionDialog = new GenerateQuestionDialog(1000, 600);
+        questionDialog.setVisible(true);
+//        return questionDialog.getDialogValue(); TODO: this should return a generated question string that should be logged!
+    }
 }

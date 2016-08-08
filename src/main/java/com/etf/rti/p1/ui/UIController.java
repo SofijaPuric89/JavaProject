@@ -1,5 +1,6 @@
 package com.etf.rti.p1.ui;
 
+import com.etf.rti.p1.app.SinGenContext;
 import com.etf.rti.p1.compiler.bnf.BNFCompiler;
 import com.etf.rti.p1.translator.BNFGrammarToEBNFRuleTranslator;
 import com.etf.rti.p1.translator.BNFGrammarToSyntaxDiagramTranslator;
@@ -44,10 +45,12 @@ public class UIController implements UIListener, SinGenLoggerListener {
         SinGenLogger.content(bnfGrammar);
         try {
             myObservable.refreshBNFPanel(bnfGrammar);
+            SinGenContext.setGrammarBNF(bnfGrammar);
 
             String ebnfGrammar = startEBNFTranslator(bnfGrammar);
             SinGenLogger.info("Translated to EBNF");
             SinGenLogger.content(ebnfGrammar);
+            SinGenContext.setGrammarEBNF(ebnfGrammar);
             myObservable.refreshEBNFPanel(ebnfGrammar);
 
             File syntaxDiagramTranslatorFile = startSyntaxDiagramTranslator(bnfGrammar);
