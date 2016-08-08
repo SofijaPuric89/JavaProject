@@ -1,0 +1,10 @@
+<enum> ::= <enum1> | <enum2>
+<enum1> ::= <enum2>.<rb> | <rb>
+<enum2> ::= <enum1>.<broj> | <broj>
+<broj> ::= <broj><cifra> | <cifra>
+<rb> ::= <rb><rc> | <rc>
+<rc> ::= <niz_jedan> | <deset>
+<niz_jedan> ::= <niz_jedan><jedan> | <jedan>
+<deset> ::= V | X
+<jedan> ::= I
+<cifra> ::= 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9

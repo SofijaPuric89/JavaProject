@@ -1,0 +1,8 @@
+<ispit>::=<naziv>,TERMIN:<vreme>,<sala>,<broj>
+<vreme>::=<sati>:<minuti>
+<sati>::=0<cifra> | 1<cifra>
+<minuti>::=<sati> | 2<cifra> | 3<cifra> | 4<cifra> | 5<cifra>
+<naziv>::=<rec> | <naziv><blanko><rec>
+<rec>::=<slovo> | <rec><slovo>
+<sala>::=<naziv>
+<broj>::= <cifra> | <broj><cifra>

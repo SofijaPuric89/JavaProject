@@ -1,0 +1,4 @@
+<start>::= <x>|<y>a
+<x>::= <z>a|bba<x>
+<y>::= aa<y>|<y>ab|<z>
+<z>::= a|b<z>

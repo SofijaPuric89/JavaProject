@@ -1,0 +1,9 @@
+<address> ::= http://<hostport> | http://<hostport>/<path>
+<hostport> ::= <host>|<host>:<port>
+<host> ::= <hostname> | <hostnumber>
+<hostname> ::= <letter> | <hostname>.<letter>
+<hostnumber> ::= <digits>.<digits>.<digits>.<digits>
+<port> ::= <digits>
+<digits> ::= <digit> | <digits><digit>
+<path> ::= <letters> | <path>/<letters>
+<letters> ::= <letter> | <letters><letter>

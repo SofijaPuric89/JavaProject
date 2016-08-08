@@ -5,8 +5,6 @@ import org.apache.commons.io.IOUtils;
 import java.io.IOException;
 import java.util.List;
 import java.util.Random;
-import java.util.Scanner;
-import java.util.stream.Collectors;
 
 import static org.apache.commons.io.IOUtils.readLines;
 

@@ -1,0 +1,7 @@
+<citat> ::= <elem>.|<elem>;<citat>
+<elem> ::= <slovo><cifra>|<grupa>
+<grupa> ::= [<nizSlova>]:[<nizCifara>]
+<nizSlova> ::= <slovo>,<slovo>|<nizSlova>,<slovo>
+<nizCifara> ::= <cifra>|<nizCifara>,<cifra>
+<slovo> ::= A|B|C|D|E|F|G|H|I|J|K|L|M|N|O|P|Q|R|S|T
+<cifra> ::= 0|1|2|3|4|5 | 6 | 7 | 8 | 9

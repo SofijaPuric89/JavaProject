@@ -1,0 +1,3 @@
+<niz> ::= <s> | <niz><s>
+<s> ::= a<p>d | <p> | <s>ad
+<p> ::= b | c | bc
