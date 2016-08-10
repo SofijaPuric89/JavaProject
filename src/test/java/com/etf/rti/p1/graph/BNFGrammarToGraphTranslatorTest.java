@@ -33,8 +33,6 @@ public class BNFGrammarToGraphTranslatorTest {
         AnswerGenerator answerGenerator = new AnswerGenerator(grammarSample);
 
         for (int i = 0; i < 1000; i++) {
-            answerGenerator.calculateCorruptAnswerParameters(answerLength, answerLength);
-
             String generatedAnswer = answerGenerator.generateAnswer(answerLength);
 
             if (!grammarChecker.isAnswerGrammaticallyCorrect(generatedAnswer)) {

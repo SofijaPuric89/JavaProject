@@ -49,27 +49,8 @@ public class AnswerGenerator {
         grammarGraph.setDifferenceLenToRecursiveNodes();
     }
 
-    /**
-     * TODO: check what is the purpose of len and sumLen
-     *
-     * @param len
-     * @param sumLen
-     */
-    public void calculateCorruptAnswerParameters(int len, int sumLen) {
-        ExponentialDistribution exponentialDistribution = new ExponentialDistribution(len / 1.5);
-        boolean ok = false;
-        while (!ok) {
-            correctLen = len - (int) Math.round(exponentialDistribution.sample());
-            if (!(correctLen <= 0 || correctLen >= sumLen)) {
-                //System.out.println(correctLen);
-                once = false;
-                generateLen = 0;
-                ok = true;
-            }
-        }
-    }
-
     public String generateAnswer(int len) {
+        calculateCorruptAnswerParameters(len);
         return generateAnswer(grammarGraph.getRoot(), len);
     }
 
@@ -157,6 +138,25 @@ public class AnswerGenerator {
                 return randNode.getData().getName();
             } else {
                 return generateAnswer(randNode, len);
+            }
+        }
+    }
+
+    /**
+     * TODO: check what is the purpose of len and sumLen
+     *
+     * @param len
+     */
+    private void calculateCorruptAnswerParameters(int len) {
+        ExponentialDistribution exponentialDistribution = new ExponentialDistribution(len / 1.5);
+        boolean ok = false;
+        while (!ok) {
+            correctLen = len - (int) Math.round(exponentialDistribution.sample());
+            if (!(correctLen <= 0 || correctLen >= len)) {
+                //System.out.println(correctLen);
+                once = false;
+                generateLen = 0;
+                ok = true;
             }
         }
     }
@@ -374,47 +374,46 @@ public class AnswerGenerator {
     public String corruptCorrectAnswer(String correctAnswer) {
         String corruptAnswer = "";
         int minDiff = 1000;
-        if (!once) {
-            int answerLen = correctAnswer.length(); // zameniti nesto u odgovoru na nekoj poziciji od correctLen do answerLen
-            if (correctLen > 0 && correctLen <= answerLen) {
-                List<Node<Symbol>> terminals = grammarGraph.findAllTerminals();
-                List<Pair<Node<Symbol>, Node<Symbol>>> pairs = new ArrayList<Pair<Node<Symbol>, Node<Symbol>>>();   // parovi cvorova terminala koji nemaju sve pretke iste
-                for (int i = 0; i < terminals.size(); i++) {
-                    for (int j = i + 1; j < terminals.size(); j++) {
-                        List<Node<Symbol>> parents1 = new ArrayList<Node<Symbol>>();
-                        getParentsOfNode(terminals.get(i), parents1);
-                        List<Node<Symbol>> parents2 = new ArrayList<Node<Symbol>>();
-                        getParentsOfNode(terminals.get(j), parents2);
-                        boolean b = areListsTheSame(parents1, parents2);
-                        if (numOfDiffParentes(parents1, parents2) < minDiff) {
-                            minDiff = numOfDiffParentes(parents1, parents2);
-                        }
-                        //if (!b) {
-                        // pairs.add(new MutablePair<Node<Symbol>, Node<Symbol>>(terminals.get(i), terminals.get(j)));  // ovde nesto pobrljavi...
-                        //}
+        calculateCorruptAnswerParameters(correctAnswer.length());
+        int answerLen = correctAnswer.length(); // zameniti nesto u odgovoru na nekoj poziciji od correctLen do answerLen
+        if (correctLen > 0 && correctLen <= answerLen) {
+            List<Node<Symbol>> terminals = grammarGraph.findAllTerminals();
+            List<Pair<Node<Symbol>, Node<Symbol>>> pairs = new ArrayList<Pair<Node<Symbol>, Node<Symbol>>>();   // parovi cvorova terminala koji nemaju sve pretke iste
+            for (int i = 0; i < terminals.size(); i++) {
+                for (int j = i + 1; j < terminals.size(); j++) {
+                    List<Node<Symbol>> parents1 = new ArrayList<Node<Symbol>>();
+                    getParentsOfNode(terminals.get(i), parents1);
+                    List<Node<Symbol>> parents2 = new ArrayList<Node<Symbol>>();
+                    getParentsOfNode(terminals.get(j), parents2);
+                    boolean b = areListsTheSame(parents1, parents2);
+                    if (numOfDiffParentes(parents1, parents2) < minDiff) {
+                        minDiff = numOfDiffParentes(parents1, parents2);
                     }
+                    //if (!b) {
+                    // pairs.add(new MutablePair<Node<Symbol>, Node<Symbol>>(terminals.get(i), terminals.get(j)));  // ovde nesto pobrljavi...
+                    //}
                 }
-                for (int i = 0; i < terminals.size(); i++) {
-                    for (int j = i + 1; j < terminals.size(); j++) {
-                        List<Node<Symbol>> parents1 = new ArrayList<Node<Symbol>>();
-                        getParentsOfNode(terminals.get(i), parents1);
-                        List<Node<Symbol>> parents2 = new ArrayList<Node<Symbol>>();
-                        getParentsOfNode(terminals.get(j), parents2);
-                        if (numOfDiffParentes(parents1, parents2) == minDiff) {
-                            pairs.add(new MutablePair<Node<Symbol>, Node<Symbol>>(terminals.get(i), terminals.get(j)));
-                        }
-                        //if (!b) {
-                        // pairs.add(new MutablePair<Node<Symbol>, Node<Symbol>>(terminals.get(i), terminals.get(j)));  // ovde nesto pobrljavi...
-                        //}
-                    }
-                }
-                //int num = randomNumber(pairs.size());   // na pozciji num menjamo ta dva para!
-                // List<String> terminals1 = new ArrayList<String>();   // treba proslediti sve, pa koji se nadje orginial (levi deo para) on da se zameni!!!
-                // List<String> terminals2 = new ArrayList<String>();
-                // getChildrenTerminals(pairs.get(num).getLeft(), terminals1);
-                // getChildrenTerminals(pairs.get(num).getRight(), terminals2);
-                corruptAnswer = swapTerminals(correctAnswer, pairs, correctLen, answerLen);
             }
+            for (int i = 0; i < terminals.size(); i++) {
+                for (int j = i + 1; j < terminals.size(); j++) {
+                    List<Node<Symbol>> parents1 = new ArrayList<Node<Symbol>>();
+                    getParentsOfNode(terminals.get(i), parents1);
+                    List<Node<Symbol>> parents2 = new ArrayList<Node<Symbol>>();
+                    getParentsOfNode(terminals.get(j), parents2);
+                    if (numOfDiffParentes(parents1, parents2) == minDiff) {
+                        pairs.add(new MutablePair<Node<Symbol>, Node<Symbol>>(terminals.get(i), terminals.get(j)));
+                    }
+                    //if (!b) {
+                    // pairs.add(new MutablePair<Node<Symbol>, Node<Symbol>>(terminals.get(i), terminals.get(j)));  // ovde nesto pobrljavi...
+                    //}
+                }
+            }
+            //int num = randomNumber(pairs.size());   // na pozciji num menjamo ta dva para!
+            // List<String> terminals1 = new ArrayList<String>();   // treba proslediti sve, pa koji se nadje orginial (levi deo para) on da se zameni!!!
+            // List<String> terminals2 = new ArrayList<String>();
+            // getChildrenTerminals(pairs.get(num).getLeft(), terminals1);
+            // getChildrenTerminals(pairs.get(num).getRight(), terminals2);
+            corruptAnswer = swapTerminals(correctAnswer, pairs, correctLen, answerLen);
         }
         return corruptAnswer;
     }
