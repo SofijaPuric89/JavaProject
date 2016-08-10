@@ -1,6 +1,7 @@
 package com.etf.rti.p1.questions;
 
 
+import com.etf.rti.p1.translator.BNFGrammarToGraphTranslator;
 import com.etf.rti.p1.translator.graph.Graph;
 import com.etf.rti.p1.translator.graph.Lists;
 import com.etf.rti.p1.translator.graph.Node;
@@ -19,30 +20,33 @@ import static java.util.Collections.sort;
  * Created by Sofija on 1/29/2016.
  */
 public class AnswerGenerator {
-    private int answerLength;
-    private Graph graph;
-    private boolean isCorrect;
     private static final double MIN_LENGTH = 0.9;
     private static final double MAX_LENGTH = 1.1;
     private static final String TERMINALS_NONTERMINALS = "(<(.+?)>)|([^<>]+)";
     private static final String NONTERMINAL = "<(.+?)>";
     private static Random randGenerator = new Random();
+
+    private final Graph grammarGraph;
+
     private int correctLen;
-    private int generateLen = 0;
+    private int generateLen;
     private boolean once;
-    private ExponentialDistribution exponentialDistribution;
 
     static {
         Calendar cal = Calendar.getInstance();
         randGenerator.setSeed(cal.getTimeInMillis());
     }
 
-    public AnswerGenerator(Graph graph, int answerLength, boolean isCorrect) {
-        this.graph = graph;
-        this.answerLength = answerLength;
-        this.isCorrect = isCorrect;
+    public AnswerGenerator(String grammar) {
+        BNFGrammarToGraphTranslator BNFGrammarToGraphTranslator = new BNFGrammarToGraphTranslator(grammar);
 
-        exponentialDistribution = new ExponentialDistribution(this.answerLength / 1.5);
+        grammarGraph = BNFGrammarToGraphTranslator.parse();
+        //TODO: check what these grammarGraph methods are used for
+        grammarGraph.setCompositeNodesToRecursive();
+        grammarGraph.setNodesToRecursive();
+        grammarGraph.setNodesToInfinite();
+        grammarGraph.setWidthToAllNodes();
+        grammarGraph.setDifferenceLenToRecursiveNodes();
     }
 
     /**
@@ -52,6 +56,7 @@ public class AnswerGenerator {
      * @param sumLen
      */
     public void calculateCorruptAnswerParameters(int len, int sumLen) {
+        ExponentialDistribution exponentialDistribution = new ExponentialDistribution(len / 1.5);
         boolean ok = false;
         while (!ok) {
             correctLen = len - (int) Math.round(exponentialDistribution.sample());
@@ -64,10 +69,11 @@ public class AnswerGenerator {
         }
     }
 
+    public String generateAnswer(int len) {
+        return generateAnswer(grammarGraph.getRoot(), len);
+    }
 
     public String generateAnswer(Node<Symbol> node, int len) {
-//        calculateCorruptAnswerParameters(answerLength, answerLength);
-
         // faza 1 i faza 2: slucajno odabiramo dete koje ima duzinu najpriblizniju len iz liste dece koji imaju pribliznu duzinu len
         if (len < 1) len = 1;
         List<Node<Symbol>> children = getChildren(node, len);
@@ -80,7 +86,7 @@ public class AnswerGenerator {
             // faza 4:
             List<Node<Symbol>> nodes = getListOfNodes(randNode);
             List<Node<Symbol>> nonterminals = getListOfNonterminals(nodes);
-            List<Pair<Node<Symbol>, Integer>> pairs = new ArrayList<Pair<Node<Symbol>, Integer>>();
+            List<Pair<Node<Symbol>, Integer>> pairs = new ArrayList<>();
             for (int i = 0; i < nodes.size(); i++) {
                 pairs.add(null);
             }
@@ -157,7 +163,7 @@ public class AnswerGenerator {
 
 
     private String generateAnswerForCompositeNode(List<Node<Symbol>> nodes, List<Pair<Node<Symbol>, Integer>> pairs) {
-        if (generateLen >= correctLen && !isCorrect && !once) {  // nekad i ne udje ovde, a kad udje izgenerise pogresan sto je ok...
+        if (generateLen >= correctLen && !once) {  // nekad i ne udje ovde, a kad udje izgenerise pogresan sto je ok...
             once = true;
             List<Node<Symbol>> cloneNodes = new ArrayList<Node<Symbol>>();
             List<Pair<Node<Symbol>, Integer>> clonePairs = new ArrayList<Pair<Node<Symbol>, Integer>>();
@@ -262,7 +268,7 @@ public class AnswerGenerator {
                 nonterminalName = matcher.group(1);
             } else
                 nonterminalName = part;
-            Node<Symbol> child = graph.find(nonterminalName, graph.getRoot());
+            Node<Symbol> child = grammarGraph.find(nonterminalName, grammarGraph.getRoot());
             nonTerminalsChildren.add(child);
         }
         return nonTerminalsChildren;
@@ -371,7 +377,7 @@ public class AnswerGenerator {
         if (!once) {
             int answerLen = correctAnswer.length(); // zameniti nesto u odgovoru na nekoj poziciji od correctLen do answerLen
             if (correctLen > 0 && correctLen <= answerLen) {
-                List<Node<Symbol>> terminals = graph.findAllTerminals();
+                List<Node<Symbol>> terminals = grammarGraph.findAllTerminals();
                 List<Pair<Node<Symbol>, Node<Symbol>>> pairs = new ArrayList<Pair<Node<Symbol>, Node<Symbol>>>();   // parovi cvorova terminala koji nemaju sve pretke iste
                 for (int i = 0; i < terminals.size(); i++) {
                     for (int j = i + 1; j < terminals.size(); j++) {

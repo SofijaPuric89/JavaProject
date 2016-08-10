@@ -22,8 +22,6 @@ public class GenerateQuestionDialog extends JDialog {
         setLocationRelativeTo(null);
         getRootPane().setDefaultButton(buttonOK);
 
-        generateAnswers();
-
         buttonOK.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 onOK();
@@ -50,26 +48,6 @@ public class GenerateQuestionDialog extends JDialog {
                 onCancel();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
-    }
-
-    //TODO: remove or refactor this method, only for testing purposes!
-    private void generateAnswers() {
-        BNFGrammarToGraphTranslator BNFGrammarToGraphTranslator = new BNFGrammarToGraphTranslator(SinGenContext.getGrammarBNF());
-        Graph grammarGraph = BNFGrammarToGraphTranslator.parse();
-        //TODO: check what these grammarGraph methods are used for
-        grammarGraph.setCompositeNodesToRecursive();
-        grammarGraph.setNodesToRecursive();
-        grammarGraph.setNodesToInfinite();
-        grammarGraph.setWidthToAllNodes();
-        grammarGraph.setDifferenceLenToRecursiveNodes();
-        int answerLength = 10;
-        AnswerGenerator answerGenerator = new AnswerGenerator(BNFGrammarToGraphTranslator.getGrammarGraph(), answerLength, false);
-        String generatedAnswer = answerGenerator.generateAnswer(BNFGrammarToGraphTranslator.getGrammarGraph().getRoot(), answerLength);
-        String corruptedAnswer = answerGenerator.corruptCorrectAnswer(generatedAnswer);
-
-        textArea1.append(SinGenContext.getGrammarBNF() + "\n\n");
-        textArea1.append("generated answer: " + generatedAnswer + "\n\n");
-        textArea1.append("corrupted answer: " + corruptedAnswer + "\n\n");
     }
 
     private void onOK() {

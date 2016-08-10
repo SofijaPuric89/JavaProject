@@ -20,31 +20,28 @@ public class BNFGrammarToGraphTranslatorTest {
         int correctCounter = 0;
         int corruptedCounter = 0;
         String grammarSample = GrammarSamples.readGrammarSample(1);
-        BNFGrammarToGraphTranslator BNFGrammarToGraphTranslator = new BNFGrammarToGraphTranslator(grammarSample);
-
-        Graph grammarGraph = BNFGrammarToGraphTranslator.parse();
-        //TODO: check what these grammarGraph methods are used for
-        grammarGraph.setCompositeNodesToRecursive();
-        grammarGraph.setNodesToRecursive();
-        grammarGraph.setNodesToInfinite();
-        grammarGraph.setWidthToAllNodes();
-        grammarGraph.setDifferenceLenToRecursiveNodes();
 
         //TODO: shouldn't provide private field as constructor parameter! Think about providing BNFGrammarToGraphTranslator as an argument
         GrammarChecker grammarChecker = null;
         try {
-            grammarChecker = new GrammarChecker(BNFGrammarToGraphTranslator.getGrammar());
+            grammarChecker = new GrammarChecker(grammarSample);
         } catch (Exception e) {
             Assert.fail();
         }
 
         int answerLength = 10;
-        AnswerGenerator answerGenerator = new AnswerGenerator(BNFGrammarToGraphTranslator.getGrammarGraph(), answerLength, false);
+        AnswerGenerator answerGenerator = new AnswerGenerator(grammarSample);
 
         for (int i = 0; i < 1000; i++) {
             answerGenerator.calculateCorruptAnswerParameters(answerLength, answerLength);
 
-            String generatedAnswer = answerGenerator.generateAnswer(BNFGrammarToGraphTranslator.getGrammarGraph().getRoot(), answerLength);
+            String generatedAnswer = answerGenerator.generateAnswer(answerLength);
+
+            if (!grammarChecker.isAnswerGrammaticallyCorrect(generatedAnswer)) {
+                System.out.println("****** ILLEGAL ANSWER " + generatedAnswer);
+                continue;
+            }
+
             String corruptedAnswer = answerGenerator.corruptCorrectAnswer(generatedAnswer);
 
             System.out.print("***GENERISANI ODGOVOR:");
