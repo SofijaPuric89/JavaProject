@@ -42,7 +42,6 @@ public class MainForm implements MainFormObservable {
     private JButton exportButton;
     private JTextField checkSequenceTextField;
     private JLabel checkSequenceIndicatorIcon;
-    private JButton checkSequenceButton;
 
     //listens for input events on the UI
     private Set<MainFormListener> listeners = new HashSet<>();

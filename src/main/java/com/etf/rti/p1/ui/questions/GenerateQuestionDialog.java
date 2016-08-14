@@ -1,5 +1,6 @@
 package com.etf.rti.p1.ui.questions;
 
+import com.etf.rti.p1.app.SinGenContext;
 import com.etf.rti.p1.ui.UIObservable;
 
 import javax.swing.*;
@@ -13,7 +14,7 @@ import java.util.function.Consumer;
 public class GenerateQuestionDialog extends JDialog implements UIObservable<GenerateQuestionDialogListener> {
     private JPanel contentPane;
     private JButton generateQuestionBtn;
-    private JTextArea textArea1;
+    private JTextArea generatedQuestionTextArea;
     private JComboBox<QuestionTypeComboBoxModelElement> questionTypeComboBox;
     private JSpinner answerLengthSpinner;
     private JTextField answerTextFieldA;
@@ -56,6 +57,7 @@ public class GenerateQuestionDialog extends JDialog implements UIObservable<Gene
         setupQuestionComboBox();
         setupAnswerLengthSpinner();
         setupAnswerTextFieldListeners();
+        generatedQuestionTextArea.setLineWrap(true);
     }
 
     private void setupAnswerTextFieldListeners() {
@@ -195,8 +197,16 @@ public class GenerateQuestionDialog extends JDialog implements UIObservable<Gene
     }
 
     private void onGenerateQuestion() {
-// add your code here
-        dispose();
+        //TODO: add mechanism for generating and putting question text according to combo box!
+        //TODO: maybe some QuestionTextBuilder?
+        generatedQuestionTextArea.setText("Koja od ponuđenih sekvenci odgovara sintaksnoj definiciji za prvi neterminal zadat u BNF notaciji?\n\n");
+        generatedQuestionTextArea.append(SinGenContext.getGrammarBNF());
+        generatedQuestionTextArea.append("\n\n");
+        generatedQuestionTextArea.append("A) " + answerTextFieldA.getText() + "\n");
+        generatedQuestionTextArea.append("B) " + answerTextFieldB.getText() + "\n");
+        generatedQuestionTextArea.append("C) " + answerTextFieldC.getText() + "\n");
+
+        setDialogValue(generatedQuestionTextArea.getText());
     }
 
     private void onCancel() {
@@ -211,5 +221,9 @@ public class GenerateQuestionDialog extends JDialog implements UIObservable<Gene
 
     public String getDialogValue() {
         return dialogValue;
+    }
+
+    public void setDialogValue(String dialogValue) {
+        this.dialogValue = dialogValue;
     }
 }
