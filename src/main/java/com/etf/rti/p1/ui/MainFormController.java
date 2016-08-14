@@ -2,6 +2,7 @@ package com.etf.rti.p1.ui;
 
 import com.etf.rti.p1.app.SinGenContext;
 import com.etf.rti.p1.compiler.bnf.BNFCompiler;
+import com.etf.rti.p1.questions.QuestionGenerator;
 import com.etf.rti.p1.translator.BNFGrammarToEBNFRuleTranslator;
 import com.etf.rti.p1.translator.BNFGrammarToSyntaxDiagramTranslator;
 import com.etf.rti.p1.translator.ebnf.rules.IRule;
@@ -20,6 +21,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Base64;
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * Main controller class that observes and manages UI events. Uses translator layer to provide data for UI.
@@ -30,6 +32,7 @@ public class MainFormController implements MainFormListener, SinGenLoggerListene
     private MainFormObservable myObservable;
     private BNFGrammarToEBNFRuleTranslator toEBNFRuleTranslator = new BNFGrammarToEBNFRuleTranslator();
     private BNFGrammarToSyntaxDiagramTranslator toSyntaxDiagramTranslator = new BNFGrammarToSyntaxDiagramTranslator();
+    private QuestionGenerator questionGenerator;
 
     public MainFormController(MainFormObservable myObservable) {
         this.myObservable = myObservable;
@@ -83,6 +86,14 @@ public class MainFormController implements MainFormListener, SinGenLoggerListene
         } catch (IOException e) {
             SinGenLogger.error("Error while exporting to file ", e);
         }
+    }
+
+    @Override
+    public void checkIfAnswerCorrect(String answer, Consumer<Boolean> callback) {
+        if(questionGenerator == null){
+            questionGenerator = new QuestionGenerator(SinGenContext.getGrammarBNF());
+        }
+        callback.accept(questionGenerator.isAnswerGrammaticallyCorrect(answer));
     }
 
     private String escapeHtml(String text) {

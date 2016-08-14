@@ -1,9 +1,12 @@
 package com.etf.rti.p1.ui;
 
+import com.etf.rti.p1.ui.questions.GenerateQuestionDialogListener;
 import com.etf.rti.p1.util.SinGenLogger;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.BadLocationException;
 import javax.swing.text.SimpleAttributeSet;
@@ -17,6 +20,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Consumer;
 
 /**
  * Main form that is responsible for all UI elements. Class implements MainFormObservable that makes the
@@ -36,6 +40,9 @@ public class MainForm implements MainFormObservable {
     private JTextArea ebnfNotationTextArea;
     private JLabel syntaxDiagramImageLabel;
     private JButton exportButton;
+    private JTextField checkSequenceTextField;
+    private JLabel checkSequenceIndicatorIcon;
+    private JButton checkSequenceButton;
 
     //listens for input events on the UI
     private Set<MainFormListener> listeners = new HashSet<>();
@@ -43,10 +50,49 @@ public class MainForm implements MainFormObservable {
     // TODO: move to context
     private File syntaxDiagramGrammarFile;
 
+
+    private final ImageIcon correctIcon;
+    private final ImageIcon incorrectIcon;
+
     public MainForm(MainFrame parent) {
         this.parent = parent;
 
+        correctIcon = new ImageIcon(MainForm.class.getResource("/images/correct_32_32.png"));
+        incorrectIcon = new ImageIcon(MainForm.class.getResource("/images/incorrect_32_32.png"));
+
         //define button actions
+        setButtonListeners(parent);
+
+        checkSequenceTextField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                onSequenceChange();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+
+            }
+        });
+    }
+
+    private void onSequenceChange() {
+        for (MainFormListener listener : listeners) {
+            listener.checkIfAnswerCorrect(checkSequenceTextField.getText(), new Consumer<Boolean>() {
+                @Override
+                public void accept(Boolean isCorrect) {
+                    checkSequenceIndicatorIcon.setIcon(isCorrect ? correctIcon : incorrectIcon);
+                }
+            });
+        }
+    }
+
+    private void setButtonListeners(final MainFrame parent) {
         importButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -136,6 +182,7 @@ public class MainForm implements MainFormObservable {
         bnfNotationTextArea.setEnabled(true);
         ebnfNotationTextArea.setEnabled(true);
         syntaxDiagramImageLabel.setEnabled(true);
+        checkSequenceTextField.setEnabled(true);
     }
 
     private void appendToLogTextArea(final String log, Color color) {

@@ -16,12 +16,13 @@
         </constraints>
         <properties>
           <floatable value="false"/>
+          <margin top="10" left="10" bottom="10" right="10"/>
           <toolTipText value=""/>
         </properties>
         <clientProperties>
           <html.disable class="java.lang.Boolean" value="false"/>
         </clientProperties>
-        <border type="none" title-resource-bundle="messages" title-key="grammar_toolbar_headline">
+        <border type="etched" title-resource-bundle="messages" title-key="grammar_toolbar_headline">
           <title-color color="-3618616"/>
         </border>
         <children>
@@ -57,6 +58,30 @@
               <enabled value="false"/>
               <icon value="images/generate_32_32.png"/>
               <text resource-bundle="messages" key="toolbar_generate_question"/>
+            </properties>
+          </component>
+          <hspacer id="ccc38">
+            <constraints/>
+          </hspacer>
+          <component id="46b54" class="javax.swing.JLabel" binding="checkSequenceIndicatorIcon">
+            <constraints/>
+            <properties>
+              <text value=" "/>
+            </properties>
+          </component>
+          <component id="59f84" class="javax.swing.JLabel">
+            <constraints/>
+            <properties>
+              <foreground color="-7566196"/>
+              <text value="&lt;first_nonterminal&gt; : "/>
+            </properties>
+          </component>
+          <component id="25fdd" class="javax.swing.JTextField" binding="checkSequenceTextField">
+            <constraints/>
+            <properties>
+              <enabled value="true"/>
+              <horizontalAlignment value="4"/>
+              <maximumSize width="5000" height="2147483647"/>
             </properties>
           </component>
         </children>
