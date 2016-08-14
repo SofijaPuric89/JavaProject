@@ -28,12 +28,12 @@
           <component id="e3e77" class="javax.swing.JButton" binding="importButton">
             <constraints/>
             <properties>
-              <maximumSize width="120" height="48"/>
-              <minimumSize width="48" height="48"/>
+              <horizontalTextPosition value="11"/>
+              <icon value="images/import_32_32.png"/>
               <opaque value="false"/>
-              <preferredSize width="96" height="48"/>
               <text resource-bundle="messages" key="grammar_import"/>
               <toolTipText resource-bundle="messages" key="grammar_import_tooltip"/>
+              <verticalTextPosition value="0"/>
             </properties>
             <clientProperties>
               <hideActionText class="java.lang.Boolean" value="false"/>
@@ -42,8 +42,7 @@
           <component id="101fe" class="javax.swing.JButton" binding="exportButton" default-binding="true">
             <constraints/>
             <properties>
-              <maximumSize width="120" height="48"/>
-              <minimumSize width="96" height="48"/>
+              <icon value="images/export_32_32.png"/>
               <text resource-bundle="messages" key="grammar_export"/>
             </properties>
           </component>
@@ -54,9 +53,7 @@
           <component id="2ea14" class="javax.swing.JButton" binding="generateQuestion">
             <constraints/>
             <properties>
-              <maximumSize width="120" height="48"/>
-              <minimumSize width="48" height="48"/>
-              <preferredSize width="100" height="48"/>
+              <icon value="images/generate_32_32.png"/>
               <text resource-bundle="messages" key="toolbar_generate_question"/>
             </properties>
           </component>
