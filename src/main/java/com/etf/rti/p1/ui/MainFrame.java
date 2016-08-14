@@ -1,7 +1,10 @@
 package com.etf.rti.p1.ui;
 
 import com.etf.rti.p1.SinGen;
+import com.etf.rti.p1.app.SinGenContext;
 import com.etf.rti.p1.ui.questions.GenerateQuestionDialog;
+import com.etf.rti.p1.ui.questions.GenerateQuestionDialogController;
+import com.etf.rti.p1.ui.questions.GenerateQuestionDialogListener;
 
 import javax.swing.*;
 import java.awt.*;
@@ -13,7 +16,9 @@ import java.net.URL;
 public class MainFrame extends JFrame {
 
     private final MainForm mainForm;
-    UIListener mainFormListener;
+
+    MainFormListener mainFormListener;
+    GenerateQuestionDialogListener generateQuestionDialogListener;
 
     public MainFrame() throws HeadlessException {
         super("SinGen");
@@ -22,7 +27,8 @@ public class MainFrame extends JFrame {
         setFrameIcon();
 
         mainForm = new MainForm(this);
-        mainFormListener = new UIController(mainForm);
+        mainFormListener = new MainFormController(mainForm);
+
         add(mainForm.getMainPanel());
     }
 
@@ -42,6 +48,7 @@ public class MainFrame extends JFrame {
     //TODO: move this part of code to Form
     public void showGenerateQuestionDialog() {
         GenerateQuestionDialog questionDialog = new GenerateQuestionDialog(1000, 600);
+        generateQuestionDialogListener = new GenerateQuestionDialogController(questionDialog, SinGenContext.getGrammarBNF());
         questionDialog.setVisible(true);
 //        return questionDialog.getDialogValue(); TODO: this should return a generated question string that should be logged!
     }

@@ -1,29 +1,36 @@
 package com.etf.rti.p1.ui.questions;
 
+import com.etf.rti.p1.ui.UIObservable;
+
 import javax.swing.*;
 import java.awt.event.*;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.function.Consumer;
 
-public class GenerateQuestionDialog extends JDialog {
+public class GenerateQuestionDialog extends JDialog implements UIObservable<GenerateQuestionDialogListener> {
     private JPanel contentPane;
-    private JButton buttonGenerate;
+    private JButton generateQuestionBtn;
     private JTextArea textArea1;
     private JComboBox<QuestionTypeComboBoxModelElement> questionTypeComboBox;
     private JSpinner answerLengthSpinner;
     private JTextField answerTextFieldA;
-    private JButton generateCorrectAnswerA;
-    private JButton generateIncorrectAnswerA;
+    private JButton generateCorrectAnswerABtn;
+    private JButton generateIncorrectAnswerABtn;
     private JLabel answerLabelA;
     private JLabel answerIndicatorIconA;
     private JLabel answerLabelB;
     private JLabel answerIndicatorIconB;
     private JTextField answerTextFieldB;
-    private JButton generateCorrectAnswerB;
-    private JButton generateIncorrectAnswerB;
+    private JButton generateCorrectAnswerBBtn;
+    private JButton generateIncorrectAnswerBBtn;
     private JTextField answerTextFieldC;
-    private JButton generateCorrectAnswerC;
-    private JButton generateIncorrectAnswerC;
+    private JButton generateCorrectAnswerCBtn;
+    private JButton generateIncorrectAnswerCBtn;
     private JLabel answerLabelC;
     private JLabel answerIndicatorIconC;
+
+    private final Set<GenerateQuestionDialogListener> listeners;
 
     public GenerateQuestionDialog(int width, int height) {
         setTitle("SinGen - Generate Question");
@@ -31,19 +38,85 @@ public class GenerateQuestionDialog extends JDialog {
         setModal(true);
         setSize(width, height);
         setLocationRelativeTo(null);
-        getRootPane().setDefaultButton(buttonGenerate);
+        getRootPane().setDefaultButton(generateQuestionBtn);
+
+        listeners = new HashSet<>();
 
         addButtonListeners();
         setupClosingActions();
         setupQuestionComboBox();
+        setupAnswerLengthSpinner();
+    }
+
+    private void setupAnswerLengthSpinner() {
+        answerLengthSpinner.setModel(new SpinnerNumberModel(10, 5, 30, 1));
     }
 
     private void addButtonListeners() {
-        buttonGenerate.addActionListener(new ActionListener() {
+        generateQuestionBtn.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 onGenerateQuestion();
             }
         });
+        generateCorrectAnswerABtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                generateCorrectAnswer(answerTextFieldA);
+            }
+        });
+        generateCorrectAnswerBBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                generateCorrectAnswer(answerTextFieldB);
+            }
+        });
+        generateCorrectAnswerCBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                generateCorrectAnswer(answerTextFieldC);
+            }
+        });
+        generateIncorrectAnswerABtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                generateIncorrectAnswer(answerTextFieldA);
+            }
+        });
+        generateIncorrectAnswerBBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                generateIncorrectAnswer(answerTextFieldB);
+            }
+        });
+        generateIncorrectAnswerCBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                generateIncorrectAnswer(answerTextFieldC);
+            }
+        });
+    }
+
+    private void generateCorrectAnswer(final JTextField answerTextField) {
+        for (GenerateQuestionDialogListener listener : listeners) {
+            listener.generateCorrectAnswer((Integer) answerLengthSpinner.getValue(), new Consumer<String>() {
+                @Override
+                public void accept(String answer) {
+                    answerTextField.setText(answer);
+                }
+            });
+        }
+    }
+
+
+    private void generateIncorrectAnswer(JTextField answerTextField) {
+        for (GenerateQuestionDialogListener listener : listeners) {
+            listener.generateIncorrectAnswer((Integer) answerLengthSpinner.getValue(), new Consumer<String>() {
+                @Override
+                public void accept(String answer) {
+                    answerTextField.setText(answer);
+                }
+            });
+        }
     }
 
     private void setupClosingActions() {
@@ -83,5 +156,10 @@ public class GenerateQuestionDialog extends JDialog {
     private void onCancel() {
 // add your code here if necessary
         dispose();
+    }
+
+    @Override
+    public void addUIListener(GenerateQuestionDialogListener listener) {
+        listeners.add(listener);
     }
 }

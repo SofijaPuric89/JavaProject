@@ -17,10 +17,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Main form that is responsible for all UI elements. Class implements UIObservable that makes the
+ * Main form that is responsible for all UI elements. Class implements MainFormObservable that makes the
  * listeners can register on UI events and then do the proper controller action. *
  */
-public class MainForm implements UIObservable {
+public class MainForm implements MainFormObservable {
     private final MainFrame parent;
     private JPanel mainPanel;
     private JToolBar grammarToolBar;
@@ -36,7 +36,7 @@ public class MainForm implements UIObservable {
     private JButton exportButton;
 
     //listens for input events on the UI
-    private Set<UIListener> listeners = new HashSet<>();
+    private Set<MainFormListener> listeners = new HashSet<>();
 
     // TODO: move to context
     private File syntaxDiagramGrammarFile;
@@ -53,7 +53,7 @@ public class MainForm implements UIObservable {
                     return;
                 }
 
-                for (UIListener listener : listeners) {
+                for (MainFormListener listener : listeners) {
                     listener.grammarImported(importedGrammar);
                 }
             }
@@ -68,7 +68,7 @@ public class MainForm implements UIObservable {
                 if(saveDialogValue == JFileChooser.APPROVE_OPTION){
                     File selectedFile = jFileChooser.getSelectedFile();
 
-                    for (UIListener listener : listeners) {
+                    for (MainFormListener listener : listeners) {
                         listener.exportFileSelected(selectedFile, BNFNotationTextArea.getText(), EBNFNotationTextArea.getText(), syntaxDiagramGrammarFile);
                     }
                 }
@@ -83,7 +83,7 @@ public class MainForm implements UIObservable {
     }
 
     @Override
-    public void addUIListener(UIListener listener) {
+    public void addUIListener(MainFormListener listener) {
         listeners.add(listener);
     }
 

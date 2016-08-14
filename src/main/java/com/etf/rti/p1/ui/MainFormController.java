@@ -25,13 +25,13 @@ import java.util.List;
  * Main controller class that observes and manages UI events. Uses translator layer to provide data for UI.
  * Invokes re-rendering of UI if needed with providing necessary data.
  */
-public class UIController implements UIListener, SinGenLoggerListener {
+public class MainFormController implements MainFormListener, SinGenLoggerListener {
 
-    private UIObservable myObservable;
+    private MainFormObservable myObservable;
     private BNFGrammarToEBNFRuleTranslator toEBNFRuleTranslator = new BNFGrammarToEBNFRuleTranslator();
     private BNFGrammarToSyntaxDiagramTranslator toSyntaxDiagramTranslator = new BNFGrammarToSyntaxDiagramTranslator();
 
-    public UIController(UIObservable myObservable) {
+    public MainFormController(MainFormObservable myObservable) {
         this.myObservable = myObservable;
 
         myObservable.addUIListener(this);
@@ -66,7 +66,7 @@ public class UIController implements UIListener, SinGenLoggerListener {
                                    File syntaxDiagramGrammarFile) {
         try {
             String encodedSyntaxDiagram = Base64.getEncoder().encodeToString(Files.readAllBytes(syntaxDiagramGrammarFile.toPath()));
-            String templateFile = IOUtils.toString(UIController.class.getClassLoader().getResourceAsStream("templates/grammar_export.html"));
+            String templateFile = IOUtils.toString(MainFormController.class.getClassLoader().getResourceAsStream("templates/grammar_export.html"));
             String rendered = templateFile.replace("{$file_name$}", FilenameUtils.getBaseName(selectedFile.getName()))
                     .replace("{$bnf_grammar$}", escapeHtml(bnfGrammar))
                     .replace("{$ebnf_grammar$}", escapeHtml(ebnfGrammar))

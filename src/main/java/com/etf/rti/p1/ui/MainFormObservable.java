@@ -3,16 +3,10 @@ package com.etf.rti.p1.ui;
 import java.io.File;
 
 /**
- * Interface that enables listeners to register on UIObservable and then do proper
+ * Interface that enables listeners to register on MainFormObservable and then do proper
  * UI managing using the interface methods.
  */
-public interface UIObservable<T> {
-
-    /**
-     * Register listener to the UIObservable elemnt
-     * @param listener register listener for UI event changes
-     */
-    void addUIListener(UIListener<T> listener);
+public interface MainFormObservable extends UIObservable<MainFormListener> {
 
     /**
      * Refreshing BNF panel with new bnf grammar

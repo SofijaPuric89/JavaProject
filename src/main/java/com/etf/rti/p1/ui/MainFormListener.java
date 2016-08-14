@@ -3,10 +3,10 @@ package com.etf.rti.p1.ui;
 import java.io.File;
 
 /**
- * Listener interface that will be registered on UIObservable object
+ * Listener interface that will be registered on MainFormObservable object
  * and then react properly on its UI events.
  */
-public interface UIListener<T> {
+public interface MainFormListener {
 
     void grammarImported(String importedGrammar);
 
