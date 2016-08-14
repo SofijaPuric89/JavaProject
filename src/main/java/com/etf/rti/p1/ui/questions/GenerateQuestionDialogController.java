@@ -7,12 +7,9 @@ import java.util.function.Consumer;
 
 public class GenerateQuestionDialogController implements GenerateQuestionDialogListener {
 
-    private final UIObservable<GenerateQuestionDialogListener> myObservable;
-
     private final QuestionGenerator questionGenerator;
 
     public GenerateQuestionDialogController(UIObservable<GenerateQuestionDialogListener> myObservable, String grammar) {
-        this.myObservable = myObservable;
         myObservable.addUIListener(this);
 
         questionGenerator = new QuestionGenerator(grammar);
@@ -24,7 +21,12 @@ public class GenerateQuestionDialogController implements GenerateQuestionDialogL
     }
 
     @Override
-    public void generateIncorrectAnswer(int answerLengt, Consumer<String> callback) {
-        callback.accept(questionGenerator.generateGrammaticalyIncorrectAnswer(answerLengt));
+    public void generateIncorrectAnswer(int answerLength, Consumer<String> callback) {
+        callback.accept(questionGenerator.generateGrammaticalyIncorrectAnswer(answerLength));
+    }
+
+    @Override
+    public void checkIfAnswerCorrect(String answer, Consumer<Boolean> callback) {
+        callback.accept(questionGenerator.isAnswerGrammaticallyCorrect(answer));
     }
 }

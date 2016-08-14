@@ -3,6 +3,8 @@ package com.etf.rti.p1.ui.questions;
 import com.etf.rti.p1.ui.UIObservable;
 
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import java.awt.event.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -30,6 +32,9 @@ public class GenerateQuestionDialog extends JDialog implements UIObservable<Gene
     private JLabel answerLabelC;
     private JLabel answerIndicatorIconC;
 
+    private final ImageIcon correctIcon;
+    private final ImageIcon incorrectIcon;
+
     private final Set<GenerateQuestionDialogListener> listeners;
 
     public GenerateQuestionDialog(int width, int height) {
@@ -40,12 +45,52 @@ public class GenerateQuestionDialog extends JDialog implements UIObservable<Gene
         setLocationRelativeTo(null);
         getRootPane().setDefaultButton(generateQuestionBtn);
 
+        correctIcon = new ImageIcon(GenerateQuestionDialog.class.getResource("/images/correct_32_32.png"));
+        incorrectIcon = new ImageIcon(GenerateQuestionDialog.class.getResource("/images/incorrect_32_32.png"));
+
         listeners = new HashSet<>();
 
         addButtonListeners();
         setupClosingActions();
         setupQuestionComboBox();
         setupAnswerLengthSpinner();
+        setupAnswerTextFieldListeners();
+    }
+
+    private void setupAnswerTextFieldListeners() {
+        addAnswerChangeListener(answerTextFieldA, answerIndicatorIconA);
+        addAnswerChangeListener(answerTextFieldB, answerIndicatorIconB);
+        addAnswerChangeListener(answerTextFieldC, answerIndicatorIconC);
+    }
+
+    private void addAnswerChangeListener(JTextField answerTextField, JLabel indicatorIcon) {
+        answerTextField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                onAnswerChange(answerTextField, indicatorIcon);
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                onAnswerChange(answerTextField, indicatorIcon);
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                onAnswerChange(answerTextField, indicatorIcon);
+            }
+        });
+    }
+
+    private void onAnswerChange(JTextField answerTextField, JLabel indicatorIcon) {
+        for (GenerateQuestionDialogListener listener : listeners) {
+            listener.checkIfAnswerCorrect(answerTextField.getText(), new Consumer<Boolean>() {
+                @Override
+                public void accept(Boolean isCorrect) {
+                    indicatorIcon.setIcon(isCorrect ? correctIcon : incorrectIcon);
+                }
+            });
+        }
     }
 
     private void setupAnswerLengthSpinner() {

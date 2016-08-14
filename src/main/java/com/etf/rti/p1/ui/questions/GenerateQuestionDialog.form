@@ -97,14 +97,6 @@
                   <grid row="0" column="3" row-span="1" col-span="3" vsize-policy="1" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
               </hspacer>
-              <component id="d65a6" class="javax.swing.JLabel" binding="answerLabelA">
-                <constraints>
-                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="A)"/>
-                </properties>
-              </component>
               <component id="b4edf" class="javax.swing.JTextField" binding="answerTextFieldA">
                 <constraints>
                   <grid row="2" column="2" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
@@ -135,30 +127,6 @@
                 </constraints>
                 <properties/>
               </component>
-              <component id="35600" class="javax.swing.JLabel" binding="answerIndicatorIconA">
-                <constraints>
-                  <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="AAA"/>
-                </properties>
-              </component>
-              <component id="eba0a" class="javax.swing.JLabel" binding="answerLabelB">
-                <constraints>
-                  <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="B)"/>
-                </properties>
-              </component>
-              <component id="aa5ad" class="javax.swing.JLabel" binding="answerIndicatorIconB">
-                <constraints>
-                  <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="BBB"/>
-                </properties>
-              </component>
               <component id="4a059" class="javax.swing.JTextField" binding="answerTextFieldB">
                 <constraints>
                   <grid row="3" column="2" row-span="1" col-span="2" vsize-policy="0" hsize-policy="6" anchor="8" fill="1" indent="0" use-parent-layout="false">
@@ -181,22 +149,6 @@
                 </constraints>
                 <properties>
                   <text resource-bundle="messages" key="question_dialog_generate_incorrect_answer_btn"/>
-                </properties>
-              </component>
-              <component id="28a3a" class="javax.swing.JLabel" binding="answerLabelC">
-                <constraints>
-                  <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="C)"/>
-                </properties>
-              </component>
-              <component id="8fef" class="javax.swing.JLabel" binding="answerIndicatorIconC">
-                <constraints>
-                  <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
-                </constraints>
-                <properties>
-                  <text value="CCC"/>
                 </properties>
               </component>
               <component id="519bf" class="javax.swing.JTextField" binding="answerTextFieldC">
@@ -229,6 +181,66 @@
                 </constraints>
                 <properties>
                   <text resource-bundle="messages" key="question_dialog_generate_label"/>
+                </properties>
+              </component>
+              <component id="d65a6" class="javax.swing.JLabel" binding="answerLabelA">
+                <constraints>
+                  <grid row="2" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="A)"/>
+                </properties>
+              </component>
+              <component id="eba0a" class="javax.swing.JLabel" binding="answerLabelB">
+                <constraints>
+                  <grid row="3" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="B)"/>
+                </properties>
+              </component>
+              <component id="35600" class="javax.swing.JLabel" binding="answerIndicatorIconA">
+                <constraints>
+                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                    <minimum-size width="32" height="32"/>
+                    <preferred-size width="32" height="32"/>
+                    <maximum-size width="32" height="32"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <text value=""/>
+                </properties>
+              </component>
+              <component id="aa5ad" class="javax.swing.JLabel" binding="answerIndicatorIconB">
+                <constraints>
+                  <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                    <minimum-size width="32" height="32"/>
+                    <preferred-size width="32" height="32"/>
+                    <maximum-size width="32" height="32"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <text value=""/>
+                </properties>
+              </component>
+              <component id="28a3a" class="javax.swing.JLabel" binding="answerLabelC">
+                <constraints>
+                  <grid row="4" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                </constraints>
+                <properties>
+                  <text value="C)"/>
+                </properties>
+              </component>
+              <component id="8fef" class="javax.swing.JLabel" binding="answerIndicatorIconC">
+                <constraints>
+                  <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
+                    <minimum-size width="32" height="32"/>
+                    <preferred-size width="32" height="32"/>
+                    <maximum-size width="32" height="32"/>
+                  </grid>
+                </constraints>
+                <properties>
+                  <text value=""/>
                 </properties>
               </component>
             </children>
