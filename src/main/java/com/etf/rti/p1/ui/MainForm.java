@@ -1,5 +1,7 @@
 package com.etf.rti.p1.ui;
 
+import com.etf.rti.p1.util.SinGenLogger;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -25,13 +27,13 @@ public class MainForm implements MainFormObservable {
     private JPanel mainPanel;
     private JToolBar grammarToolBar;
     private JButton importButton;
-    private JButton generateQuestion;
+    private JButton generateQuestionButton;
     private JPanel notationsPanel;
     private JTabbedPane logPanel;
     private JPanel logTabPanel;
     private JTextPane logTextPane;
-    private JTextArea BNFNotationTextArea;
-    private JTextArea EBNFNotationTextArea;
+    private JTextArea bnfNotationTextArea;
+    private JTextArea ebnfNotationTextArea;
     private JLabel syntaxDiagramImageLabel;
     private JButton exportButton;
 
@@ -69,15 +71,18 @@ public class MainForm implements MainFormObservable {
                     File selectedFile = jFileChooser.getSelectedFile();
 
                     for (MainFormListener listener : listeners) {
-                        listener.exportFileSelected(selectedFile, BNFNotationTextArea.getText(), EBNFNotationTextArea.getText(), syntaxDiagramGrammarFile);
+                        listener.exportFileSelected(selectedFile, bnfNotationTextArea.getText(), ebnfNotationTextArea.getText(), syntaxDiagramGrammarFile);
                     }
                 }
             }
         });
-        generateQuestion.addActionListener(new ActionListener() {
+        generateQuestionButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                parent.showGenerateQuestionDialog();
+                String generatedQuestion = parent.showGenerateQuestionDialog();
+
+                SinGenLogger.info("Generated question with answers");
+                SinGenLogger.content(generatedQuestion);
             }
         });
     }
@@ -89,12 +94,12 @@ public class MainForm implements MainFormObservable {
 
     @Override
     public void refreshBNFPanel(String bnfGrammar) {
-        BNFNotationTextArea.setText(bnfGrammar);
+        bnfNotationTextArea.setText(bnfGrammar);
     }
 
     @Override
     public void refreshEBNFPanel(String ebnfGrammar) {
-        EBNFNotationTextArea.setText(ebnfGrammar);
+        ebnfNotationTextArea.setText(ebnfGrammar);
     }
 
     @Override
@@ -104,7 +109,7 @@ public class MainForm implements MainFormObservable {
             BufferedImage syntaxDiagramImage = ImageIO.read(syntaxDiagramGrammarFile);
             syntaxDiagramImageLabel.setIcon(new ImageIcon(syntaxDiagramImage));
         } catch (IOException e) {
-            //TODO: add to log panel, set default display image?!
+            appendErrorLog("Error while refreshing syntax diagram panel, " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -122,6 +127,15 @@ public class MainForm implements MainFormObservable {
     @Override
     public void appendErrorLog(String log) {
         appendToLogTextArea(log, Color.RED);
+    }
+
+    @Override
+    public void enableAllComponents() {
+        exportButton.setEnabled(true);
+        generateQuestionButton.setEnabled(true);
+        bnfNotationTextArea.setEnabled(true);
+        ebnfNotationTextArea.setEnabled(true);
+        syntaxDiagramImageLabel.setEnabled(true);
     }
 
     private void appendToLogTextArea(final String log, Color color) {

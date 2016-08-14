@@ -56,6 +56,8 @@ public class MainFormController implements MainFormListener, SinGenLoggerListene
             File syntaxDiagramTranslatorFile = startSyntaxDiagramTranslator(bnfGrammar);
             SinGenLogger.info("Created syntax diagrams");
             myObservable.refreshSyntaxDiagramPanel(syntaxDiagramTranslatorFile);
+
+            myObservable.enableAllComponents();
         } catch (Exception e) {
             SinGenLogger.error("Error importing and processing grammar", e);
         }
@@ -79,8 +81,7 @@ public class MainFormController implements MainFormListener, SinGenLoggerListene
 
             Files.write(exportFilePath, rendered.getBytes());
         } catch (IOException e) {
-            //TODO: add message to Log panel!
-            e.printStackTrace();
+            SinGenLogger.error("Error while exporting to file ", e);
         }
     }
 

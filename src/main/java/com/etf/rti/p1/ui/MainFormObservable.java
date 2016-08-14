@@ -31,4 +31,6 @@ public interface MainFormObservable extends UIObservable<MainFormListener> {
     void appendContentLog(String log);
 
     void appendErrorLog(String log);
+
+    void enableAllComponents();
 }

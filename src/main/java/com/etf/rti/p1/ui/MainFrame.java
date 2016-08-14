@@ -46,10 +46,10 @@ public class MainFrame extends JFrame {
     }
 
     //TODO: move this part of code to Form
-    public void showGenerateQuestionDialog() {
+    public String showGenerateQuestionDialog() {
         GenerateQuestionDialog questionDialog = new GenerateQuestionDialog(1000, 600);
         generateQuestionDialogListener = new GenerateQuestionDialogController(questionDialog, SinGenContext.getGrammarBNF());
         questionDialog.setVisible(true);
-//        return questionDialog.getDialogValue(); TODO: this should return a generated question string that should be logged!
+        return questionDialog.getDialogValue();
     }
 }

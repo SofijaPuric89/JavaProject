@@ -274,8 +274,8 @@ public class Graph {
 
     public void setCompositeNodesToRecursive() {
         List<Node<Symbol>> list = returnAllNodes(root);
-        List<Node<Symbol>> recursiveNodes = new ArrayList<Node<Symbol>>();
-        List<Node<Symbol>> compositeNodes = new ArrayList<Node<Symbol>>();
+        List<Node<Symbol>> recursiveNodes = new ArrayList<>();
+        List<Node<Symbol>> compositeNodes = new ArrayList<>();
         for (Node<Symbol> node : list) {
             if (node.isRecursive()) {
                 recursiveNodes.add(node);

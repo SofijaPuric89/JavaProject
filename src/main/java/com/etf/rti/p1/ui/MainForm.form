@@ -42,6 +42,7 @@
           <component id="101fe" class="javax.swing.JButton" binding="exportButton" default-binding="true">
             <constraints/>
             <properties>
+              <enabled value="false"/>
               <icon value="images/export_32_32.png"/>
               <text resource-bundle="messages" key="grammar_export"/>
             </properties>
@@ -50,9 +51,10 @@
             <constraints/>
             <properties/>
           </component>
-          <component id="2ea14" class="javax.swing.JButton" binding="generateQuestion">
+          <component id="2ea14" class="javax.swing.JButton" binding="generateQuestionButton">
             <constraints/>
             <properties>
+              <enabled value="false"/>
               <icon value="images/generate_32_32.png"/>
               <text resource-bundle="messages" key="toolbar_generate_question"/>
             </properties>
@@ -111,10 +113,11 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="a95d2" class="javax.swing.JTextArea" binding="BNFNotationTextArea" default-binding="true">
+                  <component id="a95d2" class="javax.swing.JTextArea" binding="bnfNotationTextArea" default-binding="true">
                     <constraints/>
                     <properties>
                       <editable value="false"/>
+                      <enabled value="false"/>
                       <font size="12"/>
                       <wrapStyleWord value="false"/>
                     </properties>
@@ -155,10 +158,11 @@
                 </properties>
                 <border type="none"/>
                 <children>
-                  <component id="21fd" class="javax.swing.JTextArea" binding="EBNFNotationTextArea" default-binding="true">
+                  <component id="21fd" class="javax.swing.JTextArea" binding="ebnfNotationTextArea" default-binding="true">
                     <constraints/>
                     <properties>
                       <editable value="false"/>
+                      <enabled value="false"/>
                       <font size="12"/>
                       <wrapStyleWord value="true"/>
                     </properties>
@@ -205,6 +209,7 @@
                     <constraints/>
                     <properties>
                       <background color="-1"/>
+                      <enabled value="false"/>
                     </properties>
                     <border type="none"/>
                     <children>
@@ -240,7 +245,7 @@
             <rowspec value="fill:d:grow"/>
             <colspec value="fill:d:grow"/>
             <constraints>
-              <tabbedpane title-resource-bundle="messages" title-key="log_tab_title"/>
+              <tabbedpane title-resource-bundle="messages" title-key="log_tab_title" icon="images/info_32_32.png"/>
             </constraints>
             <properties>
               <background color="-1"/>

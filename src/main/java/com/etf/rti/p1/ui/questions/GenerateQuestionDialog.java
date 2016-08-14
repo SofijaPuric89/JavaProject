@@ -36,6 +36,7 @@ public class GenerateQuestionDialog extends JDialog implements UIObservable<Gene
     private final ImageIcon incorrectIcon;
 
     private final Set<GenerateQuestionDialogListener> listeners;
+    private String dialogValue;
 
     public GenerateQuestionDialog(int width, int height) {
         setTitle("SinGen - Generate Question");
@@ -206,5 +207,9 @@ public class GenerateQuestionDialog extends JDialog implements UIObservable<Gene
     @Override
     public void addUIListener(GenerateQuestionDialogListener listener) {
         listeners.add(listener);
+    }
+
+    public String getDialogValue() {
+        return dialogValue;
     }
 }

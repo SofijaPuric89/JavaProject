@@ -69,7 +69,6 @@ public class ImportDialog extends JDialog {
 
     private void refreshGrammarTextArea(String grammarSample) {
         grammarTextArea.setText(grammarSample);
-        grammarTextArea.selectAll();
         grammarTextArea.grabFocus();
         pack();
     }
