@@ -1,6 +1,7 @@
 package com.etf.rti.p1.ui;
 
 import com.etf.rti.p1.SinGen;
+import com.etf.rti.p1.ui.questions.GenerateQuestionDialog;
 
 import javax.swing.*;
 import java.awt.*;

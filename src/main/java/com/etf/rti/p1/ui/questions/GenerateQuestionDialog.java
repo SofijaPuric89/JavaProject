@@ -1,4 +1,4 @@
-package com.etf.rti.p1.ui;
+package com.etf.rti.p1.ui.questions;
 
 import javax.swing.*;
 import java.awt.event.*;
@@ -7,7 +7,7 @@ public class GenerateQuestionDialog extends JDialog {
     private JPanel contentPane;
     private JButton buttonGenerate;
     private JTextArea textArea1;
-    private JComboBox comboBox1;
+    private JComboBox<QuestionTypeComboBoxModelElement> questionTypeComboBox;
     private JSpinner answerLengthSpinner;
     private JTextField answerTextFieldA;
     private JButton generateCorrectAnswerA;
@@ -33,13 +33,21 @@ public class GenerateQuestionDialog extends JDialog {
         setLocationRelativeTo(null);
         getRootPane().setDefaultButton(buttonGenerate);
 
+        addButtonListeners();
+        setupClosingActions();
+        setupQuestionComboBox();
+    }
+
+    private void addButtonListeners() {
         buttonGenerate.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 onGenerateQuestion();
             }
         });
+    }
 
-// call onCancel() when cross is clicked
+    private void setupClosingActions() {
+        // call onCancel() when cross is clicked
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
@@ -53,6 +61,18 @@ public class GenerateQuestionDialog extends JDialog {
                 onCancel();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+    }
+
+    private void setupQuestionComboBox() {
+        QuestionTypeComboBoxModel questionTypeComboBoxModel = new QuestionTypeComboBoxModel();
+        questionTypeComboBoxModel.add(QuestionGivenType.GRAMMAR_IN_BNF,
+                QuestionAskedForType.CORRECT_SEQUENCE_FOR_FIRST_NONTERMINAL,
+                "Given grammar in BNF ask for correct sequence for first non-terminal");
+        questionTypeComboBoxModel.add(QuestionGivenType.GRAMMAR_IN_EBNF,
+                QuestionAskedForType.CORRECT_SEQUENCE_FOR_FIRST_NONTERMINAL,
+                "Given grammar in EBNF ask for correct sequence for first non-terminal");
+        questionTypeComboBox.setModel(questionTypeComboBoxModel);
+        questionTypeComboBox.setSelectedIndex(0);
     }
 
     private void onGenerateQuestion() {
