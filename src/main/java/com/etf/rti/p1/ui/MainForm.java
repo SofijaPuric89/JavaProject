@@ -70,12 +70,12 @@ public class MainForm implements MainFormObservable {
 
             @Override
             public void removeUpdate(DocumentEvent e) {
-
+                onSequenceChange();
             }
 
             @Override
             public void changedUpdate(DocumentEvent e) {
-
+                onSequenceChange();
             }
         });
     }
@@ -154,7 +154,7 @@ public class MainForm implements MainFormObservable {
             BufferedImage syntaxDiagramImage = ImageIO.read(syntaxDiagramGrammarFile);
             syntaxDiagramImageLabel.setIcon(new ImageIcon(syntaxDiagramImage));
         } catch (IOException e) {
-            appendErrorLog("Error while refreshing syntax diagram panel, " + e.getMessage());
+            SinGenLogger.error("Error while refreshing syntax diagram panel. ", e);
             e.printStackTrace();
         }
     }
@@ -194,6 +194,7 @@ public class MainForm implements MainFormObservable {
                 try {
                     doc.insertString(doc.getLength(), log + "\n\n", coloredLog);
                 } catch (BadLocationException e) {
+                    SinGenLogger.error("Error while appengind to log text area. ", e);
                     e.printStackTrace();
                 }
                 logTextPane.setCaretPosition(logTextPane.getDocument().getLength());

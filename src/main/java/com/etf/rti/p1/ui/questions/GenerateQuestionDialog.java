@@ -1,5 +1,6 @@
 package com.etf.rti.p1.ui.questions;
 
+import com.etf.rti.p1.SinGen;
 import com.etf.rti.p1.app.SinGenContext;
 import com.etf.rti.p1.ui.UIObservable;
 
@@ -7,6 +8,7 @@ import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import java.awt.event.*;
+import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -52,12 +54,18 @@ public class GenerateQuestionDialog extends JDialog implements UIObservable<Gene
 
         listeners = new HashSet<>();
 
+        setFrameIcon();
         addButtonListeners();
         setupClosingActions();
         setupQuestionComboBox();
         setupAnswerLengthSpinner();
         setupAnswerTextFieldListeners();
         generatedQuestionTextArea.setLineWrap(true);
+    }
+
+    @Override
+    public void addUIListener(GenerateQuestionDialogListener listener) {
+        listeners.add(listener);
     }
 
     private void setupAnswerTextFieldListeners() {
@@ -144,6 +152,7 @@ public class GenerateQuestionDialog extends JDialog implements UIObservable<Gene
         });
     }
 
+
     private void generateCorrectAnswer(final JTextField answerTextField) {
         for (GenerateQuestionDialogListener listener : listeners) {
             listener.generateCorrectAnswer((Integer) answerLengthSpinner.getValue(), new Consumer<String>() {
@@ -154,7 +163,6 @@ public class GenerateQuestionDialog extends JDialog implements UIObservable<Gene
             });
         }
     }
-
 
     private void generateIncorrectAnswer(JTextField answerTextField) {
         for (GenerateQuestionDialogListener listener : listeners) {
@@ -168,18 +176,18 @@ public class GenerateQuestionDialog extends JDialog implements UIObservable<Gene
     }
 
     private void setupClosingActions() {
-        // call onCancel() when cross is clicked
+        // call onClose() when cross is clicked
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
-                onCancel();
+                onClose();
             }
         });
 
-// call onCancel() on ESCAPE
+        // call onClose() on ESCAPE
         contentPane.registerKeyboardAction(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                onCancel();
+                onClose();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
@@ -209,14 +217,8 @@ public class GenerateQuestionDialog extends JDialog implements UIObservable<Gene
         setDialogValue(generatedQuestionTextArea.getText());
     }
 
-    private void onCancel() {
-// add your code here if necessary
+    private void onClose() {
         dispose();
-    }
-
-    @Override
-    public void addUIListener(GenerateQuestionDialogListener listener) {
-        listeners.add(listener);
     }
 
     public String getDialogValue() {
@@ -225,5 +227,11 @@ public class GenerateQuestionDialog extends JDialog implements UIObservable<Gene
 
     public void setDialogValue(String dialogValue) {
         this.dialogValue = dialogValue;
+    }
+
+    private void setFrameIcon() {
+        URL resource = SinGen.class.getResource("/images/etf_favicon.png");
+        ImageIcon imageIcon = new ImageIcon(resource);
+        setIconImage(imageIcon.getImage());
     }
 }
