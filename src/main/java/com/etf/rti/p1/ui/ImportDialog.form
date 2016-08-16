@@ -34,7 +34,7 @@
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="Import"/>
+                  <comboBoxDisplayText value="Import"/>
                 </properties>
               </component>
               <component id="5723f" class="javax.swing.JButton" binding="buttonCancel">
@@ -42,7 +42,7 @@
                   <grid row="0" column="1" row-span="1" col-span="1" vsize-policy="0" hsize-policy="3" anchor="0" fill="1" indent="0" use-parent-layout="false"/>
                 </constraints>
                 <properties>
-                  <text value="Cancel"/>
+                  <comboBoxDisplayText value="Cancel"/>
                 </properties>
               </component>
             </children>
@@ -87,7 +87,7 @@
               <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
             </constraints>
             <properties>
-              <text resource-bundle="messages" key="import_dialog_message"/>
+              <comboBoxDisplayText resource-bundle="messages" key="import_dialog_message"/>
             </properties>
           </component>
           <component id="eecfa" class="javax.swing.JComboBox" binding="grammarSamplesComboBox">

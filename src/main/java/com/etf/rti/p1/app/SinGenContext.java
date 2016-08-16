@@ -7,6 +7,7 @@ public final class SinGenContext {
 
     private static String grammarBNF;
     private static String grammarEBNF;
+    private static String firstNonTerminalSymbol;
 
     public static String getGrammarBNF() {
         return grammarBNF;
@@ -22,5 +23,13 @@ public final class SinGenContext {
 
     public static void setGrammarEBNF(String grammarEBNF) {
         SinGenContext.grammarEBNF = grammarEBNF;
+    }
+
+    public static String getFirstNonTerminalSymbol() {
+        return firstNonTerminalSymbol;
+    }
+
+    public static void setFirstNonTerminalSymbol(String firstNonTerminalSymbol) {
+        SinGenContext.firstNonTerminalSymbol = firstNonTerminalSymbol;
     }
 }

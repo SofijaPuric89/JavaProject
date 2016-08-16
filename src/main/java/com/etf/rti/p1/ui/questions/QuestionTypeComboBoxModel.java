@@ -5,14 +5,14 @@ import javax.swing.event.ListDataListener;
 import java.util.ArrayList;
 import java.util.List;
 
-class QuestionTypeComboBoxModel implements ComboBoxModel<QuestionTypeComboBoxModelElement> {
+class QuestionTypeComboBoxModel implements ComboBoxModel<QuestionModelElement> {
 
-    private QuestionTypeComboBoxModelElement selectedItem;
-    private final List<QuestionTypeComboBoxModelElement> items = new ArrayList<>();
+    private QuestionModelElement selectedItem;
+    private final List<QuestionModelElement> items = new ArrayList<>();
 
     @Override
     public void setSelectedItem(Object anItem) {
-        selectedItem = (QuestionTypeComboBoxModelElement) anItem;
+        selectedItem = (QuestionModelElement) anItem;
     }
 
     @Override
@@ -26,7 +26,7 @@ class QuestionTypeComboBoxModel implements ComboBoxModel<QuestionTypeComboBoxMod
     }
 
     @Override
-    public QuestionTypeComboBoxModelElement getElementAt(int index) {
+    public QuestionModelElement getElementAt(int index) {
         return items.get(index);
     }
 
@@ -38,8 +38,8 @@ class QuestionTypeComboBoxModel implements ComboBoxModel<QuestionTypeComboBoxMod
     public void removeListDataListener(ListDataListener l) {
     }
 
-    public void add(QuestionGivenType questionGivenType, QuestionAskedForType questionAskedForType, String text) {
-        items.add(new QuestionTypeComboBoxModelElement(questionGivenType, questionAskedForType, text));
+    public void add(QuestionGrammarGivenType questionGrammarGivenType, QuestionAskedForType questionAskedForType, String text) {
+        items.add(new QuestionModelElement(questionGrammarGivenType, questionAskedForType, text));
     }
 }
 

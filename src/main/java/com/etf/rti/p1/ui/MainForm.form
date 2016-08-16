@@ -32,7 +32,7 @@
               <horizontalTextPosition value="11"/>
               <icon value="images/import_32_32.png"/>
               <opaque value="false"/>
-              <text resource-bundle="messages" key="grammar_import"/>
+              <comboBoxDisplayText resource-bundle="messages" key="grammar_import"/>
               <toolTipText resource-bundle="messages" key="grammar_import_tooltip"/>
               <verticalTextPosition value="0"/>
             </properties>
@@ -45,7 +45,7 @@
             <properties>
               <enabled value="false"/>
               <icon value="images/export_32_32.png"/>
-              <text resource-bundle="messages" key="grammar_export"/>
+              <comboBoxDisplayText resource-bundle="messages" key="grammar_export"/>
             </properties>
           </component>
           <component id="583c2" class="javax.swing.JToolBar$Separator">
@@ -57,7 +57,7 @@
             <properties>
               <enabled value="false"/>
               <icon value="images/generate_32_32.png"/>
-              <text resource-bundle="messages" key="toolbar_generate_question"/>
+              <comboBoxDisplayText resource-bundle="messages" key="toolbar_generate_question"/>
             </properties>
           </component>
           <hspacer id="ccc38">
@@ -66,14 +66,14 @@
           <component id="46b54" class="javax.swing.JLabel" binding="checkSequenceIndicatorIcon">
             <constraints/>
             <properties>
-              <text value=" "/>
+              <comboBoxDisplayText value=" "/>
             </properties>
           </component>
           <component id="59f84" class="javax.swing.JLabel">
             <constraints/>
             <properties>
               <foreground color="-7566196"/>
-              <text value="&lt;first_nonterminal&gt; : "/>
+              <comboBoxDisplayText value="&lt;first_nonterminal&gt; : "/>
             </properties>
           </component>
           <component id="25fdd" class="javax.swing.JTextField" binding="checkSequenceTextField">
@@ -127,7 +127,7 @@
                 </constraints>
                 <properties>
                   <labelFor value="a95d2"/>
-                  <text resource-bundle="messages" key="bnf_notation_label"/>
+                  <comboBoxDisplayText resource-bundle="messages" key="bnf_notation_label"/>
                 </properties>
               </component>
               <scrollpane id="5aaaf">
@@ -170,7 +170,7 @@
                 </constraints>
                 <properties>
                   <labelFor value="21fd"/>
-                  <text resource-bundle="messages" key="ebnf_notation_label"/>
+                  <comboBoxDisplayText resource-bundle="messages" key="ebnf_notation_label"/>
                 </properties>
               </component>
               <scrollpane id="179e0">
@@ -217,7 +217,7 @@
                 </constraints>
                 <properties>
                   <labelFor value=""/>
-                  <text resource-bundle="messages" key="syntax_diagram_notation_label"/>
+                  <comboBoxDisplayText resource-bundle="messages" key="syntax_diagram_notation_label"/>
                 </properties>
               </component>
               <scrollpane id="ed21f">
@@ -244,7 +244,7 @@
                           <forms/>
                         </constraints>
                         <properties>
-                          <text value=""/>
+                          <comboBoxDisplayText value=""/>
                         </properties>
                       </component>
                     </children>
@@ -293,7 +293,7 @@
                       <background color="-1"/>
                       <editable value="false"/>
                       <font size="12"/>
-                      <text value=""/>
+                      <comboBoxDisplayText value=""/>
                     </properties>
                   </component>
                 </children>

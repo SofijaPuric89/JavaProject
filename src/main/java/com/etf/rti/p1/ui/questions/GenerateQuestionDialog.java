@@ -17,7 +17,7 @@ public class GenerateQuestionDialog extends JDialog implements UIObservable<Gene
     private JPanel contentPane;
     private JButton generateQuestionBtn;
     private JTextArea generatedQuestionTextArea;
-    private JComboBox<QuestionTypeComboBoxModelElement> questionTypeComboBox;
+    private JComboBox<QuestionModelElement> questionTypeComboBox;
     private JSpinner answerLengthSpinner;
     private JTextField answerTextFieldA;
     private JButton generateCorrectAnswerABtn;
@@ -194,10 +194,10 @@ public class GenerateQuestionDialog extends JDialog implements UIObservable<Gene
 
     private void setupQuestionComboBox() {
         QuestionTypeComboBoxModel questionTypeComboBoxModel = new QuestionTypeComboBoxModel();
-        questionTypeComboBoxModel.add(QuestionGivenType.GRAMMAR_IN_BNF,
+        questionTypeComboBoxModel.add(QuestionGrammarGivenType.GRAMMAR_IN_BNF,
                 QuestionAskedForType.CORRECT_SEQUENCE_FOR_FIRST_NONTERMINAL,
                 "Given grammar in BNF ask for correct sequence for first non-terminal");
-        questionTypeComboBoxModel.add(QuestionGivenType.GRAMMAR_IN_EBNF,
+        questionTypeComboBoxModel.add(QuestionGrammarGivenType.GRAMMAR_IN_EBNF,
                 QuestionAskedForType.CORRECT_SEQUENCE_FOR_FIRST_NONTERMINAL,
                 "Given grammar in EBNF ask for correct sequence for first non-terminal");
         questionTypeComboBox.setModel(questionTypeComboBoxModel);
