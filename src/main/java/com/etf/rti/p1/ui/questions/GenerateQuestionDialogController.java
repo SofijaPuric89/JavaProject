@@ -1,7 +1,7 @@
 package com.etf.rti.p1.ui.questions;
 
 import com.etf.rti.p1.questions.QuestionGenerator;
-import com.etf.rti.p1.ui.UserInterfaceObservable;
+import com.etf.rti.p1.ui.UIObservable;
 
 import java.util.function.Consumer;
 
@@ -9,7 +9,7 @@ public class GenerateQuestionDialogController implements GenerateQuestionDialogL
 
     private final QuestionGenerator questionGenerator;
 
-    public GenerateQuestionDialogController(UserInterfaceObservable<GenerateQuestionDialogListener> myObservable, String grammar) {
+    public GenerateQuestionDialogController(UIObservable<GenerateQuestionDialogListener> myObservable, String grammar) {
         myObservable.addUIListener(this);
 
         questionGenerator = new QuestionGenerator(grammar);

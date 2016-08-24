@@ -6,7 +6,7 @@ import java.io.File;
  * Interface that enables listeners to register on MainFormObservable and then do proper
  * UI managing using the interface methods.
  */
-public interface MainFormObservable extends UserInterfaceObservable<MainFormListener> {
+public interface MainFormObservable extends UIObservable<MainFormListener> {
 
     /**
      * Refreshing BNF panel with new bnf grammar
