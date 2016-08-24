@@ -2,7 +2,7 @@ package com.etf.rti.p1.ui.questions;
 
 import com.etf.rti.p1.SinGen;
 import com.etf.rti.p1.app.SinGenContext;
-import com.etf.rti.p1.ui.UIObservable;
+import com.etf.rti.p1.ui.UserInterfaceObservable;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -13,7 +13,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Consumer;
 
-public class GenerateQuestionDialog extends JDialog implements UIObservable<GenerateQuestionDialogListener> {
+public class GenerateQuestionDialog extends JDialog implements UserInterfaceObservable<GenerateQuestionDialogListener> {
     private JPanel contentPane;
     private JButton generateQuestionBtn;
     private JTextArea generatedQuestionTextArea;

@@ -202,7 +202,7 @@
               </component>
               <component id="35600" class="javax.swing.JLabel" binding="answerIndicatorIconA">
                 <constraints>
-                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="1" use-parent-layout="false">
+                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
                     <minimum-size width="32" height="32"/>
                     <preferred-size width="32" height="32"/>
                     <maximum-size width="32" height="32"/>
@@ -214,7 +214,7 @@
               </component>
               <component id="aa5ad" class="javax.swing.JLabel" binding="answerIndicatorIconB">
                 <constraints>
-                  <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="1" use-parent-layout="false">
+                  <grid row="3" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
                     <minimum-size width="32" height="32"/>
                     <preferred-size width="32" height="32"/>
                     <maximum-size width="32" height="32"/>
@@ -234,7 +234,7 @@
               </component>
               <component id="8fef" class="javax.swing.JLabel" binding="answerIndicatorIconC">
                 <constraints>
-                  <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="1" use-parent-layout="false">
+                  <grid row="4" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false">
                     <minimum-size width="32" height="32"/>
                     <preferred-size width="32" height="32"/>
                     <maximum-size width="32" height="32"/>
