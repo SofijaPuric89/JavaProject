@@ -1,7 +1,6 @@
 package com.etf.rti.p1.questions;
 
 import com.etf.rti.p1.util.GrammarSamples;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -29,7 +28,7 @@ public class QuestionGeneratorTest {
     @Test
     public void generateIncorrectAnswer() throws Exception {
         for (int i = 0; i < 1000; i++) {
-            String incorrectAnswer = generator.generateGrammaticalyIncorrectAnswer(10);
+            String incorrectAnswer = generator.generateGrammaticallyIncorrectAnswer(10);
             boolean isAnswerGrammaticallyCorrect = generator.isAnswerGrammaticallyCorrect(incorrectAnswer);
             assertFalse("Failed after " + i + " iterations", isAnswerGrammaticallyCorrect);
         }

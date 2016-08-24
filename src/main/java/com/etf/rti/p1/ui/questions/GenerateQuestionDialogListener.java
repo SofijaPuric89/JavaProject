@@ -8,4 +8,6 @@ public interface GenerateQuestionDialogListener {
     void generateIncorrectAnswer(int answerLength, Consumer<String> callback);
 
     void checkIfAnswerCorrect(String answer, Consumer<Boolean> callback);
+
+    void buildQuestion(QuestionModelElement element, String answerA, String answerB, String answerC, Consumer<String> callback);
 }

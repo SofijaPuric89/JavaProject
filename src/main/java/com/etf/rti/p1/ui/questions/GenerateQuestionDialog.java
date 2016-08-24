@@ -205,16 +205,16 @@ public class GenerateQuestionDialog extends JDialog implements UIObservable<Gene
     }
 
     private void onGenerateQuestion() {
-        //TODO: add mechanism for generating and putting question text according to combo box!
-        //TODO: maybe some QuestionTextBuilder?
-        generatedQuestionTextArea.setText("Koja od ponuđenih sekvenci odgovara sintaksnoj definiciji za prvi neterminal zadat u BNF notaciji?\n\n");
-        generatedQuestionTextArea.append(SinGenContext.getGrammarBNF());
-        generatedQuestionTextArea.append("\n\n");
-        generatedQuestionTextArea.append("A) " + answerTextFieldA.getText() + "\n");
-        generatedQuestionTextArea.append("B) " + answerTextFieldB.getText() + "\n");
-        generatedQuestionTextArea.append("C) " + answerTextFieldC.getText() + "\n");
-
-        setDialogValue(generatedQuestionTextArea.getText());
+        QuestionModelElement element = (QuestionModelElement) questionTypeComboBox.getSelectedItem();
+        for (GenerateQuestionDialogListener listener : listeners) {
+            listener.buildQuestion(element, answerTextFieldA.getText(), answerTextFieldB.getText(), answerTextFieldC.getText(), new Consumer<String>() {
+                @Override
+                public void accept(String generatedQuestionString) {
+                    generatedQuestionTextArea.setText(generatedQuestionString);
+                    setDialogValue(generatedQuestionTextArea.getText());
+                }
+            });
+        }
     }
 
     private void onClose() {

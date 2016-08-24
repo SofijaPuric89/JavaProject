@@ -1,5 +1,8 @@
 package com.etf.rti.p1.questions;
 
+import com.etf.rti.p1.ui.questions.QuestionAskedForType;
+import com.etf.rti.p1.ui.questions.QuestionGrammarGivenType;
+
 public class QuestionGenerator {
 
     private static final int ANSWER_RETRY_FACTOR = 2;
@@ -34,7 +37,7 @@ public class QuestionGenerator {
         throw new RuntimeException("Cannot generate correct answer after " + noOfRetries + " retries");
     }
 
-    public String generateGrammaticalyIncorrectAnswer(int answerLength) {
+    public String generateGrammaticallyIncorrectAnswer(int answerLength) {
         String answer = answerGenerator.generateAnswer(answerLength);
         if (!grammarChecker.isAnswerGrammaticallyCorrect(answer)) {
             return answer;
@@ -48,5 +51,9 @@ public class QuestionGenerator {
             noOfRetries++;
         }
         throw new RuntimeException("Cannot generate incorrect answer after " + noOfRetries + " retries");
+    }
+
+    public String buildQuestionString(QuestionGrammarGivenType givenType, QuestionAskedForType askedForType, String answerA, String answerB, String answerC) {
+        return QuestionStringBuilder.build(givenType, askedForType, answerA, answerB, answerC);
     }
 }

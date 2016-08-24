@@ -22,11 +22,16 @@ public class GenerateQuestionDialogController implements GenerateQuestionDialogL
 
     @Override
     public void generateIncorrectAnswer(int answerLength, Consumer<String> callback) {
-        callback.accept(questionGenerator.generateGrammaticalyIncorrectAnswer(answerLength));
+        callback.accept(questionGenerator.generateGrammaticallyIncorrectAnswer(answerLength));
     }
 
     @Override
     public void checkIfAnswerCorrect(String answer, Consumer<Boolean> callback) {
         callback.accept(questionGenerator.isAnswerGrammaticallyCorrect(answer));
+    }
+
+    @Override
+    public void buildQuestion(QuestionModelElement element, String answerA, String answerB, String answerC, Consumer<String> callback) {
+        callback.accept(questionGenerator.buildQuestionString(element.getQuestionGrammarGivenType(), element.getQuestionAskedForType(), answerA, answerB, answerC));
     }
 }
