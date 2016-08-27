@@ -4,6 +4,8 @@ import com.etf.rti.p1.SinGen;
 import com.etf.rti.p1.util.GrammarSamples;
 
 import javax.swing.*;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import java.awt.event.*;
 import java.net.URL;
 
@@ -12,7 +14,7 @@ public class NewGrammarDialog extends JDialog {
     private JButton buttonOK;
     private JButton buttonCancel;
     private JTextArea grammarTextArea;
-    private JComboBox grammarSamplesComboBox;
+    private JList grammarSamplesList;
     private String dialogValue;
 
     public NewGrammarDialog(int width, int height) {
@@ -51,17 +53,17 @@ public class NewGrammarDialog extends JDialog {
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
-        //set grammar sample text
-        refreshGrammarTextArea(GrammarSamples.readGrammarSample(0));
-
         //set sample grammar combo box
-        DefaultComboBoxModel comboBoxModel = new DefaultComboBoxModel(GrammarSamples.getGrammarSampleFileNames().toArray());
-        grammarSamplesComboBox.setModel(comboBoxModel);
-        grammarSamplesComboBox.addItemListener(new ItemListener() {
+        grammarSamplesList.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        grammarSamplesList.setLayoutOrientation(JList.VERTICAL);
+        ListModel listModel = new DefaultComboBoxModel(GrammarSamples.getGrammarSampleFileNames().toArray());
+        grammarSamplesList.setModel(listModel);
+        grammarSamplesList.setSelectedIndex(-1);
+        grammarSamplesList.addListSelectionListener(new ListSelectionListener() {
             @Override
-            public void itemStateChanged(ItemEvent e) {
-                String selectedFileName = e.getItem().toString();
-                String grammarSample = GrammarSamples.readGrammarSample(selectedFileName);
+            public void valueChanged(ListSelectionEvent e) {
+                int selectedGrammarSampleIndex = e.getFirstIndex();
+                String grammarSample = GrammarSamples.readGrammarSample(selectedGrammarSampleIndex);
                 refreshGrammarTextArea(grammarSample);
             }
         });
@@ -70,7 +72,6 @@ public class NewGrammarDialog extends JDialog {
     private void refreshGrammarTextArea(String grammarSample) {
         grammarTextArea.setText(grammarSample);
         grammarTextArea.grabFocus();
-        pack();
     }
 
     private void onOK() {

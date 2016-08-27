@@ -40,7 +40,8 @@ public class MainFrame extends JFrame {
 
     //TODO: move this part of code to Form
     public String showNewGrammarDialog() {
-        NewGrammarDialog newGrammarDialog = new NewGrammarDialog(600, 400);
+        // TODO: Based on actual screen size
+        NewGrammarDialog newGrammarDialog = new NewGrammarDialog(1000, 600);
         newGrammarDialog.setVisible(true);
         return newGrammarDialog.getDialogValue();
     }
