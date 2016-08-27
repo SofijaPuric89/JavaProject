@@ -40,10 +40,6 @@
               <hideActionText class="java.lang.Boolean" value="false"/>
             </clientProperties>
           </component>
-          <component id="f2195" class="javax.swing.JToolBar$Separator">
-            <constraints/>
-            <properties/>
-          </component>
           <component id="583c2" class="javax.swing.JToolBar$Separator">
             <constraints/>
             <properties/>
@@ -121,6 +117,11 @@
         <colspec value="fill:d:grow"/>
         <colspec value="left:4dlu:noGrow"/>
         <colspec value="fill:d:grow"/>
+        <colgroup>
+          <member index="1"/>
+          <member index="3"/>
+          <member index="5"/>
+        </colgroup>
         <constraints>
           <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="4" hsize-policy="4" anchor="0" fill="3" indent="0" use-parent-layout="false">
             <preferred-size width="0" height="344"/>
@@ -156,7 +157,7 @@
                   <text resource-bundle="messages" key="bnf_notation_label"/>
                 </properties>
               </component>
-              <scrollpane id="5aaaf">
+              <scrollpane id="5aaaf" binding="bnfNotationScrollPane" custom-create="true">
                 <constraints>
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                   <forms defaultalign-vert="false"/>
@@ -164,12 +165,12 @@
                 <properties/>
                 <border type="none"/>
                 <children>
-                  <component id="a95d2" class="javax.swing.JTextArea" binding="bnfNotationTextArea" default-binding="true">
+                  <component id="a95d2" class="javax.swing.JTextArea" binding="bnfNotationTextArea" custom-create="true" default-binding="true">
                     <constraints/>
                     <properties>
                       <editable value="false"/>
                       <enabled value="false"/>
-                      <font size="12"/>
+                      <font size="16"/>
                       <wrapStyleWord value="false"/>
                     </properties>
                   </component>
@@ -199,7 +200,7 @@
                   <text resource-bundle="messages" key="ebnf_notation_label"/>
                 </properties>
               </component>
-              <scrollpane id="179e0">
+              <scrollpane id="179e0" binding="ebnfNotationScrollPane" custom-create="true">
                 <constraints>
                   <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
                   <forms defaultalign-horz="false" defaultalign-vert="false"/>
@@ -209,12 +210,12 @@
                 </properties>
                 <border type="none"/>
                 <children>
-                  <component id="21fd" class="javax.swing.JTextArea" binding="ebnfNotationTextArea" default-binding="true">
+                  <component id="21fd" class="javax.swing.JTextArea" binding="ebnfNotationTextArea" custom-create="true" default-binding="true">
                     <constraints/>
                     <properties>
                       <editable value="false"/>
                       <enabled value="false"/>
-                      <font size="12"/>
+                      <font size="16"/>
                       <wrapStyleWord value="true"/>
                     </properties>
                   </component>

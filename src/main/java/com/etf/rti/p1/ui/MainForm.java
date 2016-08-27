@@ -2,6 +2,9 @@ package com.etf.rti.p1.ui;
 
 import com.etf.rti.p1.app.SinGenContext;
 import com.etf.rti.p1.util.SinGenLogger;
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
+import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
+import org.fife.ui.rtextarea.RTextScrollPane;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -45,6 +48,8 @@ public class MainForm implements MainFormObservable {
     private JLabel firstNonterminalLabel;
     private JButton openButton;
     private JButton saveAsButton;
+    private JScrollPane bnfNotationScrollPane;
+    private JScrollPane ebnfNotationScrollPane;
 
     //listens for input events on the UI
     private Set<MainFormListener> listeners = new HashSet<>();
@@ -250,5 +255,21 @@ public class MainForm implements MainFormObservable {
      */
     public JPanel getMainPanel() {
         return mainPanel;
+    }
+
+    private void createUIComponents() {
+        bnfNotationTextArea = new RSyntaxTextArea();
+        enableSyntaxHighlighting(bnfNotationTextArea);
+        bnfNotationScrollPane = new RTextScrollPane(bnfNotationTextArea);
+
+        ebnfNotationTextArea = new RSyntaxTextArea();
+        enableSyntaxHighlighting(ebnfNotationTextArea);
+        ebnfNotationScrollPane = new RTextScrollPane(ebnfNotationTextArea);
+    }
+
+    private void enableSyntaxHighlighting(JTextArea textArea) {
+        // TODO: Create BNF syntax style
+        ((RSyntaxTextArea)textArea).setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_HTML);
+        ((RSyntaxTextArea)textArea).setCodeFoldingEnabled(true);
     }
 }

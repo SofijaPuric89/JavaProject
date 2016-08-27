@@ -2,6 +2,9 @@ package com.etf.rti.p1.ui;
 
 import com.etf.rti.p1.SinGen;
 import com.etf.rti.p1.util.GrammarSamples;
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
+import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
+import org.fife.ui.rtextarea.RTextScrollPane;
 
 import javax.swing.*;
 import javax.swing.event.ListSelectionEvent;
@@ -15,6 +18,7 @@ public class NewGrammarDialog extends JDialog {
     private JButton buttonCancel;
     private JTextArea grammarTextArea;
     private JList grammarSamplesList;
+    private JScrollPane grammarScrollPane;
     private String dialogValue;
 
     public NewGrammarDialog(int width, int height) {
@@ -93,5 +97,13 @@ public class NewGrammarDialog extends JDialog {
         URL resource = SinGen.class.getResource("/images/etf_favicon.png");
         ImageIcon imageIcon = new ImageIcon(resource);
         setIconImage(imageIcon.getImage());
+    }
+
+    private void createUIComponents() {
+        grammarTextArea = new RSyntaxTextArea();
+        // TODO: Create BNF syntax style
+        ((RSyntaxTextArea)grammarTextArea).setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_HTML);
+        ((RSyntaxTextArea)grammarTextArea).setCodeFoldingEnabled(true);
+        grammarScrollPane = new RTextScrollPane(grammarTextArea);
     }
 }
