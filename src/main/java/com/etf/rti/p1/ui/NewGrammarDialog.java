@@ -104,6 +104,7 @@ public class NewGrammarDialog extends JDialog {
         // TODO: Create BNF syntax style
         ((RSyntaxTextArea)grammarTextArea).setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_HTML);
         ((RSyntaxTextArea)grammarTextArea).setCodeFoldingEnabled(true);
+        grammarTextArea.setLineWrap(true);
         grammarScrollPane = new RTextScrollPane(grammarTextArea);
     }
 }

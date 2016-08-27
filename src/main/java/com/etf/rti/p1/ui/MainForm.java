@@ -271,5 +271,6 @@ public class MainForm implements MainFormObservable {
         // TODO: Create BNF syntax style
         ((RSyntaxTextArea)textArea).setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_HTML);
         ((RSyntaxTextArea)textArea).setCodeFoldingEnabled(true);
+        textArea.setLineWrap(true);
     }
 }
