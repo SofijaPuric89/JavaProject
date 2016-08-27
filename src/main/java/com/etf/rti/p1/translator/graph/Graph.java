@@ -5,6 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.*;
 import java.util.regex.Matcher;
+import java.util.stream.Collectors;
 
 /**
  * Created by Korisnik on 20.1.2016.
@@ -582,14 +583,10 @@ public class Graph {
         return sum;
     }
 
-    public List<Node<Symbol>> findAllTerminals() {
+    public List<Node<Symbol>> getAllTerminals() {
         List<Node<Symbol>> all = returnAllNodes(root);
-        List<Node<Symbol>> terminals = new ArrayList<Node<Symbol>>();
-        for (Node<Symbol> node : all) {
-            if (!node.getData().isNonterminal() && node.getData().isNode()) {
-                terminals.add(node);
-            }
-        }
-        return terminals;
+        return all.stream()
+                .filter(node -> !node.getData().isNonterminal() && node.getData().isNode())
+                .collect(Collectors.toList());
     }
 }

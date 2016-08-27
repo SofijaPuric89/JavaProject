@@ -60,6 +60,10 @@ options {
         return listRules;
     }
 
+    public String getFirstNonterminalSymbol() {
+        return listRules.getFirst().getRule().toString();
+    }
+
     private void print(String s) {
         if (output != null)
             output.print(s);
@@ -89,7 +93,12 @@ options {
             "@parser::members {\n" +
                         "    public LinkedList<IRule> getRules() {\n" +
                         "        return null;\n" +
-                        "    }}\n");
+                        "    }\n" +
+                        "    public String getFirstNonterminalSymbol() {\n" +
+                        "        return null;\n" +
+                        "    }\n" +
+                        "}\n"
+                        );
             println(String.format("init : %s ;", s));
         }
         first = false;

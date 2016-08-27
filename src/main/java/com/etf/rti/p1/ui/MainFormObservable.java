@@ -33,4 +33,6 @@ public interface MainFormObservable extends UIObservable<MainFormListener> {
     void appendErrorLog(String log);
 
     void enableAllComponents();
+
+    void refreshFirstNonTerminalLabel(String symbol);
 }

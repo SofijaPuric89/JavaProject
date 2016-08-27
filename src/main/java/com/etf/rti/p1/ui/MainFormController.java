@@ -1,6 +1,7 @@
 package com.etf.rti.p1.ui;
 
 import com.etf.rti.p1.app.SinGenContext;
+import com.etf.rti.p1.compiler.AParser;
 import com.etf.rti.p1.compiler.bnf.BNFCompiler;
 import com.etf.rti.p1.questions.QuestionGenerator;
 import com.etf.rti.p1.translator.BNFGrammarToEBNFRuleTranslator;
@@ -50,13 +51,19 @@ public class MainFormController implements MainFormListener, SinGenLoggerListene
             myObservable.refreshBNFPanel(bnfGrammar);
             SinGenContext.setGrammarBNF(bnfGrammar);
 
-            String ebnfGrammar = startEBNFTranslator(bnfGrammar);
+            AParser bnfParser = createParser(bnfGrammar);
+
+            String firstNonterminalSymbol = bnfParser.getFirstNonterminalSymbol();
+            myObservable.refreshFirstNonTerminalLabel(firstNonterminalSymbol);
+            SinGenContext.setFirstNonterminalSymbol(firstNonterminalSymbol);
+
+            String ebnfGrammar = translateToEBNF(bnfParser);
             SinGenLogger.info("Translated to EBNF");
             SinGenLogger.content(ebnfGrammar);
             SinGenContext.setGrammarEBNF(ebnfGrammar);
             myObservable.refreshEBNFPanel(ebnfGrammar);
 
-            File syntaxDiagramTranslatorFile = startSyntaxDiagramTranslator(bnfGrammar);
+            File syntaxDiagramTranslatorFile = translateToSyntaxDiagram(bnfGrammar);
             SinGenLogger.info("Created syntax diagrams");
             myObservable.refreshSyntaxDiagramPanel(syntaxDiagramTranslatorFile);
 
@@ -100,22 +107,26 @@ public class MainFormController implements MainFormListener, SinGenLoggerListene
         return StringEscapeUtils.escapeHtml4(text).replaceAll("\\r\\n", "<br/>");
     }
 
-    private File startSyntaxDiagramTranslator(String bnfGrammar) throws Exception {
+    private File translateToSyntaxDiagram(String bnfGrammar) throws Exception {
         return toSyntaxDiagramTranslator.transformToSyntaxDiagram(bnfGrammar);
     }
 
-    private String startEBNFTranslator(String bnfGrammar) throws Exception {
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        BNFCompiler compiler = new BNFCompiler("test", "com.etf.rti.p1.compiler.bnf", out);
-        compiler.setInput(new ByteArrayInputStream(bnfGrammar.getBytes("UTF-8")));
-        compiler.getParser().init();
+    private String translateToEBNF(AParser bnfParser) throws Exception {
         toEBNFRuleTranslator = new BNFGrammarToEBNFRuleTranslator();
-        List<IRule> rules = toEBNFRuleTranslator.transformToEBNF(compiler.getParser().getRules());
+        List<IRule> rules = toEBNFRuleTranslator.transformToEBNF(bnfParser.getRules());
         String ebnfGrammar = "";
         for(IRule rule: rules){
             ebnfGrammar = ebnfGrammar.concat(rule.toString() + "\r\n").replace(" ", "");
         }
         return ebnfGrammar;
+    }
+
+    private AParser createParser(String bnfGrammar) throws Exception {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        BNFCompiler compiler = new BNFCompiler("test", "com.etf.rti.p1.compiler.bnf", out);
+        compiler.setInput(new ByteArrayInputStream(bnfGrammar.getBytes("UTF-8")));
+        compiler.getParser().init();
+        return compiler.getParser();
     }
 
     @Override

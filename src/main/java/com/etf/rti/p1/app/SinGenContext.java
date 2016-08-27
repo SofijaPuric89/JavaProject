@@ -29,7 +29,7 @@ public final class SinGenContext {
         return firstNonTerminalSymbol;
     }
 
-    public static void setFirstNonTerminalSymbol(String firstNonTerminalSymbol) {
+    public static void setFirstNonterminalSymbol(String firstNonTerminalSymbol) {
         SinGenContext.firstNonTerminalSymbol = firstNonTerminalSymbol;
     }
 }

@@ -68,7 +68,7 @@
             <constraints/>
             <properties/>
           </component>
-          <component id="59f84" class="javax.swing.JLabel">
+          <component id="59f84" class="javax.swing.JLabel" binding="firstNonterminalLabel">
             <constraints/>
             <properties>
               <foreground color="-7566196"/>

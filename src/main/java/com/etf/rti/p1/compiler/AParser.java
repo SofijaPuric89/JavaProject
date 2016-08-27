@@ -21,5 +21,5 @@ public abstract class AParser extends Parser {
 
     public abstract LinkedList<IRule> getRules();
 
-
+    public abstract String getFirstNonterminalSymbol();
 }

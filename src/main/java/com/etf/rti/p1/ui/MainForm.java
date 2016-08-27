@@ -42,6 +42,7 @@ public class MainForm implements MainFormObservable {
     private JButton exportButton;
     private JTextField checkSequenceTextField;
     private JLabel checkSequenceIndicatorIcon;
+    private JLabel firstNonterminalLabel;
 
     //listens for input events on the UI
     private Set<MainFormListener> listeners = new HashSet<>();
@@ -112,7 +113,7 @@ public class MainForm implements MainFormObservable {
                 jFileChooser.setAcceptAllFileFilterUsed(false);
                 jFileChooser.setFileFilter(new FileNameExtensionFilter("HTML file (*.html)", "html"));
                 int saveDialogValue = jFileChooser.showSaveDialog(mainPanel);
-                if(saveDialogValue == JFileChooser.APPROVE_OPTION){
+                if (saveDialogValue == JFileChooser.APPROVE_OPTION) {
                     File selectedFile = jFileChooser.getSelectedFile();
 
                     for (MainFormListener listener : listeners) {
@@ -182,6 +183,11 @@ public class MainForm implements MainFormObservable {
         ebnfNotationTextArea.setEnabled(true);
         syntaxDiagramImageLabel.setEnabled(true);
         checkSequenceTextField.setEnabled(true);
+    }
+
+    @Override
+    public void refreshFirstNonTerminalLabel(String symbol) {
+        firstNonterminalLabel.setText("<" + symbol + ">");
     }
 
     private void appendToLogTextArea(final String log, Color color) {

@@ -377,7 +377,7 @@ public class AnswerGenerator {
         calculateCorruptAnswerParameters(correctAnswer.length());
         int answerLen = correctAnswer.length(); // zameniti nesto u odgovoru na nekoj poziciji od correctLen do answerLen
         if (correctLen > 0 && correctLen <= answerLen) {
-            List<Node<Symbol>> terminals = grammarGraph.findAllTerminals();
+            List<Node<Symbol>> terminals = grammarGraph.getAllTerminals();
             List<Pair<Node<Symbol>, Node<Symbol>>> pairs = new ArrayList<Pair<Node<Symbol>, Node<Symbol>>>();   // parovi cvorova terminala koji nemaju sve pretke iste
             for (int i = 0; i < terminals.size(); i++) {
                 for (int j = i + 1; j < terminals.size(); j++) {

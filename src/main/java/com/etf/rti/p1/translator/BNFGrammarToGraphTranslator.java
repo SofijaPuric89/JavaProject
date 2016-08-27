@@ -10,8 +10,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Parsing grammar provided as input string in BNF notation. Input string contains \n as an indicator of new line
- * TODO: Think about class rename, it is more like BNFNotationGrammarParser with testing purposes
+ * Translate grammar in BNF notations into graph that is being used for generating sequence for answers
+ * Parsing grammar provided as input string in BNF notation. Input string contains \n as an indicator of new line.
  */
 public class BNFGrammarToGraphTranslator {
     //TODO: think about moving constants in Utils class for BNFGrammarToGraphTranslator
