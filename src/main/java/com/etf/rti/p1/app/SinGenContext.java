@@ -1,5 +1,7 @@
 package com.etf.rti.p1.app;
 
+import java.io.File;
+
 /**
  * Context class that keeps information about current state of application
  */
@@ -8,6 +10,7 @@ public final class SinGenContext {
     private static String grammarBNF;
     private static String grammarEBNF;
     private static String firstNonTerminalSymbol;
+    private static File loadGrammarRootDir;
 
     public static String getGrammarBNF() {
         return grammarBNF;
@@ -31,5 +34,13 @@ public final class SinGenContext {
 
     public static void setFirstNonterminalSymbol(String firstNonTerminalSymbol) {
         SinGenContext.firstNonTerminalSymbol = firstNonTerminalSymbol;
+    }
+
+    public static void setLoadGrammarRootDir(File loadGrammarRootDir) {
+        SinGenContext.loadGrammarRootDir = loadGrammarRootDir;
+    }
+
+    public static File getLoadGrammarRootDir() {
+        return loadGrammarRootDir;
     }
 }

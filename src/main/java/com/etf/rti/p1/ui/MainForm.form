@@ -53,6 +53,25 @@
             <constraints/>
             <properties/>
           </component>
+          <component id="282bd" class="javax.swing.JButton" binding="openButton">
+            <constraints/>
+            <properties>
+              <icon value="images/open_32_32.png"/>
+              <text resource-bundle="messages" key="toolbar_open_btn"/>
+            </properties>
+          </component>
+          <component id="b34dd" class="javax.swing.JButton" binding="saveAsButton">
+            <constraints/>
+            <properties>
+              <enabled value="false"/>
+              <icon value="images/save_as_32_32.png"/>
+              <text resource-bundle="messages" key="toolbar_save_as_btn"/>
+            </properties>
+          </component>
+          <component id="4be77" class="javax.swing.JToolBar$Separator">
+            <constraints/>
+            <properties/>
+          </component>
           <component id="2ea14" class="javax.swing.JButton" binding="generateQuestionButton">
             <constraints/>
             <properties>

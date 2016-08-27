@@ -1,5 +1,6 @@
 package com.etf.rti.p1.ui;
 
+import com.etf.rti.p1.app.SinGenContext;
 import com.etf.rti.p1.ui.questions.GenerateQuestionDialogListener;
 import com.etf.rti.p1.util.SinGenLogger;
 
@@ -43,6 +44,8 @@ public class MainForm implements MainFormObservable {
     private JTextField checkSequenceTextField;
     private JLabel checkSequenceIndicatorIcon;
     private JLabel firstNonterminalLabel;
+    private JButton openButton;
+    private JButton saveAsButton;
 
     //listens for input events on the UI
     private Set<MainFormListener> listeners = new HashSet<>();
@@ -120,6 +123,28 @@ public class MainForm implements MainFormObservable {
                         listener.exportFileSelected(selectedFile, bnfNotationTextArea.getText(), ebnfNotationTextArea.getText(), syntaxDiagramGrammarFile);
                     }
                 }
+            }
+        });
+        openButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser jFileChooser = new JFileChooser(SinGenContext.getLoadGrammarRootDir());
+                jFileChooser.setAcceptAllFileFilterUsed(false);
+                jFileChooser.setFileFilter(new FileNameExtensionFilter("BNF file (*.bnf)", "bnf"));
+                int saveDialogValue = jFileChooser.showOpenDialog(mainPanel);
+                if (saveDialogValue == JFileChooser.APPROVE_OPTION) {
+                    File selectedFile = jFileChooser.getSelectedFile();
+
+                    for (MainFormListener listener : listeners) {
+                        listener.openFileSelected(selectedFile);
+                    }
+                }
+            }
+        });
+        saveAsButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
             }
         });
         generateQuestionButton.addActionListener(new ActionListener() {

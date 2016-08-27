@@ -14,4 +14,6 @@ public interface MainFormListener {
     void exportFileSelected(File selectedFile, String bnfGrammar, String ebnfGrammar, File syntaxDiagramGrammarFile);
 
     void checkIfAnswerCorrect(String answer, Consumer<Boolean> callback);
+
+    void openFileSelected(File selectedFile);
 }

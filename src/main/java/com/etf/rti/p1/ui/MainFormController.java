@@ -13,10 +13,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -101,6 +98,18 @@ public class MainFormController implements MainFormListener, SinGenLoggerListene
             questionGenerator = new QuestionGenerator(SinGenContext.getGrammarBNF());
         }
         callback.accept(questionGenerator.isAnswerGrammaticallyCorrect(answer));
+    }
+
+    @Override
+    public void openFileSelected(File selectedFile) {
+        try {
+            String bnfGrammar = IOUtils.toString(new FileInputStream(selectedFile));
+            grammarImported(bnfGrammar);
+
+            SinGenContext.setLoadGrammarRootDir(selectedFile.getParentFile());
+        } catch (IOException e) {
+            SinGenLogger.error("Error opening file " + selectedFile.getName(), e);
+        }
     }
 
     private String escapeHtml(String text) {
