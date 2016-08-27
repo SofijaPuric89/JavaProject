@@ -94,7 +94,7 @@ public class MainFormController implements MainFormListener, SinGenLoggerListene
 
     @Override
     public void checkIfAnswerCorrect(String answer, Consumer<Boolean> callback) {
-        if(questionGenerator == null){
+        if (questionGenerator == null) {
             questionGenerator = new QuestionGenerator(SinGenContext.getGrammarBNF());
         }
         callback.accept(questionGenerator.isAnswerGrammaticallyCorrect(answer));
@@ -112,6 +112,20 @@ public class MainFormController implements MainFormListener, SinGenLoggerListene
         }
     }
 
+    @Override
+    public void saveAsFileSelected(File selectedFile, String bnfGrammar) {
+        try {
+            Path savedAsFilePath = selectedFile.toPath();
+            if (!selectedFile.getName().endsWith(".bnf")) {
+                savedAsFilePath = Paths.get(selectedFile.getAbsolutePath() + ".bnf");
+            }
+
+            Files.write(savedAsFilePath, bnfGrammar.getBytes());
+        } catch (IOException e) {
+            SinGenLogger.error("Error saving file " + selectedFile.getName(), e);
+        }
+    }
+
     private String escapeHtml(String text) {
         return StringEscapeUtils.escapeHtml4(text).replaceAll("\\r\\n", "<br/>");
     }
@@ -124,7 +138,7 @@ public class MainFormController implements MainFormListener, SinGenLoggerListene
         toEBNFRuleTranslator = new BNFGrammarToEBNFRuleTranslator();
         List<IRule> rules = toEBNFRuleTranslator.transformToEBNF(bnfParser.getRules());
         String ebnfGrammar = "";
-        for(IRule rule: rules){
+        for (IRule rule : rules) {
             ebnfGrammar = ebnfGrammar.concat(rule.toString() + "\r\n").replace(" ", "");
         }
         return ebnfGrammar;

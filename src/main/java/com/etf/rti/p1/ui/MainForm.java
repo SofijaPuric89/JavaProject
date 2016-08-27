@@ -144,7 +144,17 @@ public class MainForm implements MainFormObservable {
         saveAsButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                JFileChooser jFileChooser = new JFileChooser(SinGenContext.getLoadGrammarRootDir());
+                jFileChooser.setAcceptAllFileFilterUsed(false);
+                jFileChooser.setFileFilter(new FileNameExtensionFilter("BNF file (*.bnf)", "bnf"));
+                int saveDialogValue = jFileChooser.showSaveDialog(mainPanel);
+                if (saveDialogValue == JFileChooser.APPROVE_OPTION) {
+                    File selectedFile = jFileChooser.getSelectedFile();
 
+                    for (MainFormListener listener : listeners) {
+                        listener.saveAsFileSelected(selectedFile, bnfNotationTextArea.getText());
+                    }
+                }
             }
         });
         generateQuestionButton.addActionListener(new ActionListener() {
@@ -203,6 +213,7 @@ public class MainForm implements MainFormObservable {
     @Override
     public void enableAllComponents() {
         exportButton.setEnabled(true);
+        saveAsButton.setEnabled(true);
         generateQuestionButton.setEnabled(true);
         bnfNotationTextArea.setEnabled(true);
         ebnfNotationTextArea.setEnabled(true);

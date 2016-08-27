@@ -16,4 +16,6 @@ public interface MainFormListener {
     void checkIfAnswerCorrect(String answer, Consumer<Boolean> callback);
 
     void openFileSelected(File selectedFile);
+
+    void saveAsFileSelected(File selectedFile, String bnfGrammar);
 }
