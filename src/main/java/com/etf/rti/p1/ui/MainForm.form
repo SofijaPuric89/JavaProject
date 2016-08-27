@@ -49,6 +49,7 @@
             <properties>
               <icon value="images/open_32_32.png"/>
               <text resource-bundle="messages" key="toolbar_open_btn"/>
+              <toolTipText resource-bundle="messages" key="toolbar_tooltip_open_btn"/>
             </properties>
           </component>
           <component id="b34dd" class="javax.swing.JButton" binding="saveAsButton">
@@ -57,6 +58,7 @@
               <enabled value="false"/>
               <icon value="images/save_as_32_32.png"/>
               <text resource-bundle="messages" key="toolbar_save_as_btn"/>
+              <toolTipText resource-bundle="messages" key="toolbar_tooltip_save_as_btn"/>
             </properties>
           </component>
           <component id="4be77" class="javax.swing.JToolBar$Separator">
@@ -82,6 +84,7 @@
               <enabled value="false"/>
               <icon value="images/generate_32_32.png"/>
               <text resource-bundle="messages" key="toolbar_generate_question"/>
+              <toolTipText resource-bundle="messages" key="toolbar_tooltip_generate_question_btn"/>
             </properties>
           </component>
           <hspacer id="ccc38">
@@ -96,6 +99,7 @@
             <properties>
               <foreground color="-7566196"/>
               <text value=" &lt;first_non_terminal&gt; "/>
+              <toolTipText resource-bundle="messages" key="toolbar_first_nonterminal_label"/>
             </properties>
           </component>
           <component id="25fdd" class="javax.swing.JTextField" binding="checkSequenceTextField">
@@ -104,6 +108,7 @@
               <enabled value="true"/>
               <horizontalAlignment value="4"/>
               <maximumSize width="5000" height="2147483647"/>
+              <toolTipText resource-bundle="messages" key="toolbar_tooltip_check_sequence_text_field"/>
             </properties>
           </component>
         </children>

@@ -269,7 +269,7 @@ public class MainForm implements MainFormObservable {
 
     private void enableSyntaxHighlighting(JTextArea textArea) {
         // TODO: Create BNF syntax style
-        ((RSyntaxTextArea)textArea).setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_HTML);
+        ((RSyntaxTextArea)textArea).setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_XML);
         ((RSyntaxTextArea)textArea).setCodeFoldingEnabled(true);
         textArea.setLineWrap(true);
     }

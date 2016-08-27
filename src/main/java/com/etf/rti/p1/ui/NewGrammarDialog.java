@@ -102,7 +102,7 @@ public class NewGrammarDialog extends JDialog {
     private void createUIComponents() {
         grammarTextArea = new RSyntaxTextArea();
         // TODO: Create BNF syntax style
-        ((RSyntaxTextArea)grammarTextArea).setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_HTML);
+        ((RSyntaxTextArea)grammarTextArea).setSyntaxEditingStyle(SyntaxConstants.SYNTAX_STYLE_XML);
         ((RSyntaxTextArea)grammarTextArea).setCodeFoldingEnabled(true);
         grammarTextArea.setLineWrap(true);
         grammarScrollPane = new RTextScrollPane(grammarTextArea);
