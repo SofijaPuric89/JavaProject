@@ -14,18 +14,18 @@ import static org.apache.commons.io.IOUtils.readLines;
 public class GrammarSamples {
 
     private static final String GRAMMARS_RESOURCE_ROOT = "grammars/";
-    private static List<String> grammarExampleFileNames;
+    private static List<String> grammarSampleFileNames;
 
     private GrammarSamples() {
     }
 
     private static List<String> loadGrammarSampleFileNames() {
         try {
-            grammarExampleFileNames = readLines(
+            grammarSampleFileNames = readLines(
                     GrammarSamples.class.getClassLoader()
                             .getResourceAsStream(GRAMMARS_RESOURCE_ROOT),
                     "UTF-8");
-            return grammarExampleFileNames;
+            return grammarSampleFileNames;
         } catch (IOException e) {
             System.err.println("Couldn't load grammar sample files");
             e.printStackTrace();
@@ -34,20 +34,20 @@ public class GrammarSamples {
     }
 
     public static List<String> getGrammarSampleFileNames() {
-        if (grammarExampleFileNames == null) {
+        if (grammarSampleFileNames == null) {
             loadGrammarSampleFileNames();
         }
-        return grammarExampleFileNames;
+        return grammarSampleFileNames;
     }
 
     public static String getGrammarSampleFileName(int index) {
-        if (grammarExampleFileNames == null) {
+        if (grammarSampleFileNames == null) {
             loadGrammarSampleFileNames();
         }
-        if (grammarExampleFileNames == null || index < 0 || index >= grammarExampleFileNames.size()) {
+        if (grammarSampleFileNames == null || index < 0 || index >= grammarSampleFileNames.size()) {
             return null;
         }
-        return grammarExampleFileNames.get(index);
+        return grammarSampleFileNames.get(index);
     }
 
     public static String readGrammarSample(int index) {
@@ -66,25 +66,25 @@ public class GrammarSamples {
     }
 
     public static String readRandomGrammarSample() {
-        if (grammarExampleFileNames == null) {
+        if (grammarSampleFileNames == null) {
             loadGrammarSampleFileNames();
         }
-        if (grammarExampleFileNames == null) {
+        if (grammarSampleFileNames == null) {
             return null;
         }
-        int index = new Random(System.currentTimeMillis()).nextInt(grammarExampleFileNames.size());
+        int index = new Random(System.currentTimeMillis()).nextInt(grammarSampleFileNames.size());
         return readGrammarSample(index);
     }
 
     public static String readGrammarSample(String readFileName) {
-        if (grammarExampleFileNames == null) {
+        if (grammarSampleFileNames == null) {
             loadGrammarSampleFileNames();
         }
-        if (grammarExampleFileNames == null) {
+        if (grammarSampleFileNames == null) {
             return null;
         }
         try {
-            return readGrammarSample(grammarExampleFileNames.indexOf(readFileName));
+            return readGrammarSample(grammarSampleFileNames.indexOf(readFileName));
         } catch (Exception e) {
             System.err.println("Couldn't read grammar sample file " + readFileName);
             e.printStackTrace();

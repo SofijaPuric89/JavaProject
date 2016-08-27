@@ -9,7 +9,7 @@ import java.util.function.Consumer;
  */
 public interface MainFormListener {
 
-    void grammarImported(String importedGrammar);
+    void grammarOpened(String importedGrammar);
 
     void exportFileSelected(File selectedFile, String bnfGrammar, String ebnfGrammar, File syntaxDiagramGrammarFile);
 

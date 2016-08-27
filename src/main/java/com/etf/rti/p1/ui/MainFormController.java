@@ -41,7 +41,7 @@ public class MainFormController implements MainFormListener, SinGenLoggerListene
     }
 
     @Override
-    public void grammarImported(String bnfGrammar) {
+    public void grammarOpened(String bnfGrammar) {
         SinGenLogger.info("Imported grammar");
         SinGenLogger.content(bnfGrammar);
         try {
@@ -87,6 +87,7 @@ public class MainFormController implements MainFormListener, SinGenLoggerListene
             }
 
             Files.write(exportFilePath, rendered.getBytes());
+            SinGenLogger.info("Grammar exported to location: " + selectedFile.getAbsolutePath());
         } catch (IOException e) {
             SinGenLogger.error("Error while exporting to file ", e);
         }
@@ -104,7 +105,7 @@ public class MainFormController implements MainFormListener, SinGenLoggerListene
     public void openFileSelected(File selectedFile) {
         try {
             String bnfGrammar = IOUtils.toString(new FileInputStream(selectedFile));
-            grammarImported(bnfGrammar);
+            grammarOpened(bnfGrammar);
 
             SinGenContext.setLoadGrammarRootDir(selectedFile.getParentFile());
         } catch (IOException e) {

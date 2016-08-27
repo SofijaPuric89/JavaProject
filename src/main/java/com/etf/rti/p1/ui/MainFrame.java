@@ -39,10 +39,10 @@ public class MainFrame extends JFrame {
     }
 
     //TODO: move this part of code to Form
-    public String showImportDialog() {
-        ImportDialog importDialog = new ImportDialog(600, 400);
-        importDialog.setVisible(true);
-        return importDialog.getDialogValue();
+    public String showNewGrammarDialog() {
+        NewGrammarDialog newGrammarDialog = new NewGrammarDialog(600, 400);
+        newGrammarDialog.setVisible(true);
+        return newGrammarDialog.getDialogValue();
     }
 
     //TODO: move this part of code to Form

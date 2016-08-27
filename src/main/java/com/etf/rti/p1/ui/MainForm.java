@@ -1,7 +1,6 @@
 package com.etf.rti.p1.ui;
 
 import com.etf.rti.p1.app.SinGenContext;
-import com.etf.rti.p1.ui.questions.GenerateQuestionDialogListener;
 import com.etf.rti.p1.util.SinGenLogger;
 
 import javax.imageio.ImageIO;
@@ -31,7 +30,7 @@ public class MainForm implements MainFormObservable {
     private final MainFrame parent;
     private JPanel mainPanel;
     private JToolBar grammarToolBar;
-    private JButton importButton;
+    private JButton newButton;
     private JButton generateQuestionButton;
     private JPanel notationsPanel;
     private JTabbedPane logPanel;
@@ -96,16 +95,16 @@ public class MainForm implements MainFormObservable {
     }
 
     private void setButtonListeners(final MainFrame parent) {
-        importButton.addActionListener(new ActionListener() {
+        newButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String importedGrammar = parent.showImportDialog();
-                if (importedGrammar == null || importedGrammar.isEmpty()) {
+                String newGrammar = parent.showNewGrammarDialog();
+                if (newGrammar == null || newGrammar.isEmpty()) {
                     return;
                 }
 
                 for (MainFormListener listener : listeners) {
-                    listener.grammarImported(importedGrammar);
+                    listener.grammarOpened(newGrammar);
                 }
             }
         });
