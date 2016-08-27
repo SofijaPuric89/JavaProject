@@ -38,8 +38,10 @@ class QuestionStringBuilder {
     }
 
     private static String buildQuestionPartForFirstNonterminal(String grammarNotation, String grammar) {
-        return "Koja od ponuđenih sekvenci odgovara sintaksnoj definiciji za prvi neterminal zadat u " + grammarNotation + " notaciji?\n\n" +
-                grammar + "\n\n";
+        return "Koja od ponuđenih sekvenci odgovara sintaksnoj definiciji za izraz <"
+                + SinGenContext.getFirstNonTerminalSymbol() + "> zadat u "
+                + grammarNotation + " notaciji?\n\n"
+                + grammar + "\n\n";
     }
 
 

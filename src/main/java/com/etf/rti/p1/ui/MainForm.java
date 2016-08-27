@@ -187,7 +187,7 @@ public class MainForm implements MainFormObservable {
 
     @Override
     public void refreshFirstNonTerminalLabel(String symbol) {
-        firstNonterminalLabel.setText("<" + symbol + ">");
+        firstNonterminalLabel.setText(" <" + symbol + "> ");
     }
 
     private void appendToLogTextArea(final String log, Color color) {

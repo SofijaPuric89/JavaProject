@@ -72,7 +72,7 @@
             <constraints/>
             <properties>
               <foreground color="-7566196"/>
-              <text value="&lt;first_non_terminal&gt;"/>
+              <text value=" &lt;first_non_terminal&gt; "/>
             </properties>
           </component>
           <component id="25fdd" class="javax.swing.JTextField" binding="checkSequenceTextField">
