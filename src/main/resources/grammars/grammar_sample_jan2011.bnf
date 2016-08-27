@@ -1,5 +1,0 @@
-<stablo>::= (<levo> <cvor> <desno>)
-<levo>::= <stablo>+|<prazno>
-<desno>::= -<stablo>|<prazno>
-<cvor>::= A|B|C|D|E|F
-<prazno>::= _

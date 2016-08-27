@@ -1,0 +1,11 @@
+<ispit> ::= <naziv>,TERMIN:<vreme>,<sala>,<broj>
+<vreme> ::= <sati>:<minuti>
+<sati> ::= 0<cifra> | 1<cifra>
+<minuti> ::= <sati> | 2<cifra> | 3<cifra> | 4<cifra> | 5<cifra>
+<naziv> ::= <rec> | <naziv><blanko><rec>
+<rec> ::= <slovo> | <rec><slovo>
+<sala> ::= <naziv>
+<broj> ::= <cifra> | <broj><cifra>
+<slovo> ::= a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z
+<cifra> ::= 0|1|2|3|4|5|6|7|8|9
+<blanko> ::= _

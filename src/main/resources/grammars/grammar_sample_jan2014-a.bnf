@@ -1,4 +1,0 @@
-<prod>::= <ime><V><CLS>
-<ime> ::= A|X|Y|Z|<ime><ime>
-<V> ::= 0|1|2|3|<V>.<V>
-<CLS> ::= R|B

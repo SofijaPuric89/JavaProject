@@ -364,7 +364,7 @@ public class AnswerGenerator {
                 }
             }
         }
-        if (list.isEmpty()) {
+        if (list.isEmpty() && !node.getChildren().isEmpty()) {
             int num = randomNumber(node.getChildren().size());
             list.add(node.getChildren().get(num));
         }

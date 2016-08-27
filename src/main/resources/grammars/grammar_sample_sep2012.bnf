@@ -1,6 +1,0 @@
-<nastup>::=<grupa>∆<vreme>∆<minut>|<nastup>,∆<vreme>∆<minut>
-<grupa>::=<rec>|<grupa>∆<rec>
-<rec>::=<slovo>|<rec><slovo>
-<vreme>::=<sat>:<minut>
-<sat>::=<cifra>|1<cifra>|2<cifra>
-<minut>::=<cifra><cifra>

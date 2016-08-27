@@ -1,0 +1,3 @@
+<s> ::= AB<p>C | ABC
+<p> ::= C<r> | <r>
+<r> ::= DAB | DAB<p>

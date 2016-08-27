@@ -1,7 +1,0 @@
-<redvoznje>::=OD:<naziv><blanko>DO:<naziv>,<blanko><vreme>
-<vreme>::=<sati>:<minuti>
-<sati>::=0<cifra> | 1<cifra>
-<minuti>::=<sati> | 2<cifra> | 3<cifra> | 4<cifra> | 5<cifra>
-<naziv>::=<rec> | <rec><blanko><rec>
-<rec>::=<slovo> | <rec><slovo>
-<blanko>::=_

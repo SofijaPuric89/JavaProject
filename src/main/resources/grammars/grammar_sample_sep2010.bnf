@@ -1,3 +1,0 @@
-B = D | D “and” B
-D = P | P “or” D | P “xor” D
-P = “t” | “f”

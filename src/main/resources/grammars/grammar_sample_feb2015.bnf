@@ -1,4 +1,0 @@
-<start> ::= ab<x>|<y><x>
-<x> ::= <z>|<x><y>
-<y> ::= cc|a<x>a
-<z> ::= b|aa<z>
