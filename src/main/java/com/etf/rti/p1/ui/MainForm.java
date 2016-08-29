@@ -262,19 +262,20 @@ public class MainForm implements MainFormObservable {
     private void createUIComponents() {
         AbstractTokenMakerFactory tokenMakerFactory = (AbstractTokenMakerFactory) TokenMakerFactory.getDefaultInstance();
         tokenMakerFactory.putMapping("text/bnf", "com.etf.rti.p1.ui.highlight.BNFTokenMaker");
+        tokenMakerFactory.putMapping("text/ebnf", "com.etf.rti.p1.ui.highlight.EBNFTokenMaker");
 
         bnfNotationTextArea = new RSyntaxTextArea();
-        enableSyntaxHighlighting(bnfNotationTextArea);
+        enableSyntaxHighlighting(bnfNotationTextArea, "text/bnf");
         bnfNotationScrollPane = new RTextScrollPane(bnfNotationTextArea);
 
         ebnfNotationTextArea = new RSyntaxTextArea();
-        enableSyntaxHighlighting(ebnfNotationTextArea);
+        enableSyntaxHighlighting(ebnfNotationTextArea, "text/ebnf");
         ebnfNotationScrollPane = new RTextScrollPane(ebnfNotationTextArea);
     }
 
-    private void enableSyntaxHighlighting(JTextArea textArea) {
+    private void enableSyntaxHighlighting(JTextArea textArea, String type) {
         // TODO: Create BNF syntax style
-        ((RSyntaxTextArea)textArea).setSyntaxEditingStyle("text/bnf");
+        ((RSyntaxTextArea) textArea).setSyntaxEditingStyle(type);
         textArea.setLineWrap(true);
     }
 }
