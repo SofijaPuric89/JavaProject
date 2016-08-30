@@ -5,6 +5,10 @@ import com.etf.rti.p1.app.SinGenContext;
 import com.etf.rti.p1.ui.questions.GenerateQuestionDialog;
 import com.etf.rti.p1.ui.questions.GenerateQuestionDialogController;
 import com.etf.rti.p1.ui.questions.GenerateQuestionDialogListener;
+import org.fife.ui.rsyntaxtextarea.CodeTemplateManager;
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
+import org.fife.ui.rsyntaxtextarea.templates.CodeTemplate;
+import org.fife.ui.rsyntaxtextarea.templates.StaticCodeTemplate;
 
 import javax.swing.*;
 import java.awt.*;
@@ -22,6 +26,8 @@ public class MainFrame extends JFrame {
 
     public MainFrame() throws HeadlessException {
         super("SinGen");
+        enableCodeTemplates();
+
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setFrameIcon();
@@ -30,6 +36,22 @@ public class MainFrame extends JFrame {
         mainFormListener = new MainFormController(mainForm);
 
         add(mainForm.getMainPanel());
+
+    }
+
+    private void enableCodeTemplates() {
+        RSyntaxTextArea.setTemplatesEnabled(true);
+
+        CodeTemplateManager codeTemplateManager = RSyntaxTextArea.getCodeTemplateManager();
+
+        CodeTemplate ruleCodeTemplate = new StaticCodeTemplate("rule", "<", "> ::= ");
+        codeTemplateManager.addTemplate(ruleCodeTemplate);
+
+        CodeTemplate nonterminalCodeTemplate = new StaticCodeTemplate("nt", "<", ">");
+        codeTemplateManager.addTemplate(nonterminalCodeTemplate);
+
+        CodeTemplate orCodeTemplate = new StaticCodeTemplate("or", "|", null);
+        codeTemplateManager.addTemplate(orCodeTemplate);
     }
 
     private void setFrameIcon() {
