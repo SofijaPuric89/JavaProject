@@ -1,6 +1,7 @@
 package com.etf.rti.p1.translator.ebnf.arrays;
 
 import com.etf.rti.p1.translator.ebnf.elements.IElement;
+import com.etf.rti.p1.translator.ebnf.elements.Nonterminal;
 import com.etf.rti.p1.translator.ebnf.elements.Special;
 
 import java.util.LinkedList;
@@ -256,6 +257,16 @@ public class SimpleArray implements IElementArray {
 
     public ListIterator<IElement> iterator(int pos) {
         return list.listIterator(pos);
+    }
+
+    @Override
+    public boolean containsNonterminalElement() {
+        for (IElement element : list) {
+            if (element instanceof Nonterminal) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public int size() {

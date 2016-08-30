@@ -1,5 +1,11 @@
 package com.etf.rti.p1.app;
 
+import com.etf.rti.p1.compiler.AParser;
+import com.etf.rti.p1.compiler.bnf.BNFCompiler;
+import com.etf.rti.p1.util.SinGenLogger;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 
 /**
@@ -11,13 +17,32 @@ public final class SinGenContext {
     private static String grammarEBNF;
     private static String firstNonTerminalSymbol;
     private static File loadGrammarRootDir;
+    private static AParser parser;
 
     public static String getGrammarBNF() {
         return grammarBNF;
     }
 
-    public static void setGrammarBNF(String grammarBNF) {
+    public static AParser setGrammarBNF(String grammarBNF) {
+        if (SinGenContext.grammarBNF != null && SinGenContext.grammarBNF.equals(grammarBNF)) {
+            return SinGenContext.parser;
+        }
+
         SinGenContext.grammarBNF = grammarBNF;
+        try {
+            SinGenContext.parser = createParser(grammarBNF);
+        } catch (Exception e) {
+            SinGenLogger.error("Couldn't create BNF parser for grammar " + grammarBNF, e);
+        }
+        return SinGenContext.parser;
+    }
+
+    private static AParser createParser(String bnfGrammar) throws Exception {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        BNFCompiler compiler = new BNFCompiler("test", "com.etf.rti.p1.compiler.bnf", out);
+        compiler.setInput(new ByteArrayInputStream(bnfGrammar.getBytes("UTF-8")));
+        compiler.getParser().init();
+        return compiler.getParser();
     }
 
     public static String getGrammarEBNF() {
@@ -42,5 +67,9 @@ public final class SinGenContext {
 
     public static File getLoadGrammarRootDir() {
         return loadGrammarRootDir;
+    }
+
+    public static AParser getParser() {
+        return parser;
     }
 }

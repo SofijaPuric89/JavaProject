@@ -42,6 +42,8 @@ public interface IElementArray extends Cloneable, Comparable<IElementArray> {
 
     ListIterator<IElement> iterator(int pos);
 
+    boolean containsNonterminalElement();
+
     int size();
 
     Object clone();

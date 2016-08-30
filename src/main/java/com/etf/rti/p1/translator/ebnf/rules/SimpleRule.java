@@ -141,4 +141,9 @@ public class SimpleRule implements IRule {
 
         return ret;
     }
+
+    @Override
+    public boolean containsTerminal() {
+        return options.stream().anyMatch(IElementArray::containsNonterminalElement);
+    }
 }

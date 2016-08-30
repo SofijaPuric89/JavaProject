@@ -25,4 +25,5 @@ public interface IRule extends Iterable<IElementArray>, Cloneable {
 
     Object clone();
 
+    boolean containsTerminal();
 }

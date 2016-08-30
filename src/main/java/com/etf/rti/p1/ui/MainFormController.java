@@ -46,9 +46,8 @@ public class MainFormController implements MainFormListener, SinGenLoggerListene
         SinGenLogger.content(bnfGrammar);
         try {
             myObservable.refreshBNFPanel(bnfGrammar);
-            SinGenContext.setGrammarBNF(bnfGrammar);
 
-            AParser bnfParser = createParser(bnfGrammar);
+            AParser bnfParser = SinGenContext.setGrammarBNF(bnfGrammar);
 
             String firstNonterminalSymbol = bnfParser.getFirstNonterminalSymbol();
             myObservable.refreshFirstNonTerminalLabel(firstNonterminalSymbol);
@@ -145,13 +144,6 @@ public class MainFormController implements MainFormListener, SinGenLoggerListene
         return ebnfGrammar;
     }
 
-    private AParser createParser(String bnfGrammar) throws Exception {
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        BNFCompiler compiler = new BNFCompiler("test", "com.etf.rti.p1.compiler.bnf", out);
-        compiler.setInput(new ByteArrayInputStream(bnfGrammar.getBytes("UTF-8")));
-        compiler.getParser().init();
-        return compiler.getParser();
-    }
 
     @Override
     public void onInfo(String log) {

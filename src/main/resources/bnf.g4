@@ -43,7 +43,7 @@ options {
     superClass=AParser;
     }
 
-@parser::members {
+@bnfParser::members {
     private PrintStream output = null;
     private boolean first = true;
     private String name;
@@ -90,7 +90,7 @@ options {
                 "import com.etf.rti.p1.translator.ebnf.rules.IRule;\n" +
                 "import java.util.LinkedList;\n" +
             "}\n" +
-            "@parser::members {\n" +
+            "@bnfParser::members {\n" +
                         "    public LinkedList<IRule> getRules() {\n" +
                         "        return null;\n" +
                         "    }\n" +
@@ -105,7 +105,7 @@ options {
     }
 }
 
-@parser::implements {
+@bnfParser::implements {
     IParser
 }
 
