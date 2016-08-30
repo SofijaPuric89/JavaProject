@@ -143,7 +143,41 @@ public class SimpleRule implements IRule {
     }
 
     @Override
-    public boolean containsTerminal() {
+    public boolean containsNonterminal() {
         return options.stream().anyMatch(IElementArray::containsNonterminalElement);
+    }
+
+    @Override
+    public IElementArray getCompositeDirectRecursiveNode() {
+        return options.stream()
+                .filter(IElementArray::isComposite)
+                .filter(this::isDirectRecursive)
+                .findAny()
+                .orElse(null);
+    }
+
+    @Override
+    public String toBNFString() {
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(nonterminal.toBNFString());
+        sb.append(" ::= ");
+
+        for (int i = 0; i < options.size(); i++) {
+            if (options.get(i).size() == 0)
+                continue;
+            if (i > 0) {
+                sb.append(" | ");
+                sb.append(options.get(i).toBNFString());
+            } else {
+                sb.append(options.get(i).toBNFString());
+            }
+        }
+
+        return sb.toString();
+    }
+
+    private boolean isDirectRecursive(IElementArray elementArray) {
+        return elementArray.hasElement(nonterminal);
     }
 }

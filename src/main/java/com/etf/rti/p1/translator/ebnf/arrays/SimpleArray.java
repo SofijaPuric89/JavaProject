@@ -269,6 +269,21 @@ public class SimpleArray implements IElementArray {
         return false;
     }
 
+    @Override
+    public boolean isComposite() {
+        return containsNonterminalElement() && (list.size() > 1);
+    }
+
+    @Override
+    public void changeElement(IElement before, IElement after) {
+        list.replaceAll(element -> {
+            if (element.isEqual(before)) {
+                return after;
+            }
+            return element;
+        });
+    }
+
     public int size() {
         return list.size();
     }
@@ -282,6 +297,20 @@ public class SimpleArray implements IElementArray {
             e.printStackTrace();
         }
         return ret;
+    }
+
+    @Override
+    public String toBNFString() {
+        StringBuilder sb = new StringBuilder();
+
+        for (int i = 0; i < list.size(); i++) {
+            if (i != 0) {
+                sb.append(' ');
+            }
+            sb.append(list.get(i).toBNFString());
+        }
+
+        return sb.toString();
     }
 
     public String toString() {

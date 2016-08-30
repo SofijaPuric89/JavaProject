@@ -25,5 +25,9 @@ public interface IRule extends Iterable<IElementArray>, Cloneable {
 
     Object clone();
 
-    boolean containsTerminal();
+    boolean containsNonterminal();
+
+    IElementArray getCompositeDirectRecursiveNode();
+
+    String toBNFString();
 }

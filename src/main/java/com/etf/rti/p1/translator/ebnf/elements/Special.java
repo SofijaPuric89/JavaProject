@@ -25,6 +25,11 @@ public class Special extends Nonterminal {
         }
     }
 
+    @Override
+    public String toBNFString() {
+        return hiral;
+    }
+
     public boolean isSpecial() {
         return true;
     }

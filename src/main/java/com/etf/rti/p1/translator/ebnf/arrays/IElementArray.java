@@ -44,8 +44,13 @@ public interface IElementArray extends Cloneable, Comparable<IElementArray> {
 
     boolean containsNonterminalElement();
 
+    boolean isComposite();
+
+    void changeElement(IElement before, IElement after);
+
     int size();
 
     Object clone();
 
+    String toBNFString();
 }

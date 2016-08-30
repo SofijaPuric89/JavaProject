@@ -13,4 +13,6 @@ public interface IElement extends Cloneable {
     boolean isSpecial();
 
     boolean hiralMatch(IElement e);
+
+    String toBNFString();
 }

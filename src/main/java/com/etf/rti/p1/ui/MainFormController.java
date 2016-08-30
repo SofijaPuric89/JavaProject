@@ -2,13 +2,13 @@ package com.etf.rti.p1.ui;
 
 import com.etf.rti.p1.app.SinGenContext;
 import com.etf.rti.p1.compiler.AParser;
-import com.etf.rti.p1.compiler.bnf.BNFCompiler;
 import com.etf.rti.p1.questions.QuestionGenerator;
 import com.etf.rti.p1.translator.BNFGrammarToEBNFRuleTranslator;
 import com.etf.rti.p1.translator.BNFGrammarToSyntaxDiagramTranslator;
 import com.etf.rti.p1.translator.ebnf.rules.IRule;
 import com.etf.rti.p1.util.SinGenLogger;
 import com.etf.rti.p1.util.SinGenLoggerListener;
+import com.etf.rti.p1.util.Utils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
@@ -137,11 +137,7 @@ public class MainFormController implements MainFormListener, SinGenLoggerListene
     private String translateToEBNF(AParser bnfParser) throws Exception {
         toEBNFRuleTranslator = new BNFGrammarToEBNFRuleTranslator();
         List<IRule> rules = toEBNFRuleTranslator.transformToEBNF(bnfParser.getRules());
-        String ebnfGrammar = "";
-        for (IRule rule : rules) {
-            ebnfGrammar = ebnfGrammar.concat(rule.toString() + "\r\n").replace(" ", "");
-        }
-        return ebnfGrammar;
+        return Utils.listOfRulesToEBNFString(rules);
     }
 
 

@@ -41,4 +41,9 @@ public class Terminal implements IElement {
     public boolean hiralMatch(IElement e) {
         return false;
     }
+
+    @Override
+    public String toBNFString() {
+        return value;
+    }
 }
