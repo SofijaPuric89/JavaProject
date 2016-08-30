@@ -8,7 +8,7 @@ import com.etf.rti.p1.util.Utils;
 import java.util.List;
 
 
-public class RecursiveToNonRecursiveNodeStrategy implements CorruptBNFRuleStrategy {
+public class RecursiveToNonRecursiveNodeStrategy extends CorruptBNFRuleStrategy {
 
     @Override
     public List<IRule> tryToCorrupt(List<IRule> bnfRules, Integer indexToCorrupt) {
@@ -16,7 +16,7 @@ public class RecursiveToNonRecursiveNodeStrategy implements CorruptBNFRuleStrate
             // with this strategy we need more than one rule after initial rule
             return null;
         }
-        IRule ruleToCorrupt = bnfRules.get(indexToCorrupt);
+        IRule ruleToCorrupt = bnfRules.get(indexToCorrupt).deepCopy();
         IElementArray node = ruleToCorrupt.getCompositeDirectRecursiveNode();
         if (node == null) {
             return null;
@@ -31,6 +31,6 @@ public class RecursiveToNonRecursiveNodeStrategy implements CorruptBNFRuleStrate
             nonTerminalToExchangeWith = bnfRules.get(indexToCorrupt - 1).getRule();
         }
         node.changeElement(ruleToCorrupt.getRule(), nonTerminalToExchangeWith);
-        return bnfRules;
+        return safeCopyOfBnfRules(bnfRules, indexToCorrupt, ruleToCorrupt);
     }
 }

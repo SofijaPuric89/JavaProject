@@ -5,7 +5,9 @@ import com.etf.rti.p1.translator.ebnf.arrays.SimpleArray;
 import com.etf.rti.p1.translator.ebnf.elements.IElement;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.ListIterator;
+import java.util.stream.Collectors;
 
 /**
  * Created by sule on 12/12/15.
@@ -130,10 +132,22 @@ public class SimpleRule implements IRule {
     }
 
     public Object clone() {
+        return copy((LinkedList<IElementArray>) options.clone());
+    }
+
+    @Override
+    public IRule deepCopy() {
+        LinkedList<IElementArray> optionsCopy = options.stream()
+                .map(option -> (IElementArray) option.clone())
+                .collect(Collectors.toCollection(LinkedList::new));
+        return copy(optionsCopy);
+    }
+
+    private IRule copy(LinkedList<IElementArray> options) {
         SimpleRule ret = null;
         try {
             ret = (SimpleRule) super.clone();
-            ret.options = (LinkedList<IElementArray>) options.clone();
+            ret.options = options;
             ret.nonterminal = (IElement) nonterminal.clone();
         } catch (CloneNotSupportedException e) {
             e.printStackTrace();

@@ -10,9 +10,6 @@ import java.io.FileOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
-/**
- * Created by Korisnik on 18.1.2016.
- */
 public class GrammarChecker {
 
     private String grammar;
@@ -25,9 +22,9 @@ public class GrammarChecker {
     }
 
     private void setupCompiler() throws Exception {
-        Path tmpDir = Files.createTempDirectory("test");
+        Path tmpDir = Files.createTempDirectory("grammar");
         tmpDir.toFile().deleteOnExit();
-        final String name = "test";
+        final String name = tmpDir.getFileName().toString();
         Path grammar = tmpDir.resolve(name + ".g4");
 
         String grammarName = grammar.toAbsolutePath().toString();

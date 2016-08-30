@@ -5,6 +5,7 @@ import com.etf.rti.p1.util.RegexPatternFinder;
 import com.etf.rti.p1.util.Utils;
 import org.antlr.v4.Tool;
 import org.antlr.v4.tool.ErrorType;
+import org.apache.commons.io.FileUtils;
 
 import java.io.File;
 import java.io.IOException;
@@ -76,6 +77,7 @@ public class CompilerGenerator {
         for (String s : packageName.split("\\.")) {
             dstDir = dstDir.resolve(s);
         }
+        FileUtils.deleteDirectory(dstDir.toFile());
         Files.createDirectories(dstDir);
 
         for (String x : tempDir.list(new FilenamePatternFilter(".*\\.class$"))) {
