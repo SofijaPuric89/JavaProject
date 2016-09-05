@@ -1,4 +1,4 @@
-package com.etf.rti.p1.util;
+package com.etf.rti.p1.app;
 
 import java.util.HashSet;
 import java.util.Set;

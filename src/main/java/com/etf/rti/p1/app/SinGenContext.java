@@ -2,7 +2,6 @@ package com.etf.rti.p1.app;
 
 import com.etf.rti.p1.compiler.AParser;
 import com.etf.rti.p1.compiler.bnf.BNFCompiler;
-import com.etf.rti.p1.util.SinGenLogger;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;

@@ -1,10 +1,9 @@
 package com.etf.rti.p1.ui;
 
 import com.etf.rti.p1.app.SinGenContext;
-import com.etf.rti.p1.util.SinGenLogger;
+import com.etf.rti.p1.app.SinGenLogger;
 import org.fife.ui.rsyntaxtextarea.AbstractTokenMakerFactory;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
-import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rsyntaxtextarea.TokenMakerFactory;
 import org.fife.ui.rtextarea.RTextScrollPane;
 

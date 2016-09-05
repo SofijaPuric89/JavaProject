@@ -1,4 +1,4 @@
-package com.etf.rti.p1.util;
+package com.etf.rti.p1.app;
 
 public interface SinGenLoggerListener {
     void onInfo(String log);
