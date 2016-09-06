@@ -56,7 +56,7 @@ public final class SinGenContext {
         return firstNonTerminalSymbol;
     }
 
-    public static void setFirstNonterminalSymbol(String firstNonTerminalSymbol) {
+    public static void setFirstNonTerminalSymbol(String firstNonTerminalSymbol) {
         SinGenContext.firstNonTerminalSymbol = firstNonTerminalSymbol;
     }
 

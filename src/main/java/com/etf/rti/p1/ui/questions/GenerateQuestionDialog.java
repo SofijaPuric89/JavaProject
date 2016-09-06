@@ -1,7 +1,6 @@
 package com.etf.rti.p1.ui.questions;
 
 import com.etf.rti.p1.SinGen;
-import com.etf.rti.p1.app.SinGenContext;
 import com.etf.rti.p1.ui.UIObservable;
 
 import javax.swing.*;
@@ -34,6 +33,7 @@ public class GenerateQuestionDialog extends JDialog implements UIObservable<Gene
     private JButton generateIncorrectAnswerCBtn;
     private JLabel answerLabelC;
     private JLabel answerIndicatorIconC;
+    private JPanel correctSequenceAnswerParametersPanel;
 
     private final ImageIcon correctIcon;
     private final ImageIcon incorrectIcon;
@@ -196,10 +196,13 @@ public class GenerateQuestionDialog extends JDialog implements UIObservable<Gene
         QuestionTypeComboBoxModel questionTypeComboBoxModel = new QuestionTypeComboBoxModel();
         questionTypeComboBoxModel.add(QuestionGrammarGivenType.GRAMMAR_IN_BNF,
                 QuestionAskedForType.CORRECT_SEQUENCE_FOR_FIRST_NONTERMINAL,
-                "Given grammar in BNF ask for correct sequence for first non-terminal");
+                "Given grammar in BNF, ask for correct sequence for first non-terminal");
         questionTypeComboBoxModel.add(QuestionGrammarGivenType.GRAMMAR_IN_EBNF,
                 QuestionAskedForType.CORRECT_SEQUENCE_FOR_FIRST_NONTERMINAL,
-                "Given grammar in EBNF ask for correct sequence for first non-terminal");
+                "Given grammar in EBNF, ask for correct sequence for first non-terminal");
+        questionTypeComboBoxModel.add(QuestionGrammarGivenType.CORRECT_SEQUENCE_FOR_FIRST_NON_TERMINAL,
+                QuestionAskedForType.CORRECT_GRAMMAR_FOR_FIRST_NONTERMINAL_SEQUENCE,
+                "Given first non-terminal sequence, ask for correct grammar");
         questionTypeComboBox.setModel(questionTypeComboBoxModel);
         questionTypeComboBox.setSelectedIndex(0);
     }

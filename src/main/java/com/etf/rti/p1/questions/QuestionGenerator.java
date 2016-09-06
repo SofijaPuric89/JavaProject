@@ -54,6 +54,10 @@ public class QuestionGenerator {
     }
 
     public String buildQuestionString(QuestionGrammarGivenType givenType, QuestionAskedForType askedForType, String answerA, String answerB, String answerC) {
-        return QuestionStringBuilder.build(givenType, askedForType, answerA, answerB, answerC);
+        String givenParameter = "";
+        if (givenType == QuestionGrammarGivenType.CORRECT_SEQUENCE_FOR_FIRST_NON_TERMINAL) {
+            givenParameter = generateGrammaticallyCorrectAnswer(10);
+        }
+        return QuestionStringBuilder.build(givenType, askedForType, givenParameter, answerA, answerB, answerC);
     }
 }

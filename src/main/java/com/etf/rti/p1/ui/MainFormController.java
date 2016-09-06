@@ -51,7 +51,7 @@ public class MainFormController implements MainFormListener, SinGenLoggerListene
 
             String firstNonterminalSymbol = bnfParser.getFirstNonterminalSymbol();
             myObservable.refreshFirstNonTerminalLabel(firstNonterminalSymbol);
-            SinGenContext.setFirstNonterminalSymbol(firstNonterminalSymbol);
+            SinGenContext.setFirstNonTerminalSymbol(firstNonterminalSymbol);
 
             String ebnfGrammar = translateToEBNF(bnfParser);
             SinGenLogger.info("Translated to EBNF");
