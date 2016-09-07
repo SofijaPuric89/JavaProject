@@ -10,6 +10,7 @@ import javax.swing.*;
  */
 public class SinGen {
 
+    // TODO: DO we need this?
     public SinGenContext context = new SinGenContext();
 
     public static void main(String[] args) {

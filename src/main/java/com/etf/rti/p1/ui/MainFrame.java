@@ -24,9 +24,8 @@ public class MainFrame extends JFrame {
     MainFormListener mainFormListener;
     GenerateQuestionDialogListener generateQuestionDialogListener;
 
-    public MainFrame() throws HeadlessException {
+    public MainFrame() {
         super("SinGen");
-        enableCodeTemplates();
 
         setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -36,22 +35,6 @@ public class MainFrame extends JFrame {
         mainFormListener = new MainFormController(mainForm);
 
         add(mainForm.getMainPanel());
-
-    }
-
-    private void enableCodeTemplates() {
-        RSyntaxTextArea.setTemplatesEnabled(true);
-
-        CodeTemplateManager codeTemplateManager = RSyntaxTextArea.getCodeTemplateManager();
-
-        CodeTemplate ruleCodeTemplate = new StaticCodeTemplate("rule", "<", "> ::= ");
-        codeTemplateManager.addTemplate(ruleCodeTemplate);
-
-        CodeTemplate nonterminalCodeTemplate = new StaticCodeTemplate("nt", "<", ">");
-        codeTemplateManager.addTemplate(nonterminalCodeTemplate);
-
-        CodeTemplate orCodeTemplate = new StaticCodeTemplate("or", "|", null);
-        codeTemplateManager.addTemplate(orCodeTemplate);
     }
 
     private void setFrameIcon() {

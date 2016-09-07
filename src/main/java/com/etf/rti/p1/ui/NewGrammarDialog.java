@@ -1,9 +1,11 @@
 package com.etf.rti.p1.ui;
 
 import com.etf.rti.p1.SinGen;
+import com.etf.rti.p1.ui.highlight.BNFCodeCompletionSupport;
+import com.etf.rti.p1.ui.highlight.BNFErrorHighlightingParser;
+import com.etf.rti.p1.ui.highlight.BNFReplaceSupport;
 import com.etf.rti.p1.util.GrammarSamples;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
-import org.fife.ui.rsyntaxtextarea.SyntaxConstants;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
 import javax.swing.*;
@@ -66,9 +68,11 @@ public class NewGrammarDialog extends JDialog {
         grammarSamplesList.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                int selectedGrammarSampleIndex = e.getFirstIndex();
-                String grammarSample = GrammarSamples.readGrammarSample(selectedGrammarSampleIndex);
-                refreshGrammarTextArea(grammarSample);
+                if (!e.getValueIsAdjusting()) {
+                    int selectedGrammarSampleIndex = grammarSamplesList.getSelectedIndex();
+                    String grammarSample = GrammarSamples.readGrammarSample(selectedGrammarSampleIndex);
+                    refreshGrammarTextArea(grammarSample);
+                }
             }
         });
     }
@@ -100,10 +104,13 @@ public class NewGrammarDialog extends JDialog {
     }
 
     private void createUIComponents() {
-        grammarTextArea = new RSyntaxTextArea();
-        // TODO: Create BNF syntax style
-        ((RSyntaxTextArea)grammarTextArea).setSyntaxEditingStyle("text/bnf");
-        grammarTextArea.setLineWrap(true);
-        grammarScrollPane = new RTextScrollPane(grammarTextArea);
+        RSyntaxTextArea rSyntaxTextArea = new RSyntaxTextArea();
+        grammarTextArea = rSyntaxTextArea;
+        rSyntaxTextArea.setLineWrap(true);
+        rSyntaxTextArea.setSyntaxEditingStyle("text/bnf");
+        rSyntaxTextArea.addParser(new BNFErrorHighlightingParser());
+        BNFCodeCompletionSupport.enable(rSyntaxTextArea);
+        BNFReplaceSupport.enable(rSyntaxTextArea);
+        grammarScrollPane = new RTextScrollPane(rSyntaxTextArea);
     }
 }
