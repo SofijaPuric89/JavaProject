@@ -6,6 +6,7 @@ class QuestionModelElement {
     private final QuestionGrammarGivenType questionGrammarGivenType;
     private final QuestionAskedForType questionAskedForType;
     private final String comboBoxDisplayText;
+    // TODO: We don't need this
     private final String questionText;
 
     public QuestionModelElement(QuestionGrammarGivenType questionGrammarGivenType, QuestionAskedForType questionAskedForType, String comboBoxDisplayText) {

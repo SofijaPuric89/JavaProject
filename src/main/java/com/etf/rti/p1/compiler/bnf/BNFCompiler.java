@@ -7,7 +7,7 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import java.io.OutputStream;
 
 /**
- * Compiles input grammar in BNF format
+ * Compiles input grammar in BNF format.
  */
 public class BNFCompiler extends RuntimeCompiler {
     private OutputStream output;
