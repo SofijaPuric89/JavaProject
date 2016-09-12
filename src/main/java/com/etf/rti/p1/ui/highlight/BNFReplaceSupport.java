@@ -22,19 +22,20 @@ public class BNFReplaceSupport {
 
     public static void enable(RSyntaxTextArea textArea) {
         textArea.setMarkAllHighlightColor(MARK_ALL_HIGHLIGHT_COLOR);
+        RenameNonterminalAction renameNonterminalAction = new RenameNonterminalAction(textArea);
+        textArea.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0), renameNonterminalAction);
         JPopupMenu popupMenu = textArea.getPopupMenu();
         popupMenu.remove(popupMenu.getComponentCount() - 1);
         // TODO: Add "Replace" action (simple one, just text replace)
-        popupMenu.add(new RenameNonterminalAction(textArea));
+        popupMenu.add(renameNonterminalAction);
     }
 
-    private final static class RenameNonterminalAction extends TextAction {
+    private static final class RenameNonterminalAction extends TextAction {
 
         private final RSyntaxTextArea textArea;
 
         RenameNonterminalAction(RSyntaxTextArea textArea) {
             super("Rename Nonterminal");
-            this.putValue("AcceleratorKey", KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0));
             this.textArea = textArea;
         }
 

@@ -5,13 +5,8 @@ import com.etf.rti.p1.app.SinGenContext;
 import com.etf.rti.p1.ui.questions.GenerateQuestionDialog;
 import com.etf.rti.p1.ui.questions.GenerateQuestionDialogController;
 import com.etf.rti.p1.ui.questions.GenerateQuestionDialogListener;
-import org.fife.ui.rsyntaxtextarea.CodeTemplateManager;
-import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
-import org.fife.ui.rsyntaxtextarea.templates.CodeTemplate;
-import org.fife.ui.rsyntaxtextarea.templates.StaticCodeTemplate;
 
 import javax.swing.*;
-import java.awt.*;
 import java.net.URL;
 
 /**
@@ -53,7 +48,7 @@ public class MainFrame extends JFrame {
 
     //TODO: move this part of code to Form
     public String showGenerateQuestionDialog() {
-        GenerateQuestionDialog questionDialog = new GenerateQuestionDialog(1000, 600);
+        GenerateQuestionDialog questionDialog = new GenerateQuestionDialog(1200, 600);
         generateQuestionDialogListener = new GenerateQuestionDialogController(questionDialog, SinGenContext.getGrammarBNF());
         questionDialog.setVisible(true);
         return questionDialog.getDialogValue();
