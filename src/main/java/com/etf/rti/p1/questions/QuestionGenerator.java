@@ -54,6 +54,7 @@ public class QuestionGenerator {
     }
 
     public String buildQuestionString(QuestionGrammarGivenType givenType, QuestionAskedForType askedForType, String answerA, String answerB, String answerC) {
+        // TODO: replace with the one from the form
         String givenParameter = "";
         if (givenType == QuestionGrammarGivenType.CORRECT_SEQUENCE_FOR_FIRST_NON_TERMINAL) {
             givenParameter = generateGrammaticallyCorrectAnswer(10);

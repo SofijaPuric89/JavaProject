@@ -33,7 +33,23 @@ public class GenerateQuestionDialog extends JDialog implements UIObservable<Gene
     private JButton generateIncorrectAnswerCBtn;
     private JLabel answerLabelC;
     private JLabel answerIndicatorIconC;
-    private JPanel correctSequenceAnswerParametersPanel;
+    private JPanel panel1;
+    private JPanel panel2;
+    private JComboBox answerComboBoxA;
+    private JComboBox answerComboBoxB;
+    private JComboBox answerComboBoxC;
+    private JButton generateSequenceBtn;
+    private JTextField sequenceTextField;
+    private JSpinner sequenceLengthSpinner;
+    private JButton generateCorrectGrammarABtn;
+    private JButton generateCorrectGrammarBBtn;
+    private JButton generateCorrectGrammarCBtn;
+    private JButton generateIncorrectGrammarABtn;
+    private JButton generateIncorrectGrammarBBtn;
+    private JButton generateIncorrectGrammarCBtn;
+    private JLabel grammarIndicatorIconA;
+    private JLabel grammarIndicatorIconB;
+    private JLabel grammarIndicatorIconC;
 
     private final ImageIcon correctIcon;
     private final ImageIcon incorrectIcon;
@@ -105,7 +121,9 @@ public class GenerateQuestionDialog extends JDialog implements UIObservable<Gene
     }
 
     private void setupAnswerLengthSpinner() {
-        answerLengthSpinner.setModel(new SpinnerNumberModel(10, 5, 30, 1));
+        SpinnerNumberModel model = new SpinnerNumberModel(10, 5, 30, 1);
+        answerLengthSpinner.setModel(model);
+        sequenceLengthSpinner.setModel(model);
     }
 
     private void addButtonListeners() {
@@ -150,8 +168,49 @@ public class GenerateQuestionDialog extends JDialog implements UIObservable<Gene
                 generateIncorrectAnswer(answerTextFieldC);
             }
         });
+        generateSequenceBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                generateCorrectAnswer(sequenceTextField);
+            }
+        });
+        generateCorrectGrammarABtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                generateCorrectGrammar(grammarIndicatorIconA);
+            }
+        });
+        generateCorrectGrammarBBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                generateCorrectGrammar(grammarIndicatorIconB);
+            }
+        });
+        generateCorrectGrammarCBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                generateCorrectGrammar(grammarIndicatorIconC);
+            }
+        });
+        generateIncorrectGrammarABtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                generateIncorrectGrammar(grammarIndicatorIconA);
+            }
+        });
+        generateIncorrectGrammarBBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                generateIncorrectGrammar(grammarIndicatorIconB);
+            }
+        });
+        generateIncorrectGrammarCBtn.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                generateIncorrectGrammar(grammarIndicatorIconC);
+            }
+        });
     }
-
 
     private void generateCorrectAnswer(final JTextField answerTextField) {
         for (GenerateQuestionDialogListener listener : listeners) {
@@ -173,6 +232,14 @@ public class GenerateQuestionDialog extends JDialog implements UIObservable<Gene
                 }
             });
         }
+    }
+
+    private void generateCorrectGrammar(JLabel icon) {
+        icon.setIcon(correctIcon);
+    }
+
+    private void generateIncorrectGrammar(JLabel icon) {
+        icon.setIcon(incorrectIcon);
     }
 
     private void setupClosingActions() {
@@ -200,10 +267,28 @@ public class GenerateQuestionDialog extends JDialog implements UIObservable<Gene
         questionTypeComboBoxModel.add(QuestionGrammarGivenType.GRAMMAR_IN_EBNF,
                 QuestionAskedForType.CORRECT_SEQUENCE_FOR_FIRST_NONTERMINAL,
                 "Given grammar in EBNF, ask for correct sequence for first non-terminal");
+        questionTypeComboBoxModel.add(QuestionGrammarGivenType.GRAMMAR_AS_SYNTAX_DIAGRAM,
+                QuestionAskedForType.CORRECT_SEQUENCE_FOR_FIRST_NONTERMINAL,
+                "Given grammar as sequence diagram, ask for correct sequence for first non-terminal");
         questionTypeComboBoxModel.add(QuestionGrammarGivenType.CORRECT_SEQUENCE_FOR_FIRST_NON_TERMINAL,
                 QuestionAskedForType.CORRECT_GRAMMAR_FOR_FIRST_NONTERMINAL_SEQUENCE,
                 "Given first non-terminal sequence, ask for correct grammar");
+        questionTypeComboBoxModel.add(QuestionGrammarGivenType.CORRECT_SEQUENCE_FOR_FIRST_NON_TERMINAL,
+                QuestionAskedForType.CORRECT_RULE_WHICH_SHOULD_BE_ADDED,
+                "Given first non-terminal sequence and grammar in BNF, ask for missing rule so that sequence is correct");
         questionTypeComboBox.setModel(questionTypeComboBoxModel);
+        questionTypeComboBox.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (questionTypeComboBox.getSelectedIndex() == 3) {
+                    panel1.setVisible(false);
+                    panel2.setVisible(true);
+                } else {
+                    panel1.setVisible(true);
+                    panel2.setVisible(false);
+                }
+            }
+        });
         questionTypeComboBox.setSelectedIndex(0);
     }
 

@@ -3,7 +3,6 @@ package com.etf.rti.p1.questions;
 import com.etf.rti.p1.app.SinGenContext;
 import com.etf.rti.p1.ui.questions.QuestionAskedForType;
 import com.etf.rti.p1.ui.questions.QuestionGrammarGivenType;
-import com.sun.xml.internal.bind.v2.runtime.IllegalAnnotationException;
 
 /**
  * Helper class for creating string for questions according to given question type, asked for question type and answers
@@ -34,10 +33,21 @@ class QuestionStringBuilder {
                     case CORRECT_SEQUENCE_FOR_FIRST_NONTERMINAL:
                         return buildQuestionPartForGivenGrammarAskedForFirstNonterminal("EBNF", SinGenContext.getGrammarEBNF());
                 }
+            case GRAMMAR_AS_SYNTAX_DIAGRAM:
+                switch (askedForType) {
+                    case CORRECT_SEQUENCE_FOR_FIRST_NONTERMINAL:
+                        return "Koja od ponuđenih sekvenci odgovara sintaksnoj definiciji za izraz <"
+                                + SinGenContext.getFirstNonTerminalSymbol() + "> zadat u vidu sintaksnog dijagrama?\n\n";
+                }
             case CORRECT_SEQUENCE_FOR_FIRST_NON_TERMINAL:
                 switch (askedForType) {
                     case CORRECT_GRAMMAR_FOR_FIRST_NONTERMINAL_SEQUENCE:
                         return buildQuestionPartForGivenNonterminalAskedForCorrectGrammar(givenParameter);
+                    case CORRECT_RULE_WHICH_SHOULD_BE_ADDED:
+                        return "Koje od ponudjenih pravila je potrebno dodati gramatici u BNF formatu "
+                                + "tako da izrazu <"+ SinGenContext.getFirstNonTerminalSymbol() + "> odgovara " +
+                                "sekvenca " + givenParameter + "?\n\n"
+                                + SinGenContext.getGrammarBNF() + "\n\n";
                 }
         }
         throw new IllegalArgumentException("Unsupported question type combination");
