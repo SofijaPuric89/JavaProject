@@ -3,6 +3,7 @@ package com.etf.rti.p1.translator;
 import com.etf.rti.p1.compiler.AParser;
 import com.etf.rti.p1.questions.GrammarChecker;
 import com.etf.rti.p1.translator.corruptbnf.CorruptBNFRuleStrategy;
+import com.etf.rti.p1.translator.corruptbnf.ExcludeFirstChildNodeStrategy;
 import com.etf.rti.p1.translator.corruptbnf.RecursiveToNonRecursiveNodeStrategy;
 import com.etf.rti.p1.translator.ebnf.rules.IRule;
 import com.etf.rti.p1.util.Utils;
@@ -27,6 +28,7 @@ public class BNFGrammarToNonEquivalentTranslator {
     private List<CorruptBNFRuleStrategy> defineStrategies() {
         List<CorruptBNFRuleStrategy> strategies = new ArrayList<>();
         strategies.add(new RecursiveToNonRecursiveNodeStrategy());
+        strategies.add(new ExcludeFirstChildNodeStrategy());
         return strategies;
     }
 

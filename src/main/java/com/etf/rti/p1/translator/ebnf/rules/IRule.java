@@ -13,6 +13,8 @@ public interface IRule extends Iterable<IElementArray>, Cloneable {
 
     IRule insertOption(IElementArray a);
 
+    IRule removeOption(int indexOfOption);
+
     IRule setNewOptionForInsert();
 
     IRule insertElem(IElement e);

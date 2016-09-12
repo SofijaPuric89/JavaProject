@@ -74,6 +74,15 @@ public class SimpleRule implements IRule {
         return this;
     }
 
+    @Override
+    public IRule removeOption(int indexOfOption) {
+        if (indexOfOption >= options.size()) {
+            return null;
+        }
+        options.remove(indexOfOption);
+        return this;
+    }
+
     public IRule setNewOptionForInsert() {
         if (newOption.size() > 0) {
             options.addLast(newOption);
