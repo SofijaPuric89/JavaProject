@@ -1,7 +1,5 @@
 package com.etf.rti.p1.ui.questions;
 
-import com.etf.rti.p1.app.SinGenContext;
-
 class QuestionModelElement {
     private final QuestionGrammarGivenType questionGrammarGivenType;
     private final QuestionAskedForType questionAskedForType;
