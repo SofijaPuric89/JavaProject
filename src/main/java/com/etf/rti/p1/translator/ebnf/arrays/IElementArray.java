@@ -53,4 +53,6 @@ public interface IElementArray extends Cloneable, Comparable<IElementArray> {
     Object clone();
 
     String toBNFString();
+
+    IElementArray shuffleElements();
 }

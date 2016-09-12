@@ -16,10 +16,6 @@ public class ExcludeFirstChildNodeStrategy extends CorruptBNFRuleStrategy {
 
         ruleToCorrupt.removeOption(0); //removing first child
 
-        List<IRule> safeCopyOfBnfRules = safeCopyOfBnfRules(bnfRules, indexToCorrupt, ruleToCorrupt);
-        for (IRule safeCopyOfBnfRule : safeCopyOfBnfRules) {
-            System.out.println(safeCopyOfBnfRule.toBNFString());
-        }
-        return safeCopyOfBnfRules;
+        return safeCopyOfBnfRules(bnfRules, indexToCorrupt, ruleToCorrupt);
     }
 }

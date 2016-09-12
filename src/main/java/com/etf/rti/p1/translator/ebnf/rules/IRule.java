@@ -33,5 +33,7 @@ public interface IRule extends Iterable<IElementArray>, Cloneable {
 
     IElementArray getCompositeDirectRecursiveNode();
 
+    IElementArray getCompositeNode();
+
     String toBNFString();
 }

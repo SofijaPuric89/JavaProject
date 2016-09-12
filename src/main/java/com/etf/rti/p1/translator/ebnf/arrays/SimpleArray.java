@@ -3,6 +3,7 @@ package com.etf.rti.p1.translator.ebnf.arrays;
 import com.etf.rti.p1.translator.ebnf.elements.IElement;
 import com.etf.rti.p1.translator.ebnf.elements.Nonterminal;
 import com.etf.rti.p1.translator.ebnf.elements.Special;
+import edu.emory.mathcs.backport.java.util.Collections;
 
 import java.util.LinkedList;
 import java.util.ListIterator;
@@ -311,6 +312,12 @@ public class SimpleArray implements IElementArray {
         }
 
         return sb.toString();
+    }
+
+    @Override
+    public IElementArray shuffleElements() {
+        Collections.shuffle(list);
+        return this;
     }
 
     public String toString() {

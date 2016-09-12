@@ -180,6 +180,14 @@ public class SimpleRule implements IRule {
     }
 
     @Override
+    public IElementArray getCompositeNode() {
+        return options.stream()
+                .filter(IElementArray::isComposite)
+                .findAny()
+                .orElse(null);
+    }
+
+    @Override
     public String toBNFString() {
         StringBuilder sb = new StringBuilder();
 
