@@ -1,7 +1,11 @@
 package com.etf.rti.p1.ui.questions;
 
 import com.etf.rti.p1.SinGen;
+import com.etf.rti.p1.app.SinGenContext;
+import com.etf.rti.p1.translator.BNFGrammarToEBNFRuleTranslator;
+import com.etf.rti.p1.translator.BNFGrammarToNonEquivalentTranslator;
 import com.etf.rti.p1.ui.UIObservable;
+import com.etf.rti.p1.util.Utils;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -56,6 +60,9 @@ public class GenerateQuestionDialog extends JDialog implements UIObservable<Gene
 
     private final Set<GenerateQuestionDialogListener> listeners;
     private String dialogValue;
+    private String answerA;
+    private String answerB;
+    private String answerC;
 
     public GenerateQuestionDialog(int width, int height) {
         setTitle("SinGen - Generate Question");
@@ -177,37 +184,37 @@ public class GenerateQuestionDialog extends JDialog implements UIObservable<Gene
         generateCorrectGrammarABtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                generateCorrectGrammar(grammarIndicatorIconA);
+                answerA = generateCorrectGrammar(grammarIndicatorIconA, answerComboBoxA);
             }
         });
         generateCorrectGrammarBBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                generateCorrectGrammar(grammarIndicatorIconB);
+                answerB = generateCorrectGrammar(grammarIndicatorIconB, answerComboBoxB);
             }
         });
         generateCorrectGrammarCBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                generateCorrectGrammar(grammarIndicatorIconC);
+                answerC = generateCorrectGrammar(grammarIndicatorIconC, answerComboBoxC);
             }
         });
         generateIncorrectGrammarABtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                generateIncorrectGrammar(grammarIndicatorIconA);
+                answerA = generateIncorrectGrammar(grammarIndicatorIconA, answerComboBoxA);
             }
         });
         generateIncorrectGrammarBBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                generateIncorrectGrammar(grammarIndicatorIconB);
+                answerB = generateIncorrectGrammar(grammarIndicatorIconB, answerComboBoxB);
             }
         });
         generateIncorrectGrammarCBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                generateIncorrectGrammar(grammarIndicatorIconC);
+                answerC = generateIncorrectGrammar(grammarIndicatorIconC, answerComboBoxC);
             }
         });
     }
@@ -234,12 +241,45 @@ public class GenerateQuestionDialog extends JDialog implements UIObservable<Gene
         }
     }
 
-    private void generateCorrectGrammar(JLabel icon) {
+    private String generateCorrectGrammar(JLabel icon, JComboBox answerComboBox) {
         icon.setIcon(correctIcon);
+
+        //TODO: refactor this!
+        switch (answerComboBox.getSelectedIndex()) {
+            case 0: // given grammar in BNF
+                return "BNF\n" + SinGenContext.getGrammarBNF() + "\n";
+            case 1: // given grammar in EBNF
+                return "EBNF\n" + SinGenContext.getGrammarEBNF() + "\n";
+            default:
+                return "\n";
+        }
     }
 
-    private void generateIncorrectGrammar(JLabel icon) {
+    private String generateIncorrectGrammar(JLabel icon, JComboBox answerComboBox) {
         icon.setIcon(incorrectIcon);
+
+        try {
+            BNFGrammarToNonEquivalentTranslator translator =
+                    new BNFGrammarToNonEquivalentTranslator(SinGenContext.getParser(), sequenceTextField.getText());
+            String corruptBNFGrammar = translator.translateToNonEquivalentBNF();
+
+            //TODO: refactor this!
+            switch (answerComboBox.getSelectedIndex()) {
+                case 0: // given grammar in BNF
+                    return "BNF\n" + corruptBNFGrammar + "\n";
+                case 1: // given grammar in EBNF:
+                    BNFGrammarToEBNFRuleTranslator toEBNFTranslator = new BNFGrammarToEBNFRuleTranslator();
+                    Utils.listOfRulesToEBNFString(toEBNFTranslator.transformToEBNF(corruptBNFGrammar));
+                    return "EBNF\n"
+                            + Utils.listOfRulesToEBNFString(toEBNFTranslator.transformToEBNF(corruptBNFGrammar))
+                            + "\n";
+                default:
+                    return "\n";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
+        }
     }
 
     private void setupClosingActions() {
@@ -294,8 +334,9 @@ public class GenerateQuestionDialog extends JDialog implements UIObservable<Gene
 
     private void onGenerateQuestion() {
         QuestionModelElement element = (QuestionModelElement) questionTypeComboBox.getSelectedItem();
+
         for (GenerateQuestionDialogListener listener : listeners) {
-            listener.buildQuestion(element, answerTextFieldA.getText(), answerTextFieldB.getText(), answerTextFieldC.getText(), new Consumer<String>() {
+            listener.buildQuestion(element, answerA, answerB, answerC, new Consumer<String>() {
                 @Override
                 public void accept(String generatedQuestionString) {
                     generatedQuestionTextArea.setText(generatedQuestionString);

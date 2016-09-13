@@ -9,6 +9,7 @@ import com.etf.rti.p1.translator.ebnf.transformations.TransformRecursion;
 //import org.antlr.works.Console;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -28,6 +29,14 @@ public class BNFGrammarToEBNFRuleTranslator {
     public BNFGrammarToEBNFRuleTranslator() {
         bnfToEbnfTransformations.add(new TransformInnerOption());
         bnfToEbnfTransformations.add(new TransformRecursion());
+    }
+
+    public List<IRule> transformToEBNF(String bnfGrammar) throws Exception {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        BNFCompiler compiler = new BNFCompiler("test", "com.etf.rti.p1.compiler.bnf", out);
+        compiler.setInput(new ByteArrayInputStream(bnfGrammar.getBytes("UTF-8")));
+        compiler.getParser().init();
+        return transformToEBNF(compiler.getParser().getRules());
     }
 
     /**

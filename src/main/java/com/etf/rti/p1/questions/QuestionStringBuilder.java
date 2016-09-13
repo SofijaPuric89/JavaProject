@@ -9,7 +9,7 @@ import com.etf.rti.p1.ui.questions.QuestionGrammarGivenType;
  */
 class QuestionStringBuilder {
 
-    static String build(QuestionGrammarGivenType givenType, QuestionAskedForType askedForType, String givenParameter,String answerA, String answerB, String answerC) {
+    static String build(QuestionGrammarGivenType givenType, QuestionAskedForType askedForType, String givenParameter, String answerA, String answerB, String answerC) {
         return buildQuestionPart(givenType, askedForType, givenParameter) + buildAnswerPart(answerA, answerB, answerC);
     }
 
@@ -45,7 +45,7 @@ class QuestionStringBuilder {
                         return buildQuestionPartForGivenNonterminalAskedForCorrectGrammar(givenParameter);
                     case CORRECT_RULE_WHICH_SHOULD_BE_ADDED:
                         return "Koje od ponudjenih pravila je potrebno dodati gramatici u BNF formatu "
-                                + "tako da izrazu <"+ SinGenContext.getFirstNonTerminalSymbol() + "> odgovara " +
+                                + "tako da izrazu <" + SinGenContext.getFirstNonTerminalSymbol() + "> odgovara " +
                                 "sekvenca " + givenParameter + "?\n\n"
                                 + SinGenContext.getGrammarBNF() + "\n\n";
                 }
