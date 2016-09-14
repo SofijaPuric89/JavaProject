@@ -19,7 +19,7 @@ import java.util.function.Consumer;
 public class GenerateQuestionDialog extends JDialog implements UIObservable<GenerateQuestionDialogListener> {
     private JPanel contentPane;
     private JButton generateQuestionBtn;
-    private JTextArea generatedQuestionTextArea;
+    private JTextPane generatedQuestionTextArea;
     private JComboBox<QuestionModelElement> questionTypeComboBox;
     private JSpinner answerLengthSpinner;
     private JTextField answerTextFieldA;
@@ -83,7 +83,7 @@ public class GenerateQuestionDialog extends JDialog implements UIObservable<Gene
         setupQuestionComboBox();
         setupAnswerLengthSpinner();
         setupAnswerTextFieldListeners();
-        generatedQuestionTextArea.setLineWrap(true);
+        generatedQuestionTextArea.setContentType("text/html");
     }
 
     @Override
@@ -142,7 +142,7 @@ public class GenerateQuestionDialog extends JDialog implements UIObservable<Gene
         generateCorrectAnswerABtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                generateCorrectAnswer(answerTextFieldA, new Consumer<String>() {
+                generateCorrectAnswer(new Consumer<String>() {
                     @Override
                     public void accept(String answer) {
                         answerTextFieldA.setText(answer);
@@ -154,7 +154,7 @@ public class GenerateQuestionDialog extends JDialog implements UIObservable<Gene
         generateCorrectAnswerBBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                generateCorrectAnswer(answerTextFieldB, new Consumer<String>() {
+                generateCorrectAnswer(new Consumer<String>() {
                     @Override
                     public void accept(String answer) {
                         answerTextFieldB.setText(answer);
@@ -166,7 +166,7 @@ public class GenerateQuestionDialog extends JDialog implements UIObservable<Gene
         generateCorrectAnswerCBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                generateCorrectAnswer(answerTextFieldC, new Consumer<String>() {
+                generateCorrectAnswer(new Consumer<String>() {
                     @Override
                     public void accept(String answer) {
                         answerTextFieldC.setText(answer);
@@ -178,7 +178,7 @@ public class GenerateQuestionDialog extends JDialog implements UIObservable<Gene
         generateIncorrectAnswerABtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                generateIncorrectAnswer(answerTextFieldA, new Consumer<String>() {
+                generateIncorrectAnswer(new Consumer<String>() {
                     @Override
                     public void accept(String answer) {
                         answerTextFieldA.setText(answer);
@@ -190,7 +190,7 @@ public class GenerateQuestionDialog extends JDialog implements UIObservable<Gene
         generateIncorrectAnswerBBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                generateIncorrectAnswer(answerTextFieldB, new Consumer<String>() {
+                generateIncorrectAnswer(new Consumer<String>() {
                     @Override
                     public void accept(String answer) {
                         answerTextFieldB.setText(answer);
@@ -202,7 +202,7 @@ public class GenerateQuestionDialog extends JDialog implements UIObservable<Gene
         generateIncorrectAnswerCBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                generateIncorrectAnswer(answerTextFieldC, new Consumer<String>() {
+                generateIncorrectAnswer(new Consumer<String>() {
                     @Override
                     public void accept(String answer) {
                         answerTextFieldC.setText(answer);
@@ -214,7 +214,7 @@ public class GenerateQuestionDialog extends JDialog implements UIObservable<Gene
         generateSequenceBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                generateCorrectAnswer(sequenceTextField, new Consumer<String>() {
+                generateCorrectAnswer(new Consumer<String>() {
                     @Override
                     public void accept(String answer) {
                         sequenceTextField.setText(answer);
@@ -260,19 +260,13 @@ public class GenerateQuestionDialog extends JDialog implements UIObservable<Gene
         });
     }
 
-    private void generateCorrectAnswer(final JTextField answerTextField, Consumer<String> callback) {
+    private void generateCorrectAnswer(Consumer<String> callback) {
         for (GenerateQuestionDialogListener listener : listeners) {
             listener.generateCorrectAnswer((Integer) answerLengthSpinner.getValue(), callback);
-            /*listener.generateCorrectAnswer((Integer) answerLengthSpinner.getValue(), new Consumer<String>() {
-                @Override
-                public void accept(String answer) {
-                    answerTextField.setText(answer);
-                }
-            });*/
         }
     }
 
-    private void generateIncorrectAnswer(JTextField answerTextField, Consumer<String> callback) {
+    private void generateIncorrectAnswer(Consumer<String> callback) {
         for (GenerateQuestionDialogListener listener : listeners) {
             listener.generateIncorrectAnswer((Integer) answerLengthSpinner.getValue(), callback);
         }
@@ -284,9 +278,9 @@ public class GenerateQuestionDialog extends JDialog implements UIObservable<Gene
         //TODO: refactor this!
         switch (answerComboBox.getSelectedIndex()) {
             case 0: // given grammar in BNF
-                return "BNF\n" + SinGenContext.getGrammarBNF() + "\n";
+                return "BNF\r\n" + SinGenContext.getGrammarBNF();
             case 1: // given grammar in EBNF
-                return "EBNF\n" + SinGenContext.getGrammarEBNF() + "\n";
+                return "EBNF\r\n" + SinGenContext.getGrammarEBNF();
             default:
                 return "\n";
         }
@@ -303,13 +297,12 @@ public class GenerateQuestionDialog extends JDialog implements UIObservable<Gene
             //TODO: refactor this!
             switch (answerComboBox.getSelectedIndex()) {
                 case 0: // given grammar in BNF
-                    return "BNF\n" + corruptBNFGrammar + "\n";
+                    return "BNF\r\n" + corruptBNFGrammar;
                 case 1: // given grammar in EBNF:
                     BNFGrammarToEBNFRuleTranslator toEBNFTranslator = new BNFGrammarToEBNFRuleTranslator();
                     Utils.listOfRulesToEBNFString(toEBNFTranslator.transformToEBNF(corruptBNFGrammar));
-                    return "EBNF\n"
-                            + Utils.listOfRulesToEBNFString(toEBNFTranslator.transformToEBNF(corruptBNFGrammar))
-                            + "\n";
+                    return "EBNF\r\n"
+                            + Utils.listOfRulesToEBNFString(toEBNFTranslator.transformToEBNF(corruptBNFGrammar));
                 default:
                     return "\n";
             }
@@ -376,14 +369,29 @@ public class GenerateQuestionDialog extends JDialog implements UIObservable<Gene
             listener.buildQuestion(element, answerA, answerB, answerC, new Consumer<String>() {
                 @Override
                 public void accept(String generatedQuestionString) {
-                    generatedQuestionTextArea.setText(generatedQuestionString);
-                    setDialogValue(generatedQuestionTextArea.getText());
+                    generatedQuestionTextArea.setText(surroundWithHtmlBase(generatedQuestionString));
                 }
             });
         }
     }
 
+    private String surroundWithHtmlBase(String basicHtml) {
+        return "<html>" +
+                "<head>" +
+                "    <style>" +
+                "        body {" +
+                "            font-size: 16px;" +
+                "        }" +
+                "    </style>" +
+                "</head>" +
+                "<body>" +
+                basicHtml +
+                "</body>" +
+                "</html>";
+    }
+
     private void onClose() {
+        setDialogValue(generatedQuestionTextArea.getText());
         dispose();
     }
 

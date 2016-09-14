@@ -61,6 +61,7 @@ public class MainFormController implements MainFormListener, SinGenLoggerListene
 
             File syntaxDiagramTranslatorFile = translateToSyntaxDiagram(bnfGrammar);
             SinGenLogger.info("Created syntax diagrams");
+            SinGenContext.setSyntaxDiagramFile(syntaxDiagramTranslatorFile);
             myObservable.refreshSyntaxDiagramPanel(syntaxDiagramTranslatorFile);
 
             myObservable.enableAllComponents();
@@ -73,9 +74,10 @@ public class MainFormController implements MainFormListener, SinGenLoggerListene
     public void exportFileSelected(File selectedFile, String bnfGrammar, String ebnfGrammar,
                                    File syntaxDiagramGrammarFile) {
         try {
-            String encodedSyntaxDiagram = Base64.getEncoder().encodeToString(Files.readAllBytes(syntaxDiagramGrammarFile.toPath()));
+            String encodedSyntaxDiagram = Utils.encodeImage(syntaxDiagramGrammarFile);
             String templateFile = IOUtils.toString(MainFormController.class.getClassLoader().getResourceAsStream("templates/grammar_export.html"));
-            String rendered = templateFile.replace("{$file_name$}", FilenameUtils.getBaseName(selectedFile.getName()))
+            String rendered = templateFile
+                    .replace("{$file_name$}", FilenameUtils.getBaseName(selectedFile.getName()))
                     .replace("{$bnf_grammar$}", escapeHtml(bnfGrammar))
                     .replace("{$ebnf_grammar$}", escapeHtml(ebnfGrammar))
                     .replace("{$syntax_diagrams$}", encodedSyntaxDiagram);

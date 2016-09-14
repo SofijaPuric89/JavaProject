@@ -25,12 +25,9 @@
             <properties/>
             <border type="none"/>
             <children>
-              <component id="12509" class="javax.swing.JTextArea" binding="generatedQuestionTextArea">
+              <component id="21314" class="javax.swing.JTextPane" binding="generatedQuestionTextArea">
                 <constraints/>
-                <properties>
-                  <font name="Courier New" size="16"/>
-                  <wrapStyleWord value="true"/>
-                </properties>
+                <properties/>
               </component>
             </children>
           </scrollpane>

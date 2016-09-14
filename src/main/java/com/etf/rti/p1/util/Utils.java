@@ -3,6 +3,8 @@ package com.etf.rti.p1.util;
 import com.etf.rti.p1.translator.ebnf.rules.IRule;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.util.Base64;
 import java.util.List;
 
 /**
@@ -44,5 +46,9 @@ public class Utils {
             grammar = grammar.concat(rule.toBNFString() + "\r\n").replace(" ", "");
         }
         return grammar;
+    }
+
+    public static String encodeImage(File imageFile) throws IOException {
+        return Base64.getEncoder().encodeToString(Files.readAllBytes(imageFile.toPath()));
     }
 }

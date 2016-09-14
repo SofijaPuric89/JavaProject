@@ -17,6 +17,7 @@ public final class SinGenContext {
     private static String firstNonTerminalSymbol;
     private static File loadGrammarRootDir;
     private static AParser parser;
+    private static File syntaxDiagramFile;
 
     public static String getGrammarBNF() {
         return grammarBNF;
@@ -70,5 +71,13 @@ public final class SinGenContext {
 
     public static AParser getParser() {
         return parser;
+    }
+
+    public static void setSyntaxDiagramFile(File syntaxDiagramFile) {
+        SinGenContext.syntaxDiagramFile = syntaxDiagramFile;
+    }
+
+    public static File getSyntaxDiagramFile() {
+        return syntaxDiagramFile;
     }
 }
