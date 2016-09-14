@@ -142,43 +142,84 @@ public class GenerateQuestionDialog extends JDialog implements UIObservable<Gene
         generateCorrectAnswerABtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                generateCorrectAnswer(answerTextFieldA);
+                generateCorrectAnswer(answerTextFieldA, new Consumer<String>() {
+                    @Override
+                    public void accept(String answer) {
+                        answerTextFieldA.setText(answer);
+                        answerA = answer;
+                    }
+                });
             }
         });
         generateCorrectAnswerBBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                generateCorrectAnswer(answerTextFieldB);
+                generateCorrectAnswer(answerTextFieldB, new Consumer<String>() {
+                    @Override
+                    public void accept(String answer) {
+                        answerTextFieldB.setText(answer);
+                        answerB = answer;
+                    }
+                });
             }
         });
         generateCorrectAnswerCBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                generateCorrectAnswer(answerTextFieldC);
+                generateCorrectAnswer(answerTextFieldC, new Consumer<String>() {
+                    @Override
+                    public void accept(String answer) {
+                        answerTextFieldC.setText(answer);
+                        answerC = answer;
+                    }
+                });
             }
         });
         generateIncorrectAnswerABtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                generateIncorrectAnswer(answerTextFieldA);
+                generateIncorrectAnswer(answerTextFieldA, new Consumer<String>() {
+                    @Override
+                    public void accept(String answer) {
+                        answerTextFieldA.setText(answer);
+                        answerA = answer;
+                    }
+                });
             }
         });
         generateIncorrectAnswerBBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                generateIncorrectAnswer(answerTextFieldB);
+                generateIncorrectAnswer(answerTextFieldB, new Consumer<String>() {
+                    @Override
+                    public void accept(String answer) {
+                        answerTextFieldB.setText(answer);
+                        answerB = answer;
+                    }
+                });
             }
         });
         generateIncorrectAnswerCBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                generateIncorrectAnswer(answerTextFieldC);
+                generateIncorrectAnswer(answerTextFieldC, new Consumer<String>() {
+                    @Override
+                    public void accept(String answer) {
+                        answerTextFieldC.setText(answer);
+                        answerC = answer;
+                    }
+                });
             }
         });
         generateSequenceBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                generateCorrectAnswer(sequenceTextField);
+                generateCorrectAnswer(sequenceTextField, new Consumer<String>() {
+                    @Override
+                    public void accept(String answer) {
+                        sequenceTextField.setText(answer);
+                    }
+                });
             }
         });
         generateCorrectGrammarABtn.addActionListener(new ActionListener() {
@@ -219,25 +260,21 @@ public class GenerateQuestionDialog extends JDialog implements UIObservable<Gene
         });
     }
 
-    private void generateCorrectAnswer(final JTextField answerTextField) {
+    private void generateCorrectAnswer(final JTextField answerTextField, Consumer<String> callback) {
         for (GenerateQuestionDialogListener listener : listeners) {
-            listener.generateCorrectAnswer((Integer) answerLengthSpinner.getValue(), new Consumer<String>() {
+            listener.generateCorrectAnswer((Integer) answerLengthSpinner.getValue(), callback);
+            /*listener.generateCorrectAnswer((Integer) answerLengthSpinner.getValue(), new Consumer<String>() {
                 @Override
                 public void accept(String answer) {
                     answerTextField.setText(answer);
                 }
-            });
+            });*/
         }
     }
 
-    private void generateIncorrectAnswer(JTextField answerTextField) {
+    private void generateIncorrectAnswer(JTextField answerTextField, Consumer<String> callback) {
         for (GenerateQuestionDialogListener listener : listeners) {
-            listener.generateIncorrectAnswer((Integer) answerLengthSpinner.getValue(), new Consumer<String>() {
-                @Override
-                public void accept(String answer) {
-                    answerTextField.setText(answer);
-                }
-            });
+            listener.generateIncorrectAnswer((Integer) answerLengthSpinner.getValue(), callback);
         }
     }
 
