@@ -38,7 +38,7 @@ public class BNFCompilerTest {
         compilerGenerator = new CompilerGenerator(grammarName);
         FileOutputStream out = new FileOutputStream(grammarName);
 
-        BNFCompiler compiler = new BNFCompiler(name, "com.etf.rti.p1.compiler.bnf", out);
+        BNFCompiler compiler = new BNFCompiler(name, out);
         compiler.setInput(new ByteArrayInputStream(input.getBytes("UTF-8")));
         parser = compiler.getParser();
     }

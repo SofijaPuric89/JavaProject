@@ -32,7 +32,7 @@ public class GrammarChecker {
         FileOutputStream out = new FileOutputStream(grammarName);
 
         //TODO: parametrize compiler, it could be maybe Compiler interface instead of BNFCompiler
-        BNFCompiler bnfCompiler = new BNFCompiler(name, "com.etf.rti.p1.compiler.bnf", out);
+        BNFCompiler bnfCompiler = new BNFCompiler(name, out);
         bnfCompiler.setInput(new ByteArrayInputStream(this.grammar.getBytes("UTF-8")));
         AParser parser = bnfCompiler.getParser();
         parser.init();

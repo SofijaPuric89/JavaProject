@@ -20,7 +20,10 @@ public class QuestionGenerator {
     private GrammarChecker grammarChecker;
     private BNFGrammarToNonEquivalentTranslator toNonEquivalentTranslator;
 
+    private final int grammarHash;
+
     public QuestionGenerator(String grammar) {
+        grammarHash = Utils.getHashFor(grammar);
         answerGenerator = new AnswerGenerator(grammar);
         try {
             grammarChecker = new GrammarChecker(grammar);
@@ -87,5 +90,9 @@ public class QuestionGenerator {
 
     public boolean isMissingRuleCorrect(String rule) {
         return !corruptedRulesFromRule.stream().anyMatch(r -> r.toBNFString().equals(rule));
+    }
+
+    public int getGrammarHash() {
+        return grammarHash;
     }
 }

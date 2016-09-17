@@ -354,12 +354,26 @@ public class GenerateQuestionDialog extends JDialog implements UIObservable<Gene
         questionTypeComboBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (questionTypeComboBox.getSelectedIndex() == 3) {
-                    panel1.setVisible(false);
-                    panel2.setVisible(true);
-                } else {
-                    panel1.setVisible(true);
-                    panel2.setVisible(false);
+                //TODO: refactor this!
+                switch(questionTypeComboBox.getSelectedIndex()) {
+                    case 3:
+                        panel1.setVisible(false);
+                        panel2.setVisible(true);
+                        sequenceTextField.setVisible(true);
+                        generateSequenceBtn.setVisible(true);
+                        break;
+                    case 4:
+                        panel1.setVisible(true);
+                        panel2.setVisible(false);
+                        sequenceTextField.setVisible(true);
+                        generateSequenceBtn.setVisible(true);
+                        break;
+                    default:
+                        panel1.setVisible(true);
+                        panel2.setVisible(false);
+                        sequenceTextField.setVisible(false);
+                        generateSequenceBtn.setVisible(false);
+                        break;
                 }
             }
         });

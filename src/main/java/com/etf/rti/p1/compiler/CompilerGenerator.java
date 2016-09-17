@@ -19,13 +19,26 @@ import java.nio.file.StandardCopyOption;
  */
 public class CompilerGenerator {
     private static final String packageName = "com.etf.rti.p1.generated";
+
     private String grammar;
     private File tempDir;
+
+    static {
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            @Override
+            public void run() {
+                try {
+                    FileUtils.deleteDirectory(getGeneratedDir().toFile());
+                } catch (IOException e) {
+                    System.out.print("Problem deleting 'generated' dir");
+                }
+            }
+        });
+    }
 
     public CompilerGenerator(String grammar) {
         this.grammar = grammar;
     }
-
 
     private String[] params() throws IOException {
         String[] ret = new String[5];
@@ -73,11 +86,7 @@ public class CompilerGenerator {
     }
 
     private void copy() throws IOException {
-        Path dstDir = new File(Utils.getResourcePath()).toPath();
-        for (String s : packageName.split("\\.")) {
-            dstDir = dstDir.resolve(s);
-        }
-        FileUtils.deleteDirectory(dstDir.toFile());
+        Path dstDir = getGeneratedDir();
         Files.createDirectories(dstDir);
 
         for (String x : tempDir.list(new FilenamePatternFilter(".*\\.class$"))) {
@@ -99,6 +108,13 @@ public class CompilerGenerator {
         String pattern = "([^\\:]*?)\\.[^\\.]*$";
         String grammarName = RegexPatternFinder.find(grammar.replace(File.separatorChar, ':'), pattern, 1);
         return new RuntimeCompiler(grammarName, packageName);
+    }
 
+    private static Path getGeneratedDir() {
+        Path dir = new File(Utils.getResourcePath()).toPath();
+        for (String s : packageName.split("\\.")) {
+            dir = dir.resolve(s);
+        }
+        return dir;
     }
 }

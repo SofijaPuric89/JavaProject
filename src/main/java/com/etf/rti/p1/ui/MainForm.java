@@ -224,6 +224,9 @@ public class MainForm implements MainFormObservable {
         ebnfNotationTextArea.setEnabled(true);
         syntaxDiagramImageLabel.setEnabled(true);
         checkSequenceTextField.setEnabled(true);
+        if (!checkSequenceTextField.getText().isEmpty()) {
+            onSequenceChange();
+        }
     }
 
     @Override

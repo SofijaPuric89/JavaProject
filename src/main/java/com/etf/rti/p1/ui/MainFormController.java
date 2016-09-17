@@ -96,7 +96,7 @@ public class MainFormController implements MainFormListener, SinGenLoggerListene
 
     @Override
     public void checkIfAnswerCorrect(String answer, Consumer<Boolean> callback) {
-        if (questionGenerator == null) {
+        if ((questionGenerator == null) || (questionGenerator.getGrammarHash() != SinGenContext.getGrammarHash())) {
             questionGenerator = new QuestionGenerator(SinGenContext.getGrammarBNF());
         }
         callback.accept(questionGenerator.isAnswerGrammaticallyCorrect(answer));

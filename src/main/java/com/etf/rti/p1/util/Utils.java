@@ -51,4 +51,8 @@ public class Utils {
     public static String encodeImage(File imageFile) throws IOException {
         return Base64.getEncoder().encodeToString(Files.readAllBytes(imageFile.toPath()));
     }
+
+    public static int getHashFor(String grammar) {
+        return grammar != null ? grammar.hashCode() : 0;
+    }
 }

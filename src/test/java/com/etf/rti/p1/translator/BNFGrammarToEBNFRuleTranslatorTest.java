@@ -24,7 +24,7 @@ public class BNFGrammarToEBNFRuleTranslatorTest {
     @Before
     public void setup() throws Exception {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        compiler = new BNFCompiler("test", "com.etf.rti.p1.compiler.bnf", out);
+        compiler = new BNFCompiler(out);
         String grammarSample = GrammarSamples.readGrammarSample(1);
         compiler.setInput(new ByteArrayInputStream(grammarSample.getBytes("UTF-8")));
         compiler.getParser().init();

@@ -56,7 +56,7 @@ public class BNFGrammarToSyntaxDiagramTranslator {
         String grammarName = grammarDirPath.toAbsolutePath().toString();
         FileOutputStream out = new FileOutputStream(grammarName);
 
-        BNFCompiler compiler = new BNFCompiler(name, "com.etf.rti.p1.compiler.bnf", out);
+        BNFCompiler compiler = new BNFCompiler(name, out);
         compiler.setInput(new ByteArrayInputStream(input.getBytes("UTF-8")));
         AParser parser = compiler.getParser();
         parser.init();

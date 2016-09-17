@@ -33,7 +33,7 @@ public class BNFGrammarToEBNFRuleTranslator {
 
     public List<IRule> transformToEBNF(String bnfGrammar) throws Exception {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
-        BNFCompiler compiler = new BNFCompiler("test", "com.etf.rti.p1.compiler.bnf", out);
+        BNFCompiler compiler = new BNFCompiler(out);
         compiler.setInput(new ByteArrayInputStream(bnfGrammar.getBytes("UTF-8")));
         compiler.getParser().init();
         return transformToEBNF(compiler.getParser().getRules());

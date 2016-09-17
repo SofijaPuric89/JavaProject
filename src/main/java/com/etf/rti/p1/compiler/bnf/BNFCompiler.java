@@ -1,9 +1,11 @@
 package com.etf.rti.p1.compiler.bnf;
 
 import com.etf.rti.p1.compiler.RuntimeCompiler;
+import com.google.common.io.NullOutputStream;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 
+import java.io.ByteArrayOutputStream;
 import java.io.OutputStream;
 
 /**
@@ -12,9 +14,13 @@ import java.io.OutputStream;
 public class BNFCompiler extends RuntimeCompiler {
     private OutputStream output;
 
-    public BNFCompiler(String name, String packageName, OutputStream out) {
-        super(name, packageName);
+    public BNFCompiler(String name, OutputStream out) {
+        super(name, "com.etf.rti.p1.compiler.bnf");
         output = out;
+    }
+
+    public BNFCompiler(OutputStream out) {
+        this("bnf" + Long.toString(System.nanoTime()), out);
     }
 
     protected <T> T getObject(String name, Class<?>[] argsType, Object[] args) throws Exception {

@@ -60,7 +60,7 @@ public class BNFErrorHighlightingParser extends AbstractParser {
     }
 
     private BNFCompiler getBNFCompiler(String text) throws IOException {
-        BNFCompiler compiler = new BNFCompiler("current" + Long.toString(System.nanoTime()), "com.etf.rti.p1.compiler.bnf", new NullOutputStream());
+        BNFCompiler compiler = new BNFCompiler(new NullOutputStream());
         compiler.setInput(new ByteArrayInputStream(text.getBytes("UTF-8")));
         return compiler;
     }
