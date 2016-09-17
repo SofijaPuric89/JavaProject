@@ -19,7 +19,7 @@ public class QuestionGeneratorTest {
     @Test
     public void generateCorrectAnswer() throws Exception {
         for (int i = 0; i < 1000; i++) {
-            String correctAnswer = generator.generateGrammaticallyCorrectAnswer(10);
+            String correctAnswer = generator.generateGrammaticallyCorrectSequence(10);
             boolean isAnswerGrammaticallyCorrect = generator.isAnswerGrammaticallyCorrect(correctAnswer);
             assertTrue("Failed after " + i + " iterations", isAnswerGrammaticallyCorrect);
         }
@@ -28,7 +28,7 @@ public class QuestionGeneratorTest {
     @Test
     public void generateIncorrectAnswer() throws Exception {
         for (int i = 0; i < 1000; i++) {
-            String incorrectAnswer = generator.generateGrammaticallyIncorrectAnswer(10);
+            String incorrectAnswer = generator.generateGrammaticallyIncorrectSequence(10);
             boolean isAnswerGrammaticallyCorrect = generator.isAnswerGrammaticallyCorrect(incorrectAnswer);
             assertFalse("Failed after " + i + " iterations", isAnswerGrammaticallyCorrect);
         }

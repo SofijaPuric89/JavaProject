@@ -3,11 +3,13 @@ package com.etf.rti.p1.ui.questions;
 import java.util.function.Consumer;
 
 public interface GenerateQuestionDialogListener {
-    void generateCorrectAnswer(int answerLength, Consumer<String> callback);
+    void generateCorrectAnswer(QuestionModelElement selectedQuestionType, int answerLength, Consumer<String> callback);
 
-    void generateIncorrectAnswer(int answerLength, Consumer<String> callback);
+    void generateCorrectSequence(int answerLength, Consumer<String> callback);
 
-    void checkIfAnswerCorrect(String answer, Consumer<Boolean> callback);
+    void generateIncorrectAnswer(QuestionModelElement selectedQuestionType, int answerLength, Consumer<String> callback);
 
-    void buildQuestion(QuestionModelElement element, String answerA, String answerB, String answerC, Consumer<String> callback);
+    void checkIfAnswerCorrect(QuestionModelElement selectedQuestionType, String answer, Consumer<Boolean> callback);
+
+    void buildQuestion(QuestionModelElement element, String givenParameter, String answerA, String answerB, String answerC, Consumer<String> callback);
 }

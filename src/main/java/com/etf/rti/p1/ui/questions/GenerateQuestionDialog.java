@@ -44,7 +44,6 @@ public class GenerateQuestionDialog extends JDialog implements UIObservable<Gene
     private JComboBox answerComboBoxC;
     private JButton generateSequenceBtn;
     private JTextField sequenceTextField;
-    private JSpinner sequenceLengthSpinner;
     private JButton generateCorrectGrammarABtn;
     private JButton generateCorrectGrammarBBtn;
     private JButton generateCorrectGrammarCBtn;
@@ -118,7 +117,7 @@ public class GenerateQuestionDialog extends JDialog implements UIObservable<Gene
 
     private void onAnswerChange(JTextField answerTextField, JLabel indicatorIcon) {
         for (GenerateQuestionDialogListener listener : listeners) {
-            listener.checkIfAnswerCorrect(answerTextField.getText(), new Consumer<Boolean>() {
+            listener.checkIfAnswerCorrect((QuestionModelElement) questionTypeComboBox.getSelectedItem(), answerTextField.getText(), new Consumer<Boolean>() {
                 @Override
                 public void accept(Boolean isCorrect) {
                     indicatorIcon.setIcon(isCorrect ? correctIcon : incorrectIcon);
@@ -130,7 +129,6 @@ public class GenerateQuestionDialog extends JDialog implements UIObservable<Gene
     private void setupAnswerLengthSpinner() {
         SpinnerNumberModel model = new SpinnerNumberModel(10, 5, 30, 1);
         answerLengthSpinner.setModel(model);
-        sequenceLengthSpinner.setModel(model);
     }
 
     private void addButtonListeners() {
@@ -214,7 +212,7 @@ public class GenerateQuestionDialog extends JDialog implements UIObservable<Gene
         generateSequenceBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                generateCorrectAnswer(new Consumer<String>() {
+                generateCorrectSequence(new Consumer<String>() {
                     @Override
                     public void accept(String answer) {
                         sequenceTextField.setText(answer);
@@ -260,15 +258,21 @@ public class GenerateQuestionDialog extends JDialog implements UIObservable<Gene
         });
     }
 
+    private void generateCorrectSequence(Consumer<String> callback) {
+        for (GenerateQuestionDialogListener listener : listeners) {
+            listener.generateCorrectSequence((Integer) answerLengthSpinner.getValue(), callback);
+        }
+    }
+
     private void generateCorrectAnswer(Consumer<String> callback) {
         for (GenerateQuestionDialogListener listener : listeners) {
-            listener.generateCorrectAnswer((Integer) answerLengthSpinner.getValue(), callback);
+            listener.generateCorrectAnswer((QuestionModelElement) questionTypeComboBox.getSelectedItem(), (Integer) answerLengthSpinner.getValue(), callback);
         }
     }
 
     private void generateIncorrectAnswer(Consumer<String> callback) {
         for (GenerateQuestionDialogListener listener : listeners) {
-            listener.generateIncorrectAnswer((Integer) answerLengthSpinner.getValue(), callback);
+            listener.generateIncorrectAnswer((QuestionModelElement) questionTypeComboBox.getSelectedItem(), (Integer) answerLengthSpinner.getValue(), callback);
         }
     }
 
@@ -298,7 +302,7 @@ public class GenerateQuestionDialog extends JDialog implements UIObservable<Gene
             switch (answerComboBox.getSelectedIndex()) {
                 case 0: // given grammar in BNF
                     return "BNF\r\n" + corruptBNFGrammar;
-                case 1: // given grammar in EBNF:
+                case 1: // given grammar in EBNF
                     BNFGrammarToEBNFRuleTranslator toEBNFTranslator = new BNFGrammarToEBNFRuleTranslator();
                     Utils.listOfRulesToEBNFString(toEBNFTranslator.transformToEBNF(corruptBNFGrammar));
                     return "EBNF\r\n"
@@ -366,7 +370,7 @@ public class GenerateQuestionDialog extends JDialog implements UIObservable<Gene
         QuestionModelElement element = (QuestionModelElement) questionTypeComboBox.getSelectedItem();
 
         for (GenerateQuestionDialogListener listener : listeners) {
-            listener.buildQuestion(element, answerA, answerB, answerC, new Consumer<String>() {
+            listener.buildQuestion(element, sequenceTextField.getText(), answerA, answerB, answerC, new Consumer<String>() {
                 @Override
                 public void accept(String generatedQuestionString) {
                     generatedQuestionTextArea.setText(surroundWithHtmlBase(generatedQuestionString));

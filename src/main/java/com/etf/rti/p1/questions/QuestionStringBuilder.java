@@ -18,7 +18,7 @@ class QuestionStringBuilder {
         try {
             String templateFile = IOUtils.toString(QuestionStringBuilder.class.getClassLoader().getResourceAsStream("templates/question_text.html"));
             String questionPart = buildQuestionPart(givenType, askedForType, givenParameter);
-            String grammarPart = buildGrammarPart(givenType);
+            String grammarPart = buildGrammarPart(givenType, askedForType);
             return templateFile
                     .replace("{$question_part$}", escapeHtml(questionPart))
                     .replace("{$grammar_part$}", grammarPart)
@@ -79,10 +79,9 @@ class QuestionStringBuilder {
                 + grammarNotation + " notaciji?";
     }
 
-    private static String buildGrammarPart(QuestionGrammarGivenType givenType) {
+    private static String buildGrammarPart(QuestionGrammarGivenType givenType, QuestionAskedForType askedForType) {
         switch (givenType) {
             case GRAMMAR_IN_BNF:
-            case CORRECT_SEQUENCE_FOR_FIRST_NON_TERMINAL:
                 return escapeHtmlAndReplaceLineBreaks(SinGenContext.getGrammarBNF());
             case GRAMMAR_IN_EBNF:
                 return escapeHtmlAndReplaceLineBreaks(SinGenContext.getGrammarEBNF());
@@ -91,6 +90,12 @@ class QuestionStringBuilder {
                     return "<img src=\"file:/" + SinGenContext.getSyntaxDiagramFile().getCanonicalPath() + "\" />";
                 } catch (IOException e) {
                     return "";
+                }
+            case CORRECT_SEQUENCE_FOR_FIRST_NON_TERMINAL:
+                if (askedForType == QuestionAskedForType.CORRECT_GRAMMAR_FOR_FIRST_NONTERMINAL_SEQUENCE) {
+                    return "";
+                } else {
+                    return escapeHtmlAndReplaceLineBreaks(SinGenContext.getGrammarBNF());
                 }
         }
         throw new IllegalArgumentException("Unsupported question type combination");

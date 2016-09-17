@@ -16,22 +16,45 @@ public class GenerateQuestionDialogController implements GenerateQuestionDialogL
     }
 
     @Override
-    public void generateCorrectAnswer(int answerLength, Consumer<String> callback) {
-        callback.accept(questionGenerator.generateGrammaticallyCorrectAnswer(answerLength));
+    public void generateCorrectAnswer(QuestionModelElement selectedQuestionType, int answerLength, Consumer<String> callback) {
+        String answer;
+        if (selectedQuestionType.getQuestionAskedForType() == QuestionAskedForType.CORRECT_RULE_WHICH_SHOULD_BE_ADDED) {
+            answer = questionGenerator.generateCorrectRuleAnswer();
+        } else {
+            answer = questionGenerator.generateGrammaticallyCorrectSequence(answerLength);
+        }
+        callback.accept(answer);
     }
 
     @Override
-    public void generateIncorrectAnswer(int answerLength, Consumer<String> callback) {
-        callback.accept(questionGenerator.generateGrammaticallyIncorrectAnswer(answerLength));
+    public void generateCorrectSequence(int answerLength, Consumer<String> callback) {
+        callback.accept(questionGenerator.generateGrammaticallyCorrectSequence(answerLength));
     }
 
     @Override
-    public void checkIfAnswerCorrect(String answer, Consumer<Boolean> callback) {
-        callback.accept(questionGenerator.isAnswerGrammaticallyCorrect(answer));
+    public void generateIncorrectAnswer(QuestionModelElement selectedQuestionType, int answerLength, Consumer<String> callback) {
+        String answer;
+        if (selectedQuestionType.getQuestionAskedForType() == QuestionAskedForType.CORRECT_RULE_WHICH_SHOULD_BE_ADDED) {
+            answer = questionGenerator.generateIncorrectRuleAnswer();
+        } else {
+            answer = questionGenerator.generateGrammaticallyIncorrectSequence(answerLength);
+        }
+        callback.accept(answer);
     }
 
     @Override
-    public void buildQuestion(QuestionModelElement element, String answerA, String answerB, String answerC, Consumer<String> callback) {
-        callback.accept(questionGenerator.buildQuestionString(element.getQuestionGrammarGivenType(), element.getQuestionAskedForType(), answerA, answerB, answerC));
+    public void checkIfAnswerCorrect(QuestionModelElement selectedQuestionType, String answer, Consumer<Boolean> callback) {
+        boolean isAnswerCorrect;
+        if (selectedQuestionType.getQuestionAskedForType() == QuestionAskedForType.CORRECT_RULE_WHICH_SHOULD_BE_ADDED) {
+            isAnswerCorrect = questionGenerator.isMissingRuleCorrect(answer);
+        } else {
+            isAnswerCorrect = questionGenerator.isAnswerGrammaticallyCorrect(answer);
+        }
+        callback.accept(isAnswerCorrect);
+    }
+
+    @Override
+    public void buildQuestion(QuestionModelElement element, String givenParameter, String answerA, String answerB, String answerC, Consumer<String> callback) {
+        callback.accept(questionGenerator.buildQuestionString(element.getQuestionGrammarGivenType(), element.getQuestionAskedForType(), givenParameter, answerA, answerB, answerC));
     }
 }

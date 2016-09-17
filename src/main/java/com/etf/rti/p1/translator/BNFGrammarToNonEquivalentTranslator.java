@@ -56,6 +56,42 @@ public class BNFGrammarToNonEquivalentTranslator {
         return null;
     }
 
+    public int findIndexToCorruptRule(){
+        if (sequence == null || sequence.isEmpty()) {
+            return -1;
+        }
+        List<IRule> bnfRules = bnfParser.getRules();
+        List<Integer> ruleIndexesToCorrupt = getRuleCandidatesToCorrupt(bnfRules);
+        randomize(ruleIndexesToCorrupt);
+        randomize(strategies);
+        for (Integer indexToCorrupt : ruleIndexesToCorrupt) {
+            for (CorruptBNFRuleStrategy strategy : strategies) {
+                List<IRule> corruptedGrammar = strategy.tryToCorrupt(bnfRules, indexToCorrupt);
+                if (corruptedGrammar != null) {
+                    String corruptedGrammarString = Utils.listOfRulesToBNFString(corruptedGrammar);
+                    if (!isGrammaticallyCorrectForSequence(corruptedGrammarString)) {
+                        return indexToCorrupt;
+                    }
+                }
+            }
+        }
+        return -1;
+    }
+
+    public List<IRule> corruptedRulesFromRule(int ruleIndex){
+        List<IRule> corruptedRules = new ArrayList<>();
+        for (CorruptBNFRuleStrategy strategy : strategies) {
+            List<IRule> corruptedGrammar = strategy.tryToCorrupt(bnfParser.getRules(), ruleIndex);
+            if (corruptedGrammar != null) {
+                String corruptedGrammarString = Utils.listOfRulesToBNFString(corruptedGrammar);
+                if (!isGrammaticallyCorrectForSequence(corruptedGrammarString)) {
+                    corruptedRules.add(corruptedGrammar.get(ruleIndex));
+                }
+            }
+        }
+        return corruptedRules;
+    }
+
     private boolean isGrammaticallyCorrectForSequence(String corruptedGrammar) {
         try {
             GrammarChecker grammarChecker = new GrammarChecker(corruptedGrammar);
