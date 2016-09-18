@@ -116,6 +116,10 @@ public class GenerateQuestionDialog extends JDialog implements UIObservable<Gene
     }
 
     private void onAnswerChange(JTextField answerTextField, JLabel indicatorIcon) {
+        if (answerTextField.getText().isEmpty()) {
+            indicatorIcon.setIcon(null);
+            return;
+        }
         for (GenerateQuestionDialogListener listener : listeners) {
             listener.checkIfAnswerCorrect((QuestionModelElement) questionTypeComboBox.getSelectedItem(), answerTextField.getText(), new Consumer<Boolean>() {
                 @Override
@@ -354,6 +358,10 @@ public class GenerateQuestionDialog extends JDialog implements UIObservable<Gene
         questionTypeComboBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                answerTextFieldA.setText("");
+                answerTextFieldB.setText("");
+                answerTextFieldC.setText("");
+                sequenceTextField.setText("");
                 //TODO: refactor this!
                 switch(questionTypeComboBox.getSelectedIndex()) {
                     case 3:
