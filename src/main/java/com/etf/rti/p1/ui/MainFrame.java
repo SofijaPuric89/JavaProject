@@ -14,8 +14,9 @@ import java.net.URL;
  */
 public class MainFrame extends JFrame {
 
-    private final MainForm mainForm;
+    private static final double GENERATE_QUESTION_DIALOG_SCALE = 0.9;
 
+    private final MainForm mainForm;
     MainFormListener mainFormListener;
     GenerateQuestionDialogListener generateQuestionDialogListener;
 
@@ -48,7 +49,9 @@ public class MainFrame extends JFrame {
 
     //TODO: move this part of code to Form
     public String showGenerateQuestionDialog() {
-        GenerateQuestionDialog questionDialog = new GenerateQuestionDialog(1200, 600);
+        int width = (int) (mainForm.getMainPanel().getWidth() * GENERATE_QUESTION_DIALOG_SCALE);
+        int height = (int) (mainForm.getMainPanel().getHeight() * GENERATE_QUESTION_DIALOG_SCALE);
+        GenerateQuestionDialog questionDialog = new GenerateQuestionDialog(width, height);
         generateQuestionDialogListener = new GenerateQuestionDialogController(questionDialog, SinGenContext.getGrammarBNF());
         questionDialog.setVisible(true);
         return questionDialog.getDialogValue();

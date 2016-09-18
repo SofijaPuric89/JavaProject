@@ -58,7 +58,7 @@ class QuestionStringBuilder {
                     case CORRECT_RULE_WHICH_SHOULD_BE_ADDED:
                         return "Koje od ponudjenih pravila je potrebno dodati gramatici u BNF formatu "
                                 + "tako da izrazu <" + SinGenContext.getFirstNonTerminalSymbol() + "> odgovara " +
-                                "sekvenca " + givenParameter + "?";
+                                "sekvenca " + givenParameter + " ?";
                 }
         }
         throw new IllegalArgumentException("Unsupported question type combination");
@@ -70,7 +70,7 @@ class QuestionStringBuilder {
         }
 
         return "Kojim od ponuđenih sintaksnih pravila za startni neterminal <" + SinGenContext.getFirstNonTerminalSymbol()
-                + "> odgovara izraz " + sequence + "?";
+                + "> odgovara izraz " + sequence + " ?";
     }
 
     private static String buildQuestionPartForGivenGrammarAskedForFirstNonterminal(String grammarNotation) {

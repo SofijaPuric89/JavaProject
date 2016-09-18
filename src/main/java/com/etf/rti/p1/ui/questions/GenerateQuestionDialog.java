@@ -216,6 +216,7 @@ public class GenerateQuestionDialog extends JDialog implements UIObservable<Gene
         generateSequenceBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                cleanAnswerFields();
                 generateCorrectSequence(new Consumer<String>() {
                     @Override
                     public void accept(String answer) {
@@ -308,7 +309,6 @@ public class GenerateQuestionDialog extends JDialog implements UIObservable<Gene
                     return "BNF\r\n" + corruptBNFGrammar;
                 case 1: // given grammar in EBNF
                     BNFGrammarToEBNFRuleTranslator toEBNFTranslator = new BNFGrammarToEBNFRuleTranslator();
-                    Utils.listOfRulesToEBNFString(toEBNFTranslator.transformToEBNF(corruptBNFGrammar));
                     return "EBNF\r\n"
                             + Utils.listOfRulesToEBNFString(toEBNFTranslator.transformToEBNF(corruptBNFGrammar));
                 default:
@@ -358,9 +358,7 @@ public class GenerateQuestionDialog extends JDialog implements UIObservable<Gene
         questionTypeComboBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                answerTextFieldA.setText("");
-                answerTextFieldB.setText("");
-                answerTextFieldC.setText("");
+                cleanAnswerFields();
                 sequenceTextField.setText("");
                 //TODO: refactor this!
                 switch(questionTypeComboBox.getSelectedIndex()) {
@@ -369,12 +367,14 @@ public class GenerateQuestionDialog extends JDialog implements UIObservable<Gene
                         panel2.setVisible(true);
                         sequenceTextField.setVisible(true);
                         generateSequenceBtn.setVisible(true);
+                        generateSequenceBtn.doClick();
                         break;
                     case 4:
                         panel1.setVisible(true);
                         panel2.setVisible(false);
                         sequenceTextField.setVisible(true);
                         generateSequenceBtn.setVisible(true);
+                        generateSequenceBtn.doClick();
                         break;
                     default:
                         panel1.setVisible(true);
@@ -386,6 +386,21 @@ public class GenerateQuestionDialog extends JDialog implements UIObservable<Gene
             }
         });
         questionTypeComboBox.setSelectedIndex(0);
+    }
+
+    private void cleanAnswerFields() {
+        answerA = "";
+        answerB = "";
+        answerC = "";
+        answerTextFieldA.setText("");
+        answerTextFieldB.setText("");
+        answerTextFieldC.setText("");
+        grammarIndicatorIconA.setIcon(null);
+        grammarIndicatorIconB.setIcon(null);
+        grammarIndicatorIconC.setIcon(null);
+        answerComboBoxA.setSelectedIndex(0);
+        answerComboBoxB.setSelectedIndex(0);
+        answerComboBoxC.setSelectedIndex(0);
     }
 
     private void onGenerateQuestion() {

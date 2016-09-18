@@ -28,15 +28,6 @@ public class GenerateQuestionDialogController implements GenerateQuestionDialogL
     }
 
     @Override
-    public void generateCorrectSequence(QuestionModelElement selectedQuestionType, int answerLength, Consumer<String> callback) {
-        String correctSequence = questionGenerator.generateGrammaticallyCorrectSequence(answerLength);
-        if (selectedQuestionType.getQuestionAskedForType() == QuestionAskedForType.CORRECT_RULE_WHICH_SHOULD_BE_ADDED) {
-            questionGenerator.setCorrectSequence(correctSequence);
-        }
-        callback.accept(correctSequence);
-    }
-
-    @Override
     public void generateIncorrectAnswer(QuestionModelElement selectedQuestionType, int answerLength, Consumer<String> callback) {
         String answer;
         if (selectedQuestionType.getQuestionAskedForType() == QuestionAskedForType.CORRECT_RULE_WHICH_SHOULD_BE_ADDED) {
@@ -45,6 +36,15 @@ public class GenerateQuestionDialogController implements GenerateQuestionDialogL
             answer = questionGenerator.generateGrammaticallyIncorrectSequence(answerLength);
         }
         callback.accept(answer);
+    }
+
+    @Override
+    public void generateCorrectSequence(QuestionModelElement selectedQuestionType, int answerLength, Consumer<String> callback) {
+        String correctSequence = questionGenerator.generateGrammaticallyCorrectSequence(answerLength);
+        if (selectedQuestionType.getQuestionAskedForType() == QuestionAskedForType.CORRECT_RULE_WHICH_SHOULD_BE_ADDED) {
+            questionGenerator.setCorrectSequence(correctSequence);
+        }
+        callback.accept(correctSequence);
     }
 
     @Override
