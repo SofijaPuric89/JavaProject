@@ -260,7 +260,7 @@ public class GenerateQuestionDialog extends JDialog implements UIObservable<Gene
 
     private void generateCorrectSequence(Consumer<String> callback) {
         for (GenerateQuestionDialogListener listener : listeners) {
-            listener.generateCorrectSequence((Integer) answerLengthSpinner.getValue(), callback);
+            listener.generateCorrectSequence((QuestionModelElement) questionTypeComboBox.getSelectedItem(), (Integer) answerLengthSpinner.getValue(), callback);
         }
     }
 

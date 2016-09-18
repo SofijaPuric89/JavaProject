@@ -5,7 +5,7 @@ import java.util.function.Consumer;
 public interface GenerateQuestionDialogListener {
     void generateCorrectAnswer(QuestionModelElement selectedQuestionType, int answerLength, Consumer<String> callback);
 
-    void generateCorrectSequence(int answerLength, Consumer<String> callback);
+    void generateCorrectSequence(QuestionModelElement selectedQuestionType, int answerLength, Consumer<String> callback);
 
     void generateIncorrectAnswer(QuestionModelElement selectedQuestionType, int answerLength, Consumer<String> callback);
 

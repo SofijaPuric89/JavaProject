@@ -8,6 +8,7 @@ import com.etf.rti.p1.ui.questions.QuestionGrammarGivenType;
 import com.etf.rti.p1.util.Utils;
 
 import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 public class QuestionGenerator {
@@ -15,6 +16,7 @@ public class QuestionGenerator {
     private static final int ANSWER_RETRY_FACTOR = 2;
 
     private final AnswerGenerator answerGenerator;
+    private String incompleteBNFGrammar;
     private List<IRule> corruptedRulesFromRule;
     private int indexToCorruptRule;
     private GrammarChecker grammarChecker;
@@ -27,12 +29,6 @@ public class QuestionGenerator {
         answerGenerator = new AnswerGenerator(grammar);
         try {
             grammarChecker = new GrammarChecker(grammar);
-            toNonEquivalentTranslator =
-                    new BNFGrammarToNonEquivalentTranslator(
-                            SinGenContext.getParser(),
-                            SinGenContext.getFirstNonTerminalSymbol());
-            indexToCorruptRule = toNonEquivalentTranslator.findIndexToCorruptRule();
-            corruptedRulesFromRule = toNonEquivalentTranslator.corruptedRulesFromRule(indexToCorruptRule);
         } catch (Exception e) {
             // TODO: Refactor
             e.printStackTrace();
@@ -94,5 +90,18 @@ public class QuestionGenerator {
 
     public int getGrammarHash() {
         return grammarHash;
+    }
+
+    public void setCorrectSequence(String sequence) {
+        toNonEquivalentTranslator =
+                new BNFGrammarToNonEquivalentTranslator(
+                        SinGenContext.getParser(),
+                        sequence);
+        indexToCorruptRule = toNonEquivalentTranslator.findIndexToCorruptRule();
+        corruptedRulesFromRule = toNonEquivalentTranslator.corruptedRulesFromRule(indexToCorruptRule);
+        List<IRule> copiedRules = new LinkedList<>(SinGenContext.getParser().getRules());
+        copiedRules.remove(indexToCorruptRule);
+        incompleteBNFGrammar = Utils.listOfRulesToBNFString(copiedRules);
+        SinGenContext.setIncompleteBNFGrammar(incompleteBNFGrammar);
     }
 }

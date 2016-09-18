@@ -95,7 +95,7 @@ class QuestionStringBuilder {
                 if (askedForType == QuestionAskedForType.CORRECT_GRAMMAR_FOR_FIRST_NONTERMINAL_SEQUENCE) {
                     return "";
                 } else {
-                    return escapeHtmlAndReplaceLineBreaks(SinGenContext.getGrammarBNF());
+                    return escapeHtmlAndReplaceLineBreaks(SinGenContext.getIncompleteBNFGrammar());
                 }
         }
         throw new IllegalArgumentException("Unsupported question type combination");

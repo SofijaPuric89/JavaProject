@@ -20,6 +20,7 @@ public final class SinGenContext {
     private static AParser parser;
     private static File syntaxDiagramFile;
     private static int grammarHash;
+    private static String incompleteBNFGrammar;
 
     public static String getGrammarBNF() {
         return grammarBNF;
@@ -86,5 +87,13 @@ public final class SinGenContext {
 
     public static int getGrammarHash() {
         return grammarHash;
+    }
+
+    public static void setIncompleteBNFGrammar(String incompleteBNFGrammar) {
+        SinGenContext.incompleteBNFGrammar = incompleteBNFGrammar;
+    }
+
+    public static String getIncompleteBNFGrammar() {
+        return incompleteBNFGrammar;
     }
 }
