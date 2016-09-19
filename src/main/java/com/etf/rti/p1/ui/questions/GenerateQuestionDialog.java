@@ -421,7 +421,8 @@ public class GenerateQuestionDialog extends JDialog implements UIObservable<Gene
                 "<head>" +
                 "    <style>" +
                 "        body {" +
-                "            font-size: 16px;" +
+                "            font-family: \"Verdana, Geneva, sans-serif\";" +
+                "            font-size: 14px;" +
                 "        }" +
                 "    </style>" +
                 "</head>" +

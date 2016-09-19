@@ -16,6 +16,7 @@ import java.awt.event.KeyEvent;
 public class BNFReplaceSupport {
 
     private static final Color MARK_ALL_HIGHLIGHT_COLOR = new Color(255, 236, 170);
+    private static final KeyStroke SHORTCUT = KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0);
 
     private BNFReplaceSupport() {
     }
@@ -23,10 +24,9 @@ public class BNFReplaceSupport {
     public static void enable(RSyntaxTextArea textArea) {
         textArea.setMarkAllHighlightColor(MARK_ALL_HIGHLIGHT_COLOR);
         RenameNonterminalAction renameNonterminalAction = new RenameNonterminalAction(textArea);
-        textArea.getInputMap().put(KeyStroke.getKeyStroke(KeyEvent.VK_F2, 0), renameNonterminalAction);
+        textArea.getInputMap().put(SHORTCUT, renameNonterminalAction);
         JPopupMenu popupMenu = textArea.getPopupMenu();
         popupMenu.remove(popupMenu.getComponentCount() - 1);
-        // TODO: Add "Replace" action (simple one, just text replace)
         popupMenu.add(renameNonterminalAction);
     }
 
@@ -36,6 +36,7 @@ public class BNFReplaceSupport {
 
         RenameNonterminalAction(RSyntaxTextArea textArea) {
             super("Rename Nonterminal");
+            this.putValue("AcceleratorKey", SHORTCUT);
             this.textArea = textArea;
         }
 
@@ -45,7 +46,6 @@ public class BNFReplaceSupport {
             // we always take the selection start
             int caretPosition = component.getSelectionStart();
             Token token = textArea.modelToToken(caretPosition);
-            System.out.println(token);
 
             if ((token != null) && (token.getType() == Token.VARIABLE)) {
                 String oldName = token.getLexeme();
@@ -78,12 +78,6 @@ public class BNFReplaceSupport {
             BNFRenameNonterminalDialog dialog = new BNFRenameNonterminalDialog(oldName);
             dialog.setVisible(true);
             return dialog.getDialogValue();
-        }
-
-        @Override
-        public boolean isEnabled() {
-            // TODO
-            return super.isEnabled();
         }
     }
 }

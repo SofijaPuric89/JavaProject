@@ -27,7 +27,9 @@
             <children>
               <component id="21314" class="javax.swing.JTextPane" binding="generatedQuestionTextArea">
                 <constraints/>
-                <properties/>
+                <properties>
+                  <margin top="0" left="3" bottom="10" right="3"/>
+                </properties>
               </component>
             </children>
           </scrollpane>
