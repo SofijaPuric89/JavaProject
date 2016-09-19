@@ -228,36 +228,42 @@ public class GenerateQuestionDialog extends JDialog implements UIObservable<Gene
         generateCorrectGrammarABtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                checkForUnpopulatedSequence();
                 answerA = generateCorrectGrammar(grammarIndicatorIconA, answerComboBoxA);
             }
         });
         generateCorrectGrammarBBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                checkForUnpopulatedSequence();
                 answerB = generateCorrectGrammar(grammarIndicatorIconB, answerComboBoxB);
             }
         });
         generateCorrectGrammarCBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                checkForUnpopulatedSequence();
                 answerC = generateCorrectGrammar(grammarIndicatorIconC, answerComboBoxC);
             }
         });
         generateIncorrectGrammarABtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                checkForUnpopulatedSequence();
                 answerA = generateIncorrectGrammar(grammarIndicatorIconA, answerComboBoxA);
             }
         });
         generateIncorrectGrammarBBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                checkForUnpopulatedSequence();
                 answerB = generateIncorrectGrammar(grammarIndicatorIconB, answerComboBoxB);
             }
         });
         generateIncorrectGrammarCBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                checkForUnpopulatedSequence();
                 answerC = generateIncorrectGrammar(grammarIndicatorIconC, answerComboBoxC);
             }
         });
@@ -270,14 +276,22 @@ public class GenerateQuestionDialog extends JDialog implements UIObservable<Gene
     }
 
     private void generateCorrectAnswer(Consumer<String> callback) {
+        checkForUnpopulatedSequence();
         for (GenerateQuestionDialogListener listener : listeners) {
             listener.generateCorrectAnswer((QuestionModelElement) questionTypeComboBox.getSelectedItem(), (Integer) answerLengthSpinner.getValue(), callback);
         }
     }
 
     private void generateIncorrectAnswer(Consumer<String> callback) {
+        checkForUnpopulatedSequence();
         for (GenerateQuestionDialogListener listener : listeners) {
             listener.generateIncorrectAnswer((QuestionModelElement) questionTypeComboBox.getSelectedItem(), (Integer) answerLengthSpinner.getValue(), callback);
+        }
+    }
+
+    private void checkForUnpopulatedSequence() {
+        if ((questionTypeComboBox.getSelectedIndex() > 2) && (sequenceTextField.getText().isEmpty())) {
+            generateSequenceBtn.doClick();
         }
     }
 
@@ -367,14 +381,12 @@ public class GenerateQuestionDialog extends JDialog implements UIObservable<Gene
                         panel2.setVisible(true);
                         sequenceTextField.setVisible(true);
                         generateSequenceBtn.setVisible(true);
-                        generateSequenceBtn.doClick();
                         break;
                     case 4:
                         panel1.setVisible(true);
                         panel2.setVisible(false);
                         sequenceTextField.setVisible(true);
                         generateSequenceBtn.setVisible(true);
-                        generateSequenceBtn.doClick();
                         break;
                     default:
                         panel1.setVisible(true);
