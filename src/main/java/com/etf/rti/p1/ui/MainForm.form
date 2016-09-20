@@ -322,7 +322,7 @@
                     <properties>
                       <background color="-1"/>
                       <editable value="false"/>
-                      <font size="12"/>
+                      <font name="Consolas" size="14"/>
                     </properties>
                   </component>
                 </children>

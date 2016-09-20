@@ -6,6 +6,7 @@ import com.etf.rti.p1.translator.BNFGrammarToEBNFRuleTranslator;
 import com.etf.rti.p1.translator.BNFGrammarToNonEquivalentTranslator;
 import com.etf.rti.p1.ui.UIObservable;
 import com.etf.rti.p1.util.Utils;
+import org.apache.commons.lang3.StringEscapeUtils;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
@@ -422,6 +423,7 @@ public class GenerateQuestionDialog extends JDialog implements UIObservable<Gene
             listener.buildQuestion(element, sequenceTextField.getText(), answerA, answerB, answerC, new Consumer<String>() {
                 @Override
                 public void accept(String generatedQuestionString) {
+                    setDialogValue(generatedQuestionString);
                     generatedQuestionTextArea.setText(surroundWithHtmlBase(generatedQuestionString));
                 }
             });
@@ -445,7 +447,6 @@ public class GenerateQuestionDialog extends JDialog implements UIObservable<Gene
     }
 
     private void onClose() {
-        setDialogValue(generatedQuestionTextArea.getText());
         dispose();
     }
 
@@ -454,7 +455,10 @@ public class GenerateQuestionDialog extends JDialog implements UIObservable<Gene
     }
 
     public void setDialogValue(String dialogValue) {
-        this.dialogValue = dialogValue;
+        this.dialogValue = StringEscapeUtils.unescapeHtml4(dialogValue
+                .replaceAll("\\<img[^>]*>", "// Sintaksni dijagram je izostavljen //")
+                .replaceAll("<br/>", "\r\n")
+                .replaceAll("\\<[^>]*>",""));
     }
 
     private void setFrameIcon() {

@@ -31,6 +31,9 @@ import java.util.function.Consumer;
  * listeners can register on UI events and then do the proper controller action. *
  */
 public class MainForm implements MainFormObservable {
+    private static final Color INFO_TEXT_COLOR = new Color(0, 148, 255);
+    private static final Color ERROR_TEXT_COLOR = new Color(255, 73, 53);
+
     private final MainFrame parent;
     private JPanel mainPanel;
     private JToolBar grammarToolBar;
@@ -166,9 +169,10 @@ public class MainForm implements MainFormObservable {
             @Override
             public void actionPerformed(ActionEvent e) {
                 String generatedQuestion = parent.showGenerateQuestionDialog();
-
-                SinGenLogger.info("Generated question with answers");
-                SinGenLogger.content(generatedQuestion);
+                if (generatedQuestion != null) {
+                    SinGenLogger.info("Generated question with answers");
+                    SinGenLogger.content(generatedQuestion);
+                }
             }
         });
     }
@@ -202,7 +206,7 @@ public class MainForm implements MainFormObservable {
 
     @Override
     public void appendInfoLog(String log) {
-        appendToLogTextArea(log, Color.BLUE);
+        appendToLogTextArea(log, INFO_TEXT_COLOR);
     }
 
     @Override
@@ -212,7 +216,7 @@ public class MainForm implements MainFormObservable {
 
     @Override
     public void appendErrorLog(String log) {
-        appendToLogTextArea(log, Color.RED);
+        appendToLogTextArea(log, ERROR_TEXT_COLOR);
     }
 
     @Override
@@ -244,10 +248,8 @@ public class MainForm implements MainFormObservable {
                 try {
                     doc.insertString(doc.getLength(), log + "\n\n", coloredLog);
                 } catch (BadLocationException e) {
-                    SinGenLogger.error("Error while appengind to log text area. ", e);
                     e.printStackTrace();
                 }
-                logTextPane.setCaretPosition(logTextPane.getDocument().getLength());
             }
         });
     }
@@ -276,7 +278,6 @@ public class MainForm implements MainFormObservable {
     }
 
     private void enableSyntaxHighlighting(JTextArea textArea, String type) {
-        // TODO: Create BNF syntax style
         ((RSyntaxTextArea) textArea).setSyntaxEditingStyle(type);
         textArea.setLineWrap(true);
     }
