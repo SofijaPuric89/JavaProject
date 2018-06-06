@@ -1,0 +1,7 @@
+<p> ::= <korisnik>!<domen>
+<korisnik> ::= <rec> | <korisnik>_<rec>
+<domen> ::= <kraj_domena> | <rec>.<domen>
+<kraj_domena> ::= com | co.rs
+<rec> ::= <slovo> | <slovo><rec> | <rec><cifra>
+<slovo> ::= a|b|c|d|e|f|g|h|i|j|k|l|m|n|o|p|q|r|s|t|u|v|w|x|y|z
+<cifra> ::= 0|1|2|3|4|5|6|7|8|9

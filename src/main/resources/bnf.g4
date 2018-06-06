@@ -29,13 +29,13 @@ grammar bnf;
 @header {
     import java.io.OutputStream;
     import java.io.PrintStream;
-    import com.etf.rti.p1.generator.AParser;
+    import com.etf.rti.p1.compiler.AParser;
     import org.apache.commons.lang3.StringEscapeUtils;
     import java.util.LinkedList;
-    import com.etf.rti.p1.ebnf.elements.Nonterminal;
-    import com.etf.rti.p1.ebnf.elements.Terminal;
-    import com.etf.rti.p1.ebnf.rules.IRule;
-    import com.etf.rti.p1.ebnf.rules.SimpleRule;
+    import com.etf.rti.p1.translator.ebnf.elements.Nonterminal;
+    import com.etf.rti.p1.translator.ebnf.elements.Terminal;
+    import com.etf.rti.p1.translator.ebnf.rules.IRule;
+    import com.etf.rti.p1.translator.ebnf.rules.SimpleRule;
 
 }
 
@@ -43,7 +43,7 @@ options {
     superClass=AParser;
     }
 
-@parser::members {
+@bnfParser::members {
     private PrintStream output = null;
     private boolean first = true;
     private String name;
@@ -58,6 +58,10 @@ options {
 
     public LinkedList<IRule> getRules() {
         return listRules;
+    }
+
+    public String getFirstNonterminalSymbol() {
+        return listRules.getFirst().getRule().toString();
     }
 
     private void print(String s) {
@@ -82,21 +86,26 @@ options {
                 "superClass=AParser;\n"+
                 "}\n"+
             "@header {\n"+
-                "import com.etf.rti.p1.generator.AParser;\n" +
-                "import com.etf.rti.p1.ebnf.rules.IRule;\n" +
+                "import com.etf.rti.p1.compiler.AParser;\n" +
+                "import com.etf.rti.p1.translator.ebnf.rules.IRule;\n" +
                 "import java.util.LinkedList;\n" +
             "}\n" +
-            "@parser::members {\n" +
+            "@bnfParser::members {\n" +
                         "    public LinkedList<IRule> getRules() {\n" +
                         "        return null;\n" +
-                        "    }}\n");
+                        "    }\n" +
+                        "    public String getFirstNonterminalSymbol() {\n" +
+                        "        return null;\n" +
+                        "    }\n" +
+                        "}\n"
+                        );
             println(String.format("init : %s ;", s));
         }
         first = false;
     }
 }
 
-@parser::implements {
+@bnfParser::implements {
     IParser
 }
 

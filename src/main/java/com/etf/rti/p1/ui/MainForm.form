@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form xmlns="http://www.intellij.com/uidesigner/form/" version="1" bind-to-class="com.etf.rti.p1.ui.MainForm">
+  <grid id="27dc6" binding="mainPanel" layout-manager="GridLayoutManager" row-count="3" column-count="1" same-size-horizontally="false" same-size-vertically="false" hgap="-1" vgap="-1">
+    <margin top="5" left="5" bottom="5" right="5"/>
+    <constraints>
+      <xy x="20" y="20" width="1097" height="527"/>
+    </constraints>
+    <properties/>
+    <border type="none"/>
+    <children>
+      <toolbar id="5748c" binding="grammarToolBar">
+        <constraints>
+          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="6" anchor="0" fill="1" indent="0" use-parent-layout="false">
+            <preferred-size width="-1" height="20"/>
+          </grid>
+        </constraints>
+        <properties>
+          <floatable value="false"/>
+          <margin top="10" left="10" bottom="10" right="10"/>
+          <toolTipText value=""/>
+        </properties>
+        <clientProperties>
+          <html.disable class="java.lang.Boolean" value="false"/>
+        </clientProperties>
+        <border type="etched" title-resource-bundle="messages" title-key="grammar_toolbar_headline">
+          <title-color color="-3618616"/>
+        </border>
+        <children>
+          <component id="e3e77" class="javax.swing.JButton" binding="newButton">
+            <constraints/>
+            <properties>
+              <horizontalTextPosition value="11"/>
+              <icon value="images/new_32_32.png"/>
+              <opaque value="false"/>
+              <text resource-bundle="messages" key="toolbar_new_btn"/>
+              <toolTipText resource-bundle="messages" key="toolbar_tooltip_new_btn"/>
+              <verticalTextPosition value="0"/>
+            </properties>
+            <clientProperties>
+              <hideActionText class="java.lang.Boolean" value="false"/>
+            </clientProperties>
+          </component>
+          <component id="583c2" class="javax.swing.JToolBar$Separator">
+            <constraints/>
+            <properties/>
+          </component>
+          <component id="282bd" class="javax.swing.JButton" binding="openButton">
+            <constraints/>
+            <properties>
+              <icon value="images/open_32_32.png"/>
+              <text resource-bundle="messages" key="toolbar_open_btn"/>
+              <toolTipText resource-bundle="messages" key="toolbar_tooltip_open_btn"/>
+            </properties>
+          </component>
+          <component id="b34dd" class="javax.swing.JButton" binding="saveAsButton">
+            <constraints/>
+            <properties>
+              <enabled value="false"/>
+              <icon value="images/save_as_32_32.png"/>
+              <text resource-bundle="messages" key="toolbar_save_as_btn"/>
+              <toolTipText resource-bundle="messages" key="toolbar_tooltip_save_as_btn"/>
+            </properties>
+          </component>
+          <component id="4be77" class="javax.swing.JToolBar$Separator">
+            <constraints/>
+            <properties/>
+          </component>
+          <component id="101fe" class="javax.swing.JButton" binding="exportButton" default-binding="true">
+            <constraints/>
+            <properties>
+              <enabled value="false"/>
+              <icon value="images/export_32_32.png"/>
+              <text resource-bundle="messages" key="grammar_export"/>
+              <toolTipText resource-bundle="messages" key="grammar_export_tooltip"/>
+            </properties>
+          </component>
+          <component id="17097" class="javax.swing.JToolBar$Separator">
+            <constraints/>
+            <properties/>
+          </component>
+          <component id="2ea14" class="javax.swing.JButton" binding="generateQuestionButton">
+            <constraints/>
+            <properties>
+              <enabled value="false"/>
+              <icon value="images/generate_32_32.png"/>
+              <text resource-bundle="messages" key="toolbar_generate_question"/>
+              <toolTipText resource-bundle="messages" key="toolbar_tooltip_generate_question_btn"/>
+            </properties>
+          </component>
+          <hspacer id="ccc38">
+            <constraints/>
+          </hspacer>
+          <component id="46b54" class="javax.swing.JLabel" binding="checkSequenceIndicatorIcon">
+            <constraints/>
+            <properties/>
+          </component>
+          <component id="59f84" class="javax.swing.JLabel" binding="firstNonterminalLabel">
+            <constraints/>
+            <properties>
+              <foreground color="-7566196"/>
+              <text value=" &lt;first_non_terminal&gt; "/>
+              <toolTipText resource-bundle="messages" key="toolbar_first_nonterminal_label"/>
+            </properties>
+          </component>
+          <component id="25fdd" class="javax.swing.JTextField" binding="checkSequenceTextField">
+            <constraints/>
+            <properties>
+              <enabled value="true"/>
+              <horizontalAlignment value="4"/>
+              <maximumSize width="5000" height="2147483647"/>
+              <toolTipText resource-bundle="messages" key="toolbar_tooltip_check_sequence_text_field"/>
+            </properties>
+          </component>
+        </children>
+      </toolbar>
+      <grid id="4affd" binding="notationsPanel" layout-manager="FormLayout">
+        <rowspec value="center:d:grow"/>
+        <rowspec value="top:4dlu:noGrow"/>
+        <rowspec value="center:max(d;4px):noGrow"/>
+        <colspec value="fill:d:grow"/>
+        <colspec value="left:4dlu:noGrow"/>
+        <colspec value="fill:d:grow"/>
+        <colspec value="left:4dlu:noGrow"/>
+        <colspec value="fill:d:grow"/>
+        <colgroup>
+          <member index="1"/>
+          <member index="3"/>
+          <member index="5"/>
+        </colgroup>
+        <constraints>
+          <grid row="1" column="0" row-span="1" col-span="1" vsize-policy="4" hsize-policy="4" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <preferred-size width="0" height="344"/>
+          </grid>
+        </constraints>
+        <properties>
+          <focusCycleRoot value="false"/>
+          <font size="14"/>
+        </properties>
+        <border type="none" title-justification="2">
+          <font/>
+        </border>
+        <children>
+          <grid id="f06e9" layout-manager="FormLayout">
+            <rowspec value="center:d:grow"/>
+            <rowspec value="top:4dlu:noGrow"/>
+            <rowspec value="center:max(d;4px):noGrow"/>
+            <colspec value="fill:d:grow"/>
+            <constraints>
+              <grid row="0" column="0" row-span="3" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+              <forms/>
+            </constraints>
+            <properties/>
+            <border type="empty"/>
+            <children>
+              <component id="cc9e9" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                  <forms defaultalign-horz="false"/>
+                </constraints>
+                <properties>
+                  <labelFor value="a95d2"/>
+                  <text resource-bundle="messages" key="bnf_notation_label"/>
+                </properties>
+              </component>
+              <scrollpane id="5aaaf" binding="bnfNotationScrollPane" custom-create="true">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                  <forms defaultalign-vert="false"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <component id="a95d2" class="javax.swing.JTextArea" binding="bnfNotationTextArea" custom-create="true" default-binding="true">
+                    <constraints/>
+                    <properties>
+                      <editable value="false"/>
+                      <enabled value="false"/>
+                      <font size="16"/>
+                      <wrapStyleWord value="false"/>
+                    </properties>
+                  </component>
+                </children>
+              </scrollpane>
+            </children>
+          </grid>
+          <grid id="bb05a" layout-manager="FormLayout">
+            <rowspec value="center:d:grow"/>
+            <rowspec value="top:4dlu:noGrow"/>
+            <rowspec value="center:max(d;4px):noGrow"/>
+            <colspec value="fill:d:grow"/>
+            <constraints>
+              <grid row="0" column="2" row-span="3" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+              <forms/>
+            </constraints>
+            <properties/>
+            <border type="empty"/>
+            <children>
+              <component id="1ac39" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                  <forms defaultalign-horz="false"/>
+                </constraints>
+                <properties>
+                  <labelFor value="21fd"/>
+                  <text resource-bundle="messages" key="ebnf_notation_label"/>
+                </properties>
+              </component>
+              <scrollpane id="179e0" binding="ebnfNotationScrollPane" custom-create="true">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                  <forms defaultalign-horz="false" defaultalign-vert="false"/>
+                </constraints>
+                <properties>
+                  <verifyInputWhenFocusTarget value="true"/>
+                </properties>
+                <border type="none"/>
+                <children>
+                  <component id="21fd" class="javax.swing.JTextArea" binding="ebnfNotationTextArea" custom-create="true" default-binding="true">
+                    <constraints/>
+                    <properties>
+                      <editable value="false"/>
+                      <enabled value="false"/>
+                      <font size="16"/>
+                      <wrapStyleWord value="true"/>
+                    </properties>
+                  </component>
+                </children>
+              </scrollpane>
+            </children>
+          </grid>
+          <grid id="8b27c" layout-manager="FormLayout">
+            <rowspec value="center:d:grow"/>
+            <rowspec value="top:4dlu:noGrow"/>
+            <rowspec value="center:max(d;4px):noGrow"/>
+            <colspec value="fill:max(d;4px):noGrow"/>
+            <colspec value="left:4dlu:noGrow"/>
+            <colspec value="fill:d:grow"/>
+            <constraints>
+              <grid row="0" column="4" row-span="3" col-span="1" vsize-policy="0" hsize-policy="0" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+              <forms defaultalign-vert="false"/>
+            </constraints>
+            <properties/>
+            <border type="empty"/>
+            <children>
+              <component id="b1325" class="javax.swing.JLabel">
+                <constraints>
+                  <grid row="2" column="0" row-span="1" col-span="3" vsize-policy="0" hsize-policy="0" anchor="0" fill="0" indent="0" use-parent-layout="false"/>
+                  <forms defaultalign-horz="false" defaultalign-vert="false"/>
+                </constraints>
+                <properties>
+                  <labelFor value=""/>
+                  <text resource-bundle="messages" key="syntax_diagram_notation_label"/>
+                </properties>
+              </component>
+              <scrollpane id="ed21f">
+                <constraints>
+                  <grid row="0" column="2" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                  <forms defaultalign-horz="false" defaultalign-vert="false"/>
+                </constraints>
+                <properties/>
+                <border type="none"/>
+                <children>
+                  <grid id="11ce9" layout-manager="FormLayout">
+                    <rowspec value="center:d:noGrow"/>
+                    <colspec value="fill:d:noGrow"/>
+                    <constraints/>
+                    <properties>
+                      <background color="-1"/>
+                      <enabled value="false"/>
+                    </properties>
+                    <border type="none"/>
+                    <children>
+                      <component id="f4e6e" class="javax.swing.JLabel" binding="syntaxDiagramImageLabel">
+                        <constraints>
+                          <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="0" hsize-policy="0" anchor="8" fill="0" indent="0" use-parent-layout="false"/>
+                          <forms/>
+                        </constraints>
+                        <properties/>
+                      </component>
+                    </children>
+                  </grid>
+                </children>
+              </scrollpane>
+            </children>
+          </grid>
+        </children>
+      </grid>
+      <tabbedpane id="d2e21" binding="logPanel">
+        <constraints>
+          <grid row="2" column="0" row-span="1" col-span="1" vsize-policy="3" hsize-policy="3" anchor="0" fill="3" indent="0" use-parent-layout="false">
+            <preferred-size width="200" height="200"/>
+          </grid>
+        </constraints>
+        <properties>
+          <tabLayoutPolicy value="1"/>
+        </properties>
+        <border type="none"/>
+        <children>
+          <grid id="b3b13" binding="logTabPanel" layout-manager="FormLayout">
+            <rowspec value="fill:d:grow"/>
+            <colspec value="fill:d:grow"/>
+            <constraints>
+              <tabbedpane title-resource-bundle="messages" title-key="log_tab_title" icon="images/info_32_32.png"/>
+            </constraints>
+            <properties>
+              <background color="-1"/>
+            </properties>
+            <border type="none"/>
+            <children>
+              <scrollpane id="a9efe">
+                <constraints>
+                  <grid row="0" column="0" row-span="1" col-span="1" vsize-policy="7" hsize-policy="7" anchor="0" fill="3" indent="0" use-parent-layout="false"/>
+                  <forms defaultalign-horz="false" defaultalign-vert="false"/>
+                </constraints>
+                <properties>
+                  <background color="-1"/>
+                </properties>
+                <border type="none"/>
+                <children>
+                  <component id="4ec71" class="javax.swing.JTextPane" binding="logTextPane">
+                    <constraints/>
+                    <properties>
+                      <background color="-1"/>
+                      <editable value="false"/>
+                      <font name="Consolas" size="14"/>
+                    </properties>
+                  </component>
+                </children>
+              </scrollpane>
+            </children>
+          </grid>
+        </children>
+      </tabbedpane>
+    </children>
+  </grid>
+</form>
